@@ -10,6 +10,8 @@ import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Cosmos from '../components/motion/Cosmos.astro';
 import WorldMap from '../components/WorldMap.astro';
+import Marquee from '../components/Marquee.astro';
+import Stats from '../components/Stats.astro';
 import {getEntry, getCollection} from 'astro:content';
 import PlanetArt from '../components/PlanetArt.astro';
 import {nav} from '../data/nav';
@@ -37,7 +39,7 @@ const pages = await getCollection('pages');
 const fromPrice = (slug: string) => {
   const plans = pages.find(x => x.data.slug === slug)?.data.plans ?? [];
   const priced = plans.map(pl => ({pl, n: Number(pl.price.replace(/[^\d,]/g, '').replace(',', '.'))})).filter(x => x.n > 0).sort((a, b) => a.n - b.n)[0];
-  return priced ? `od ${priced.pl.price}${priced.pl.period ? ` / ${priced.pl.period}` : ''}` : '';
+  return priced ? `od ${priced.pl.price.replace(/^od\s+/i, '')}${priced.pl.period ? ` / ${priced.pl.period}` : ''}` : '';
 };
 const noteOf = (slug: string) => nav.flatMap(g => g.items).find(i => i.href === slug)?.note ?? '';
 const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p.href)}));
@@ -66,6 +68,8 @@ const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p
     {d?.included && <ul class="chips hero__chips" aria-label="V ceně každého tarifu">{d.included.slice(0, 3).map(i => <li>{i}</li>)}</ul>}
   </section>
 
+  <Marquee label="Technologie, na kterých služby běží" items={['NVMe SSD', 'PHP 8.3', 'MariaDB', "Let's Encrypt", 'KVM', 'Git deploy', 'Composer', 'Redis', 'Node.js', 'WP-CLI', 'ModSecurity', 'IPv6']} />
+
   <section class="section" id="produkty">
     <div class="wrap">
       <SectionHead title="Jeden vesmír. Všechno pro váš web." lead="Od prvního webu po dedikovaný server. Jeden účet, jedna klientská zóna a jedna podpora, která zná celý váš projekt." />
@@ -92,6 +96,13 @@ const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p
   </section>
 
   {d?.highlights?.length && <Highlights items={d.highlights} title="Prémiový hosting, který nemusíte hlídat." planet="datacenter" />}
+
+  <Stats title="ONhost v číslech." items={[
+    {value: 99.9, decimals: 1, suffix: ' %', label: 'garantovaná dostupnost podle SLA'},
+    {value: 14, suffix: ' dní', label: 'uchováváme noční zálohy webu, databází i e-mailů'},
+    {value: 1, suffix: ' min', label: 'interval kontroly dostupnosti vašeho webu'},
+    {value: 1, suffix: ' h', label: 'reakce podpory na urgentní výpadek'},
+  ]} />
 
   {d?.plans?.length && <Plans plans={d.plans} note={d.priceNote} title="Férové ceny. Bez hvězdiček." id="cenik" />}
 

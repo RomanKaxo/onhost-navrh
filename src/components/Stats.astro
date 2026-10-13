@@ -1,0 +1,32 @@
+---
+// Velká čísla (jen fakta ze živého webu). Hodnota se při odkrytí „napočítá“ (src/motion/site.js, atribut data-count).
+import SectionHead from './SectionHead.astro';
+interface Stat { value: number; decimals?: number; suffix?: string; prefix?: string; label: string }
+interface Props { title: string; lead?: string; items: Stat[] }
+const {title, lead, items} = Astro.props;
+const fmt = (s: Stat) => `${s.prefix ?? ''}${s.value.toLocaleString('cs-CZ', {minimumFractionDigits: s.decimals ?? 0, maximumFractionDigits: s.decimals ?? 0})}${s.suffix ?? ''}`;
+---
+<section class="section stats">
+  <div class="wrap">
+    <SectionHead title={title} lead={lead} />
+    <dl class="stats__grid">
+      {items.map((s, i) => (
+        <div class="stat" data-reveal style={`--d:${i * 80}ms`}>
+          <dt>{s.label}</dt>
+          <dd data-count={s.value} data-decimals={s.decimals ?? 0} data-prefix={s.prefix ?? ''} data-suffix={s.suffix ?? ''}>{fmt(s)}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+<style>
+  .stats__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; }
+  .stat { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 14px; padding: 8px 28px 8px 0; border-left: 1px solid var(--line); padding-left: 28px; }
+  .stat:first-child { border-left: 0; padding-left: 0; }
+  dd { margin: 0; font: 700 clamp(48px, 6vw, 92px)/.95 var(--font-display); letter-spacing: -.03em; color: #fff; font-variant-numeric: tabular-nums; }
+  .stat:nth-child(2) dd { color: var(--lilac-200); }
+  .stat:nth-child(4) dd { background: linear-gradient(120deg, #fff, var(--pink-hot)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  dt { font-size: 15.5px; line-height: 1.45; color: var(--text-dim); max-width: 22ch; }
+  @media (max-width: 960px) { .stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; } .stat:nth-child(3) { border-left: 0; padding-left: 0; } }
+  @media (max-width: 520px) { .stats__grid { grid-template-columns: minmax(0, 1fr); } .stat { border-left: 0; padding-left: 0; } }
+</style>

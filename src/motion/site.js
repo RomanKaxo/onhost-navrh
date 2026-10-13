@@ -36,6 +36,24 @@ onPage(() => {
     card.style.setProperty('--my', `${e.clientY - box.top}px`);
   }, {passive: true});
 
+  // Čísla se při prvním zobrazení napočítají od nuly (jen když pohyb nevadí).
+  const counters = [...document.querySelectorAll('[data-count]')];
+  if (counters.length && !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    const format = (el, v) => `${el.dataset.prefix}${v.toLocaleString('cs-CZ', {minimumFractionDigits: +el.dataset.decimals, maximumFractionDigits: +el.dataset.decimals})}${el.dataset.suffix}`;
+    const io = new IntersectionObserver(entries => entries.forEach(({target, isIntersecting}) => {
+      if (!isIntersecting) return;
+      io.unobserve(target);
+      const end = +target.dataset.count, start = performance.now(), duration = 1400;
+      const step = now => {
+        const p = Math.min(1, (now - start) / duration), eased = 1 - Math.pow(1 - p, 3);
+        target.textContent = format(target, end * eased);
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }), {threshold: .6});
+    counters.forEach(el => { el.textContent = format(el, 0); io.observe(el); });
+    cleanups.push(() => io.disconnect());
+  }
   cleanups.push(reveal([...document.querySelectorAll('[data-reveal]')]));
   return () => cleanups.forEach(fn => fn());
 });

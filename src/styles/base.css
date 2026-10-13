@@ -82,3 +82,11 @@ a.card:hover,.card--interactive:hover{border-color:var(--line-strong)}
 [data-reveal]{transition:opacity var(--t-move) var(--ease),translate var(--t-move) var(--ease);transition-delay:var(--d,0ms)}
 
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important;scroll-behavior:auto!important}.reveal-pending{opacity:1;translate:none}}
+
+/* Atmosféra sekcí: velká měkká mlhovina za obsahem, střídavě vlevo a vpravo — stránka dýchá, nepůsobí jako prázdná tma. */
+main > .section::before{content:'';position:absolute;z-index:-1;pointer-events:none;width:min(1100px,120vw);aspect-ratio:1.6;top:8%;
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--brand) 42%,transparent),color-mix(in srgb,var(--brand) 12%,transparent) 55%,transparent);filter:blur(10px)}
+main > .section:nth-of-type(odd)::before{left:-28%}
+main > .section:nth-of-type(even)::before{right:-30%;background:radial-gradient(closest-side,color-mix(in srgb,var(--pink) 16%,transparent),color-mix(in srgb,var(--brand) 14%,transparent) 50%,transparent)}
+main > .section.cta-section::before,main > .section.article::before,main > .section.listing::before{display:none}
+main{position:relative;isolation:isolate;overflow-x:clip}
