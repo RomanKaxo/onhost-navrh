@@ -1,46 +1,27 @@
 ---
-// Planeta produktu: koule s pásy a terminátorem, volitelný prstenec a měsíce.
-// „Zapnutí“ při načtení = planeta se z tmy rozsvítí (jen jas), pak se pomalu otáčí.
-import {planetFor} from '../data/planets';
-interface Props { name?: string; size?: string; power?: boolean; class?: string; transitionName?: string }
-const {name, size = 'min(100%, 420px)', power = false, class: className, transitionName} = Astro.props;
-const look = planetFor(name);
-const moons = Array.from({length: look.moons ?? 0}, (_, i) => i);
+import {planetFor, planets} from '../data/planets';
+import {globeSnapshot} from '../motion/globe.js';
+interface Props { name?: string; size?: string; power?: boolean; class?: string; transitionName?: string; animate?: boolean }
+const {name, size = 'min(100%, 420px)', power = false, class: className, transitionName, animate = false} = Astro.props;
+const key = name && planets[name] ? name : 'web';
+const look = planetFor(key);
+const numericSize = /^\d+(?:\.\d+)?px$/.test(size) ? parseFloat(size) : 420;
+const small = numericSize < 120;
+const snapshot = globeSnapshot(key, small);
 ---
-<div class:list={['planet', {'planet--power': power, 'planet--ring': look.ring, 'planet--bands': look.bands}, className]}
-  style={`--size:${size};--c1:${look.c1};--c2:${look.c2}`} aria-hidden="true" transition:name={transitionName}>
-  <div class="planet__glow"></div>
-  {look.ring && <div class="planet__ring planet__ring--back"></div>}
-  <div class="planet__body"><div class="planet__surface"></div></div>
-  {look.ring && <div class="planet__ring planet__ring--front"></div>}
-  {moons.map(i => <div class="planet__moon-path" style={`--i:${i}`}><span class="planet__moon"></span></div>)}
+<div class:list={['planet', className]} style={`--size:${size};--accent:${look.c1}`} aria-hidden="true" transition:name={transitionName}>
+  <div class="planet__poster" set:html={snapshot} />
+  {animate && <canvas data-globe-canvas={key} data-power={String(power)} aria-hidden="true"></canvas>}
 </div>
+<script>
+  import '../motion/globe.js';
+</script>
 <style>
-  .planet { position: relative; width: var(--size); aspect-ratio: 1; isolation: isolate; }
-  .planet__glow { position: absolute; inset: 8%; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--c1) 45%, transparent), transparent 68%); filter: blur(28px); }
-  .planet__body { position: absolute; inset: 22%; border-radius: 50%; overflow: hidden;
-    background: radial-gradient(circle at 34% 30%, color-mix(in srgb, #fff 55%, var(--c1)) 0%, var(--c1) 26%, var(--c2) 64%, #12001E 100%);
-    box-shadow: inset -26px -22px 60px #12001Ecc, inset 8px 8px 30px color-mix(in srgb, #fff 18%, transparent), 0 0 70px color-mix(in srgb, var(--c1) 30%, transparent); }
-  /* Pásy povrchu se posouvají → dojem otáčení koule. */
-  .planet__surface { position: absolute; inset: 0; opacity: .35; mix-blend-mode: soft-light;
-    background: repeating-linear-gradient(172deg, transparent 0 9%, color-mix(in srgb, var(--c2) 80%, #000) 9% 13%, transparent 13% 21%, color-mix(in srgb, #fff 40%, var(--c1)) 21% 23%);
-    background-size: 200% 100%; animation: spin-surface 60s linear infinite; }
-  .planet--bands .planet__surface { opacity: .6; }
-  @keyframes spin-surface { to { background-position: -200% 0; } }
-  .planet__ring { position: absolute; inset: 37% 4%; border-radius: 50%; rotate: -16deg;
-    border: 2px solid color-mix(in srgb, var(--c1) 55%, transparent); box-shadow: 0 0 0 6px color-mix(in srgb, var(--c1) 10%, transparent), 0 0 0 14px color-mix(in srgb, var(--lilac) 6%, transparent); }
-  .planet__ring--back { z-index: -1; }
-  .planet__ring--front { clip-path: inset(50% 0 0 0); }
-  .planet__moon-path { position: absolute; inset: calc(10% - var(--i) * 4%); rotate: calc(-14deg + var(--i) * 26deg); pointer-events: none;
-    --t: calc(18s + var(--i) * 9s); animation: moon-layer var(--t) linear infinite; animation-delay: calc(var(--i) * -7s); }
-  .planet__moon { position: absolute; left: 50%; top: 50%; width: calc(6% - var(--i) * 1%); aspect-ratio: 1; margin: -1.5% 0 0 -1.5%; border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #fff, var(--lilac-200) 45%, var(--brand)); box-shadow: 0 0 12px color-mix(in srgb, var(--lilac-200) 60%, transparent);
-    offset-path: ellipse(50% 16% at 50% 50%); offset-rotate: 0deg; animation: moon var(--t) linear infinite; animation-delay: inherit; }
-  /* Dráha začíná vpravo a jde dolů: první polovina je před planetou, druhá za ní (tam měsíc ztmavne). */
-  @keyframes moon { 0% { offset-distance: 0%; opacity: 1; } 50% { opacity: 1; } 56% { opacity: .4; } 94% { opacity: .4; } 100% { offset-distance: 100%; opacity: 1; } }
-  @keyframes moon-layer { 0%, 50% { z-index: 2; } 50.01%, 100% { z-index: -1; } }
-  .planet--power .planet__body, .planet--power .planet__glow, .planet--power .planet__ring { animation: power-on 1.8s var(--ease) both; }
-  .planet--power .planet__ring { animation-delay: .35s; }
-  @keyframes power-on { from { filter: brightness(.08) saturate(.4); opacity: .3; } }
-  @media (prefers-reduced-motion: reduce) { .planet__surface, .planet__moon, .planet--power * { animation: none !important; } }
+  .planet{position:relative;width:var(--size);max-width:100%;aspect-ratio:1;isolation:isolate}
+  .planet__poster,.planet canvas{position:absolute;inset:0;width:100%;height:100%}
+  .planet__poster :global(svg){width:100%;height:100%}
+  .planet canvas{opacity:0;transition:opacity 180ms ease}
+  .planet.globe-ready canvas{opacity:1}
+  .planet.globe-ready .planet__poster{visibility:hidden}
+  @media(prefers-reduced-motion:reduce){.planet canvas{transition:none}}
 </style>

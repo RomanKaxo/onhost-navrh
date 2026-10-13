@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import Planet from '../components/Planet.astro';
+import WorldMap from '../components/WorldMap.astro';
+import {planets} from '../data/planets';
+---
+<Base title="Datové glóby — laboratoř" description="Vizuální studie datových glóbů a světové sítě pro návrh ONhost.">
+  <main class="wrap">
+    <header><p class="eyebrow">Vizuální studie · ONhost</p><h1>Infrastruktura z vesmíru.</h1><p class="lead">Datové glóby a síťové motivy. Ilustrace služeb, nikoli skutečná topologie infrastruktury.</p></header>
+    <section aria-label="Datové glóby" class="lab-grid">
+      {Object.keys(planets).map((name,i)=><article class="card lab-globe">
+        <div class="lab-caption"><span class="card__index">{String(i+1).padStart(2,'0')} / {name}</span><Planet name={name} size="64px" /></div>
+        <Planet name={name} size="420px" animate power />
+      </article>)}
+    </section>
+    <section class="lab-world"><p class="eyebrow">Souhvězdí sítě · ilustrační mapa</p><h2>Výchozí bod: Praha.</h2><WorldMap /><div class="lab-compact card"><WorldMap compact /></div></section>
+  </main>
+</Base>
+<script>
+  import '../motion/site.js';
+</script>
+<style>
+  header{padding:80px 0 48px;display:grid;gap:24px}
+  h1{font-size:var(--fs-display);max-width:900px}
+  .lab-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .lab-globe{padding:16px 20px 0;overflow:hidden}
+  .lab-caption{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .lab-caption .card__index{margin:0;font-size:11px}
+  .lab-world{padding:96px 0;display:grid;gap:24px}
+  h2{font-size:var(--fs-h2)}
+  .lab-compact{width:min(100%,560px);justify-self:center}
+  @media(max-width:1050px){.lab-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:600px){header{padding-top:48px}.lab-grid{grid-template-columns:1fr}.lab-globe{padding-inline:16px}}
+</style>
