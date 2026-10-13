@@ -176,14 +176,15 @@ export const ProductOrbit: React.FC<{ from: number; to: number; names: string[] 
   return (
     <AbsoluteFill style={{ opacity: show }}>
       <svg width={W} height={H} style={{ position: 'absolute', inset: 0 }}>
-        <ellipse cx={W / 2} cy={760} rx={420} ry={150} fill="none" stroke={C.lilac} strokeOpacity={.3} strokeWidth={1.5} strokeDasharray="6 10" />
+        <ellipse cx={W / 2} cy={760} rx={420} ry={250} fill="none" stroke={C.lilac} strokeOpacity={.3} strokeWidth={1.5} strokeDasharray="6 10" />
       </svg>
       {names.map((name, i) => {
         const a = (i / names.length) * Math.PI * 2 + (frame - from) / 70;
         const depth = (Math.sin(a) + 1) / 2; // 0 vzadu, 1 vpředu
-        const size = 120 + depth * 110;
+        // Nejbližší bod dráhy je 250 px od středu symbolu: poloměr symbolu + ochranná zóna (~125 px) + poloměr planety (max 90 px) se tam vejde.
+        const size = 110 + depth * 70;
         return <div key={name} style={{ position: 'absolute', inset: 0, zIndex: depth > .5 ? 3 : 1 }}>
-          <PlanetImg name={name} size={size} x={W / 2 + Math.cos(a) * 420} y={760 + Math.sin(a) * 150} brightness={.45 + .55 * depth} opacity={ramp(frame, from + i * 3, from + 14 + i * 3)} />
+          <PlanetImg name={name} size={size} x={W / 2 + Math.cos(a) * 420} y={760 + Math.sin(a) * 250} brightness={.45 + .55 * depth} opacity={ramp(frame, from + i * 3, from + 14 + i * 3)} />
         </div>;
       })}
     </AbsoluteFill>
