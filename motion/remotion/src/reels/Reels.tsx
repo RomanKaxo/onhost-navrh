@@ -51,7 +51,7 @@ export const Reels: React.FC = () => {
         <Caption lines={[{ text: 'Výpadek? Reagujeme' }, { text: 'do hodiny. Česky.', color: C.lilac200 }]} from={S.support[0] + 8} to={S.support[1]} y={1000} />
 
         <ProductOrbit from={S.products[0]} to={S.products[1]} names={['web', 'vps', 'domains', 'mail', 'database', 'game']} />
-        <Caption lines={[{ text: 'Od 49 Kč měsíčně' }, { text: 'bez DPH.', color: C.lilac200 }]} from={S.products[0] + 8} to={S.products[1]} y={1080} />
+        <Caption lines={[{ text: 'Od 49 Kč měsíčně' }, { text: 'bez DPH.', color: C.lilac200 }]} from={S.products[0] + 8} to={S.products[1]} y={1170} />
 
         <Outro from={S.outro[0]} />
         <Caption lines={[{ text: 'Zapněte svůj web.' }]} from={S.outro[0] + 14} to={REELS_FRAMES + 40} y={980} size={80} />
