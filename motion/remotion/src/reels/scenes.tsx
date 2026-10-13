@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { AbsoluteFill, Img, continueRender, delayRender, staticFile, useCurrentFrame } from 'remotion';
-import { C, H, W, ramp, rng } from './kit';
+import { C, H, W, ramp, rng, useLayout } from './kit';
 
 // ── Horizont datové planety: body na kouli (Fibonacciho mřížka), ortografický pohled na horní okraj.
 // Světla „měst“ se rozsvěcují od jednoho místa (Praha) a spojují se tenkými linkami.
-const N = 2600, R = 1520, CX = W / 2;
+const N = 2600, R = 1520;
 const sphere = Array.from({ length: N }, (_, i) => {
   const y = 1 - (i + .5) / N * 2, r = Math.sqrt(1 - y * y), th = i * 2.399963;
   return { x: Math.cos(th) * r, y, z: Math.sin(th) * r };
@@ -19,14 +19,16 @@ const project = (p: { x: number; y: number; z: number }, spin: number) => {
 };
 export const Horizon: React.FC<{ enter: number; exit: number; ignite: number }> = ({ enter, exit, ignite }) => {
   const frame = useCurrentFrame();
+  const { width: FW, height: FH, landscape } = useLayout();
+  const CX = landscape ? 1240 : W / 2;
   const rise = ramp(frame, enter, enter + 50) * (1 - ramp(frame, exit - 30, exit));
-  const cy = H + R - 700 * rise + 120; // okraj planety vyjede zespodu (horní okraj kolem y≈1340)
+  const cy = FH + R - FH * .365 * rise + 120; // okraj planety vyjede zespodu (na výšku horní okraj kolem y≈1340)
   const spin = frame / 900;
   const origin = { x: CX + 120, y: cy - R + 90 };
   const pts = sphere.map((p, i) => {
     const q = project(p, spin);
     return { i, sx: CX + q.x * R, sy: cy - q.y * R, z: q.z, lit: lit[i] };
-  }).filter(p => p.z > 0 && p.sy < H + 10 && p.sy > cy - R - 10);
+  }).filter(p => p.z > 0 && p.sy < FH + 10 && p.sy > cy - R - 10 && p.sx > -10 && p.sx < FW + 10);
   const wave = (p: { sx: number; sy: number }) => { const d = Math.hypot(p.sx - origin.x, p.sy - origin.y) / 9; return ramp(frame, ignite + d, ignite + d + 12); };
   const litPts = pts.filter(p => p.lit);
   // Každé světlo se spojí se dvěma nejbližšími sousedy (síť mezi „městy“).
@@ -38,7 +40,7 @@ export const Horizon: React.FC<{ enter: number; exit: number; ignite: number }> 
   if (rise <= 0) return null;
   return (
     <AbsoluteFill>
-      <svg width={W} height={H}>
+      <svg width={FW} height={FH}>
         <defs>
           <radialGradient id="body" cx="50%" cy="0%" r="70%"><stop offset="0" stopColor={C.deep} /><stop offset=".5" stopColor="#1a0330" /><stop offset="1" stopColor={C.space} /></radialGradient>
           <filter id="glow"><feGaussianBlur stdDeviation="18" /></filter>
@@ -194,5 +196,6 @@ export const ProductOrbit: React.FC<{ from: number; to: number; names: string[] 
 export const Outro: React.FC<{ from: number }> = ({ from }) => {
   const frame = useCurrentFrame();
   const show = ramp(frame, from, from + 20);
-  return <Img src={staticFile('brand/onhost-horizontal.svg')} style={{ position: 'absolute', left: W / 2 - 330, top: 700, width: 660, height: 'auto', opacity: show, transform: `scale(${.96 + .04 * show})` }} />;
+  const { width, landscape } = useLayout();
+  return <Img src={staticFile('brand/onhost-horizontal.svg')} style={{ position: 'absolute', left: width / 2 - 330, top: landscape ? 330 : 700, width: 660, height: 'auto', opacity: show, transform: `scale(${.96 + .04 * show})` }} />;
 };

@@ -11,5 +11,6 @@ const Root: React.FC = () => <>
   <Composition id="Deploy" component={Deploy} width={1920} height={1080} fps={30} durationInFrames={240} />
   <Composition id="Constellation" component={Constellation} width={1920} height={1080} fps={30} durationInFrames={240} />
   <Composition id="Reels" component={Reels} width={1080} height={1920} fps={30} durationInFrames={REELS_FRAMES} />
+  <Composition id="ReelsLandscape" component={Reels} width={1920} height={1080} fps={30} durationInFrames={REELS_FRAMES} />
 </>;
 registerRoot(Root);
