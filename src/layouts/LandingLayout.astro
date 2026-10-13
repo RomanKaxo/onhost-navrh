@@ -9,6 +9,10 @@ import Specs from '../components/Specs.astro';
 import Faq from '../components/Faq.astro';
 import Related from '../components/Related.astro';
 import CtaBand from '../components/CtaBand.astro';
+import Terminal from '../components/visuals/Terminal.astro';
+import BackupTimeline from '../components/visuals/BackupTimeline.astro';
+import ChatSample from '../components/visuals/ChatSample.astro';
+import Heartbeat from '../components/visuals/Heartbeat.astro';
 import {render} from 'astro:content';
 import {allPages, crumbs, type Page} from '../data/pages';
 import {planetOf, highlightsHead, stepsTitle} from '../data/defaults';
@@ -22,10 +26,14 @@ const related = (d.related ?? []).map(s => pages.find(p => p.data.slug === s)).f
 const primary = d.plans?.length ? {label: 'Vybrat tarif', href: '#tarify'} : d.cta?.primary;
 const secondary = d.plans?.length ? (d.cta?.secondary ?? {label: 'Napsat podpoře', href: '/kontakt'}) : d.cta?.secondary;
 const head = highlightsHead(d.kind, d.slug, d.title);
+// Stránky s vlastní ilustrací v úvodu místo planety.
+const Visual = ({developer: Terminal, 'funkce/zalohy': BackupTimeline, 'funkce/ai-asistent': ChatSample, 'funkce/monitoring': Heartbeat} as Record<string, any>)[d.slug];
 ---
 <Site title={d.title} description={d.description}>
   <PageHero crumbs={crumbs(d.slug, d.title)} eyebrow={d.eyebrow} title={d.headline ?? d.title} lead={d.lead}
-    planet={planetOf(d.slug, d.planet)} included={d.included} primary={primary} secondary={secondary} />
+    planet={planetOf(d.slug, d.planet)} included={d.included} primary={primary} secondary={secondary}>
+    {Visual && <Visual slot="visual" />}
+  </PageHero>
   {d.highlights?.length && <Highlights items={d.highlights} eyebrow={head.eyebrow} title={head.title} />}
   {d.plans?.length && <Plans plans={d.plans} note={d.priceNote} />}
   {d.steps?.length && <Steps items={d.steps} title={stepsTitle(d.steps.length)} />}

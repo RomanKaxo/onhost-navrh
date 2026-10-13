@@ -28,9 +28,11 @@ const words = title.split(/\s+/);
       </div>}
       {included && included.length > 0 && <ul class="chips phero__chips" aria-label="V ceně">{included.map(i => <li>{i}</li>)}</ul>}
     </div>
-    {!compact && <div class="phero__visual">
-      <div class="phero__orbits"><span></span><span></span></div>
-      <Planet name={planet} power size="100%" transitionName={planet ? `planet-${planet}` : undefined} />
+    {!compact && <div class:list={['phero__visual', {'phero__visual--custom': Astro.slots.has('visual')}]}>
+      {Astro.slots.has('visual') ? <slot name="visual" /> : <>
+        <div class="phero__orbits"><span></span><span></span></div>
+        <Planet name={planet} power animate size="100%" transitionName={planet ? `planet-${planet}` : undefined} />
+      </>}
     </div>}
   </div>
 </section>

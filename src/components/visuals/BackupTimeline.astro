@@ -1,0 +1,48 @@
+---
+// Zálohy: 14 nočních záloh (fakta ze stránky Zálohy), výběr bodu obnovy jako v klientské zóně.
+import Frame from './Frame.astro';
+const days = Array.from({length: 14}, (_, i) => 13 - i);
+const label = (d: number) => d === 0 ? 'Dnes v noci' : d === 1 ? 'Včera v noci' : `Před ${d} dny`;
+const pick = 3;
+---
+<Frame title="Klientská zóna — Zálohy" class="backups">
+  <p class="bk__head"><span>Body obnovy</span><b>14 dní</b></p>
+  <ol class="bk__track" aria-label="Noční zálohy za posledních 14 dní">
+    {days.map(d => <li class:list={['bk__dot', {'bk__dot--today': d === 0, 'bk__dot--pick': d === pick}]} style={`--i:${13 - d}`} title={label(d)}><span class="sr-only">{label(d)}</span></li>)}
+  </ol>
+  <div class="bk__labels" aria-hidden="true"><span>Před 13 dny</span><span>Dnes</span></div>
+  <div class="bk__card">
+    <div>
+      <p class="bk__title">{label(pick)}</p>
+      <p class="bk__meta">Web · databáze · e-maily</p>
+    </div>
+    <span class="bk__btn">Obnovit</span>
+  </div>
+  <div class="bk__progress" aria-hidden="true"><span></span></div>
+  <p class="bk__status" aria-hidden="true">Obnova obvykle do 30 minut</p>
+</Frame>
+<style>
+  .bk__head { display: flex; justify-content: space-between; margin: 6px 0 18px; font-size: 14px; color: var(--text-faint); }
+  .bk__head b { color: var(--lilac-200); font-weight: 600; }
+  .bk__track { position: relative; display: grid; grid-template-columns: repeat(14, 1fr); align-items: center; margin: 0; padding: 0; list-style: none; height: 28px; }
+  .bk__track::before { content: ''; position: absolute; left: 4px; right: 4px; top: 50%; height: 1px; background: linear-gradient(90deg, var(--line), var(--line-strong)); }
+  .bk__dot { position: relative; justify-self: center; width: 9px; height: 9px; border-radius: 50%; background: var(--lilac); opacity: 0; scale: .4; animation: dot .5s var(--ease) forwards; animation-delay: calc(.5s + var(--i) * 60ms); }
+  .bk__dot--today { background: var(--pink); box-shadow: 0 0 12px var(--pink); }
+  /* Výběr bodu obnovy: kroužek „přijede“ z dneška na zálohu před 3 dny. */
+  .bk__dot--pick::after { content: ''; position: absolute; inset: -7px; border-radius: 50%; border: 1.5px solid var(--lilac-50); opacity: 0; animation: ring .6s var(--ease) forwards 1.9s; }
+  .bk__labels { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--text-faint); }
+  .bk__card { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 22px; padding: 16px 18px; border-radius: 14px; border: 1px solid var(--line-strong);
+    background: color-mix(in srgb, var(--brand) 30%, transparent); opacity: 0; translate: 0 10px; animation: rise .6s var(--ease) forwards 2.3s; }
+  .bk__title { margin: 0; font-weight: 600; color: #fff; }
+  .bk__meta { margin: 2px 0 0; font-size: 13.5px; color: var(--text-faint); }
+  .bk__btn { padding: 9px 16px; border-radius: 999px; background: var(--pink); color: #fff; font-weight: 600; font-size: 14px; animation: press .24s var(--ease) 3.1s; }
+  .bk__progress { height: 3px; margin-top: 18px; border-radius: 3px; background: var(--line); overflow: hidden; opacity: 0; animation: show .2s forwards 3.3s; }
+  .bk__progress span { display: block; height: 100%; width: 100%; transform-origin: left; scale: 0 1; background: linear-gradient(90deg, var(--pink), var(--lilac-200)); animation: fill 2.6s var(--ease) forwards 3.4s; }
+  .bk__status { margin: 10px 0 0; font-size: 13px; color: var(--text-faint); opacity: 0; animation: show .4s forwards 3.4s; }
+  @keyframes dot { to { opacity: 1; scale: 1; } }
+  @keyframes ring { from { scale: .4; } to { opacity: 1; scale: 1; } }
+  @keyframes rise { to { opacity: 1; translate: 0 0; } }
+  @keyframes press { 50% { scale: .94; } }
+  @keyframes show { to { opacity: 1; } }
+  @keyframes fill { to { scale: 1 1; } }
+</style>

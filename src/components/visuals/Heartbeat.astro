@@ -1,0 +1,40 @@
+---
+// Monitoring: kontrola každou minutu (fakt ze stránky Monitoring) — 60 posledních kontrol a hlídání SSL.
+import Frame from './Frame.astro';
+const checks = Array.from({length: 60}, (_, i) => i);
+---
+<Frame title="Klientská zóna — Monitoring" class="beat">
+  <div class="beat__head">
+    <p><span class="beat__live" aria-hidden="true"></span>Web je dostupný</p>
+    <span>kontrola každou minutu</span>
+  </div>
+  <ol class="beat__bars" aria-label="Posledních 60 kontrol dostupnosti">
+    {checks.map(i => <li style={`--i:${i}`}></li>)}
+  </ol>
+  <div class="beat__axis" aria-hidden="true"><span>Před hodinou</span><span>Teď</span></div>
+  <svg class="beat__line" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
+    <path class="beat__base" d="M0 34 H120 L132 34 L140 12 L150 52 L158 26 L166 34 H270 L282 34 L290 14 L300 50 L308 28 L316 34 H400" />
+    <path class="beat__pulse" pathLength="1" d="M0 34 H120 L132 34 L140 12 L150 52 L158 26 L166 34 H270 L282 34 L290 14 L300 50 L308 28 L316 34 H400" />
+  </svg>
+  <div class="beat__ssl"><span>SSL certifikát</span><b>Platný · obnovuje se automaticky</b></div>
+</Frame>
+<style>
+  .beat__head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 6px 0 16px; }
+  .beat__head p { margin: 0; display: flex; align-items: center; gap: 10px; font-weight: 600; color: #fff; }
+  .beat__head > span { font-size: 13px; color: var(--text-faint); }
+  .beat__live { width: 9px; height: 9px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 0 0 var(--pink); animation: live 2s ease-out infinite; }
+  .beat__bars { display: grid; grid-template-columns: repeat(60, 1fr); gap: 2px; height: 34px; margin: 0; padding: 0; list-style: none; }
+  .beat__bars li { border-radius: 2px; background: color-mix(in srgb, var(--lilac) 70%, transparent); transform-origin: bottom; scale: 1 0; animation: grow .4s var(--ease) forwards; animation-delay: calc(.4s + var(--i) * 18ms); }
+  .beat__bars li:last-child { background: var(--pink); }
+  .beat__axis { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--text-faint); }
+  .beat__line { width: 100%; height: 56px; margin-top: 14px; }
+  .beat__line path { fill: none; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .beat__base { stroke: color-mix(in srgb, var(--lilac) 30%, transparent); }
+  .beat__pulse { stroke: var(--pink-hot); stroke-width: 2; stroke-dasharray: .18 .82; stroke-dashoffset: .18; filter: drop-shadow(0 0 4px var(--pink)); animation: sweep 3.2s linear infinite 1.6s; }
+  .beat__ssl { display: flex; justify-content: space-between; gap: 12px; margin-top: 14px; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); font-size: 14px; color: var(--text-faint); }
+  .beat__ssl b { color: var(--lilac-50); font-weight: 500; text-align: right; }
+  @keyframes grow { to { scale: 1 1; } }
+  @keyframes sweep { to { stroke-dashoffset: -.82; } }
+  @keyframes live { 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+  @media (prefers-reduced-motion: reduce) { .beat__bars li { scale: 1 1; animation: none; } .beat__pulse { display: none; } }
+</style>

@@ -1,0 +1,41 @@
+---
+// Postup nasazení přes Git přesně podle stránky Developer; příkazy se „píšou“, výstup naskočí po řádcích.
+import Frame from './Frame.astro';
+const lines: {kind: 'cmd' | 'out' | 'ok' | 'note'; text: string}[] = [
+  {kind: 'note', text: '# Přidejte ONhost jako remote'},
+  {kind: 'cmd', text: 'git remote add onhost ssh://onhost.cz/~/repo.git'},
+  {kind: 'note', text: '# Push = automatický deploy'},
+  {kind: 'cmd', text: 'git push onhost main'},
+  {kind: 'out', text: 'remote: Deploying to production...'},
+  {kind: 'out', text: 'remote: Composer install OK'},
+  {kind: 'out', text: 'remote: Migrations OK'},
+  {kind: 'ok', text: 'remote: ✓ Deploy complete'},
+];
+let t = 0.6;
+const timed = lines.map(line => {
+  const start = t;
+  const typing = line.kind === 'cmd' ? line.text.length * 0.035 : 0;
+  t += typing + (line.kind === 'cmd' ? 0.45 : line.kind === 'out' ? 0.38 : 0.25);
+  return {...line, start, typing, len: line.text.length};
+});
+---
+<Frame title="~/projekt — terminál" note="Ukázka postupu" class="terminal">
+  <pre aria-label="Ukázka nasazení přes Git">{timed.map(l => <span class:list={['tl', `tl--${l.kind}`]} style={`--start:${l.start}s;--typing:${l.typing}s;--len:${l.len}`}>{l.kind === 'cmd' && <i aria-hidden="true">$ </i>}<span class="tl__text">{l.text}</span>{'\n'}</span>)}<span class="tl tl--cursor" style={`--start:${t}s`} aria-hidden="true">$ <b></b></span></pre>
+</Frame>
+<style>
+  pre { margin: 0; font: 14px/1.75 ui-monospace, 'SFMono-Regular', Menlo, monospace; color: var(--lilac-50); white-space: pre-wrap; word-break: break-all; min-height: 17.5em; }
+  .tl { display: block; opacity: 0; animation: show 0s linear forwards; animation-delay: var(--start); }
+  .tl i { font-style: normal; color: var(--pink-hot); }
+  .tl--note { color: color-mix(in srgb, var(--lilac-200) 55%, transparent); }
+  .tl--out { color: var(--lilac-200); }
+  .tl--ok { color: #fff; font-weight: 600; }
+  .tl--ok .tl__text { background: linear-gradient(90deg, color-mix(in srgb, var(--pink) 30%, transparent), transparent); padding: 1px 6px; margin-left: -6px; border-radius: 4px; }
+  /* Psaní příkazu: text se odkrývá po znacích. */
+  .tl--cmd .tl__text { display: inline-block; max-width: 0; overflow: hidden; white-space: nowrap; vertical-align: bottom; animation: type var(--typing) steps(var(--len)) forwards; animation-delay: var(--start); }
+  .tl--cursor b { display: inline-block; width: .6em; height: 1.1em; vertical-align: -.15em; background: var(--lilac-200); animation: blink 1s steps(1) infinite; }
+  @keyframes show { to { opacity: 1; } }
+  @keyframes type { to { max-width: calc(var(--len) * 1ch); } }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (max-width: 560px) { pre { font-size: 12px; } .tl--cmd .tl__text { white-space: pre-wrap; max-width: none; } }
+  @media (prefers-reduced-motion: reduce) { .tl { opacity: 1; animation: none; } .tl--cmd .tl__text { max-width: none; animation: none; } }
+</style>
