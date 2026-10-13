@@ -1,0 +1,18 @@
+/* Tokeny z brandmanuálu ONHOST 2026 (docs/brief.md). */
+@import '@fontsource/league-spartan/400.css';
+@import '@fontsource/league-spartan/600.css';
+@import '@fontsource/league-spartan/700.css';
+@import '@fontsource-variable/inter';
+:root {
+  --space-0: #12001E; --brand: #3C096C; --brand-deep: #2C0A3E;
+  --pink: #E91E7A; --pink-hot: #F72585;
+  --lilac: #BB88EB; --lilac-200: #E0BEFF; --lilac-50: #F1E2FF;
+  --ink-900: #1A1A1A; --ink-800: #2E2E2E; --ink-700: #332A2E; --ink-600: #4D3F46;
+  --font-display: 'League Spartan', system-ui, sans-serif;
+  --font-body: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --ease: cubic-bezier(.2,.8,.2,1);
+  --t-micro: 180ms; --t-move: 550ms; --t-scene: 1600ms;
+  --radius: 18px; --radius-sm: 10px;
+  --gutter: clamp(16px, 4vw, 48px); --maxw: 1240px;
+  --logo-mark: #fff; --logo-bar: var(--pink);
+}
