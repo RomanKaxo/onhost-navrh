@@ -1,0 +1,7 @@
+---
+import { ClientRouter } from 'astro:transitions';
+---
+<ClientRouter fallback="swap" />
+<style is:global>
+  @media(prefers-reduced-motion:reduce) { ::view-transition-old(root),::view-transition-new(root) { animation:none !important; } }
+</style>

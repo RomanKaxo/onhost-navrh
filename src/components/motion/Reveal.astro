@@ -1,0 +1,15 @@
+---
+interface Props { class?: string; delay?: number; }
+const { class: className, delay = 0 } = Astro.props;
+---
+<div class:list={['reveal',className]} data-reveal style={`--reveal-delay:${Math.min(500,Math.max(0,delay))}ms`}><slot /></div>
+<style is:global>
+  [data-reveal] { transition:opacity 550ms var(--ease),transform 550ms var(--ease); transition-delay:var(--reveal-delay,0ms); }
+  [data-reveal].reveal-pending { opacity:0; transform:translateY(20px); }
+  @media(prefers-reduced-motion:reduce) { [data-reveal] { transition:none; } [data-reveal].reveal-pending { opacity:1; transform:none; } }
+</style>
+<script>
+  import { reveal } from '../../motion/reveal.js';
+  import { onPage } from '../../motion/lifecycle.js';
+  onPage(() => reveal(Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'))));
+</script>
