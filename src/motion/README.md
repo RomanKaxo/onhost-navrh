@@ -10,7 +10,7 @@ import Orbit from '../components/motion/Orbit.astro';
 import Reveal from '../components/motion/Reveal.astro';
 ---
 <section class="hero">
-  <Cosmos id="hero-cosmos" on={false} dpr={1.5} />
+  <Cosmos id="hero-cosmos" on={false} dpr={1.5} planet />
   <div class="foreground">
     <Orbit size="min(76vw, 440px)" rings={2} duration={48}>
       <PowerSwitch target="hero-cosmos" size={100} label="Napájení vesmíru" />
@@ -38,6 +38,50 @@ getCosmos(document.getElementById('hero-cosmos'))?.setPower(true, { duration: 16
 // duration in milliseconds; 0 means immediate. `.on` gives the target power state.
 ```
 
-For standalone mounting, `createCosmos(host, {on, dpr})` returns `{on, setPower, destroy}`. Call `destroy()` before removing its host. Use `bindPower(button)`, `observeOrbits(elements)` and `reveal(elements)` for custom wrappers; each returns a cleanup function. `onPage(setup)` supplies Astro document lifecycle handling.
+For standalone mounting, `createCosmos(host, {on, dpr, planet})` returns `{on, setPower, destroy}`. Call `destroy()` before removing its host. Use `bindPower(button)`, `observeOrbits(elements)` and `reveal(elements)` for custom wrappers; each returns a cleanup function. `onPage(setup)` supplies Astro document lifecycle handling.
 
 Preview at `/onhost-navrh/motion-lab`. Video source, scripts and licence note are in `../../motion/remotion/README.md`.
+
+
+## Power planet
+
+Opt in with `<Cosmos id="hero-cosmos" on={false} planet />`, or use
+`planet={{ x: .5, y: 1.68, radius: 1 }}`. Default is `false`, preserving the
+starfield-only scene. `x` and `y` are center fractions measured from the top-left;
+`radius` is in canvas heights. The radius expands on wide canvases while preserving
+`y - radius` (the upper limb height), keeping the default horizon at 68% on portrait
+and ultrawide screens. The component serializes this option in `data-planet`.
+
+The same full-screen triangle shades the orthographic ray/sphere intersection,
+three-octave procedural terrain, upper-left terminator, thin lilac/pink atmosphere,
+and sparse jittered city nodes with faint connections. Surface rotation takes
+approximately 12 minutes per revolution; planet parallax is 24% of star parallax.
+`setPower(on, {duration})` keeps its existing contract: stars/terrain transition over
+that duration, ignition spreads from one surface origin over 1500 ms, and shutdown
+city lights fade over 1.35 times the duration. Rapid toggles retain current brightness;
+`duration: 0` applies the complete state immediately.
+
+Reduced motion initializes one static lit frame, with instant explicit power changes.
+Off scenes stop their RAF once the lights finish fading; hidden/offscreen scenes pause
+both rotation and ignition. CSS fallback retains a radial-gradient horizon even after
+context loss. This is an abstract brand-colour planet, not geographic Earth imagery.
+
+Performance budget: default DPR 1.5, capped at 2, low-power context, one draw call,
+no textures or external rendering library. Browser RAF measurements describe frame
+pacing on the measured renderer; validate on a physical integrated GPU before claiming
+hardware-specific 60 fps.
+
+
+Measured in headless Chromium / ANGLE SwiftShader (software Vulkan), 180 RAF samples
+per viewport at browser DPR 1: 1440×900 mean 35.19 ms, p95 50.0 ms;
+390×844 mean 16.67 ms, p95 16.8 ms. These are full-page frame intervals, not GPU
+execution timings; physical integrated-GPU 60 fps remains unverified. The lab loads
+27,799 bytes of JS across its entrypoints and shared chunks (11,204 bytes summed gzip);
+the Cosmos renderer chunk is 8,737 bytes (3,895 gzip).
+
+Verified: build; Chromium WebGL1 and forced WebGL2; no horizontal overflow at the
+required viewports; 2560×900 composition; no-JS / no-WebGL horizon; context-loss
+fallback; reduced-motion lit initialization with zero RAF requests; fully-off,
+offscreen and hidden-tab loop suspension; resume on reentry. Required OFF and ON
+(after 2500 ms) screenshots, ignition samples and JSON measurement reports are in
+`/tmp/claude-1000/-home-roman/0769163a-bb85-4963-bd8a-0534bc2582b6/scratchpad/codex-planet/`.

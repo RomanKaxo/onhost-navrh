@@ -1,23 +1,28 @@
 ---
-interface Props { id: string; on?: boolean; dpr?: number; class?: string; }
-const { id, on = true, dpr = 1.5, class: className } = Astro.props;
+interface Props { id: string; on?: boolean; dpr?: number; class?: string; planet?: boolean | { x?: number; y?: number; radius?: number }; }
+const { id, on = true, dpr = 1.5, planet = false, class: className } = Astro.props;
 ---
-<div id={id} class:list={['cosmos', className]} data-cosmos data-power={on ? 'on' : 'off'} data-dpr={dpr} aria-hidden="true" style={`--cosmos-power:${on ? 1 : 0}`}>
+<div id={id} class:list={['cosmos', className]} data-cosmos data-power={on ? 'on' : 'off'} data-dpr={dpr} data-planet={planet ? JSON.stringify(planet) : undefined} aria-hidden="true" style={`--cosmos-power:${on ? 1 : 0}`}>
   <div class="cosmos-fallback"></div>
+  <div class="cosmos-horizon"></div>
   <canvas></canvas>
 </div>
 <style>
   .cosmos { position:absolute; inset:0; overflow:hidden; background:var(--space-0, #12001e); pointer-events:none; }
   .cosmos-fallback { position:absolute; inset:0; opacity:var(--cosmos-power,1); background:radial-gradient(ellipse at 65% 40%,#3c096c 0%,transparent 65%),radial-gradient(ellipse at 20% 70%,#3c096c 0%,#12001e 70%); }
+  .cosmos-horizon { display:none; position:absolute; inset:0; background:radial-gradient(circle var(--planet-radius, 100vh) at var(--planet-x, 50%) var(--planet-y, 168vh), #08000e 97.8%, #2c0a3e 99.3%, #bb88eb 99.8%, transparent 100.2%); opacity:calc(.18 + var(--cosmos-power, 1) * .82); }
+  [data-planet] .cosmos-horizon { display:block; }
+  [data-renderer='webgl'] .cosmos-horizon { display:none; }
   canvas { width:100%; height:100%; display:block; opacity:0; }
+  [data-renderer='webgl'] .cosmos-fallback { display:none; }
   [data-renderer='webgl'] canvas { opacity:1; }
-  @media(prefers-reduced-motion:reduce) { .cosmos[data-power='off']:not([data-renderer]) .cosmos-fallback { opacity:1; } }
+  @media(prefers-reduced-motion:reduce) { .cosmos[data-power='off']:not([data-renderer]) .cosmos-fallback { opacity:1; } .cosmos:not([data-renderer]) .cosmos-horizon { opacity:1; } }
 </style>
 <script>
   import { createCosmos } from '../../motion/cosmos.js';
   import { onPage } from '../../motion/lifecycle.js';
   onPage(() => {
-    const scenes = Array.from(document.querySelectorAll<HTMLElement>('[data-cosmos]')).map(host => createCosmos(host, { on: host.dataset.power !== 'off', dpr: Number(host.dataset.dpr) }));
+    const scenes = Array.from(document.querySelectorAll<HTMLElement>('[data-cosmos]')).map(host => createCosmos(host, { on: host.dataset.power !== 'off', dpr: Number(host.dataset.dpr), planet: host.dataset.planet ? JSON.parse(host.dataset.planet) : false }));
     return () => scenes.forEach(scene => scene.destroy());
   });
 </script>
