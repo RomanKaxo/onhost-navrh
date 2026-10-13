@@ -30,10 +30,10 @@ highlights:
 steps:
   - title: Vyberte tarif s SSH
     text: "Zvolte hostingový tarif s SSH přístupem a Git deploy workflow."
-  - title: Přidejte remote
-    text: "Repozitář propojíte příkazem git remote add onhost ssh://onhost.cz/~/repo.git."
+  - title: Propojte repozitář
+    text: "Hosting přidáte do svého Git repozitáře jako remote přes SSH."
   - title: Pushněte
-    text: "Příkaz git push onhost main spustí deploy včetně Composer install a migrací."
+    text: "Jeden git push spustí deploy včetně Composer install a migrací."
 specs:
   - label: PHP
     value: "8.1, 8.2, 8.3; přepínání za běhu, vlastní php.ini"
@@ -72,15 +72,11 @@ cta:
 related: [webhosting, vps, databaze]
 sample: false
 ---
-## Ukázka: deploy přes Git
+## Jak vypadá deploy přes Git
 
 ```bash
-# Přidejte ONhost jako remote
-git remote add onhost \
-  ssh://onhost.cz/~/repo.git
-
 # Push = automatický deploy
-git push onhost main
+git push
 
 # Výstup
 remote: Deploying to production...

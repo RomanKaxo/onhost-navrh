@@ -1,11 +1,9 @@
 ---
-// Postup nasazení přes Git přesně podle stránky Developer; příkazy se „píšou“, výstup naskočí po řádcích.
+// Nasazení přes Git (push = deploy) podle stránky Developer, bez konkrétních adres; příkazy se „píšou“, výstup naskočí po řádcích.
 import Frame from './Frame.astro';
 const lines: {kind: 'cmd' | 'out' | 'ok' | 'note'; text: string}[] = [
-  {kind: 'note', text: '# Přidejte ONhost jako remote'},
-  {kind: 'cmd', text: 'git remote add onhost ssh://onhost.cz/~/repo.git'},
   {kind: 'note', text: '# Push = automatický deploy'},
-  {kind: 'cmd', text: 'git push onhost main'},
+  {kind: 'cmd', text: 'git push'},
   {kind: 'out', text: 'remote: Deploying to production...'},
   {kind: 'out', text: 'remote: Composer install OK'},
   {kind: 'out', text: 'remote: Migrations OK'},
