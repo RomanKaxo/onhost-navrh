@@ -12,6 +12,7 @@ const compositions = {
   'power-on-loop-portrait': ['PowerOnLoopPortrait', 90],
   deploy: ['Deploy', 90],
   constellation: ['Constellation', 90],
+  reels: ['Reels', 1030],
 };
 const selected = process.argv[2] ? process.argv.slice(2) : Object.keys(compositions);
 for (const name of selected) {
@@ -19,7 +20,7 @@ for (const name of selected) {
   const [id, frame] = compositions[name];
   const common = ['src/index.tsx', id];
   const extra = process.env.REMOTION_BROWSER ? [`--browser-executable=${process.env.REMOTION_BROWSER}`] : [];
-  const jobs = process.env.POSTER_ONLY ? ['png'] : ['png','webm','mp4'];
+  const jobs = process.env.POSTER_ONLY ? ['png'] : name === 'reels' ? ['png','mp4'] : ['png','webm','mp4'];
   for (const extension of jobs) {
     const args = extension === 'png'
       ? ['still', ...common, `${output}${name}.png`, `--frame=${frame}`, ...extra]
