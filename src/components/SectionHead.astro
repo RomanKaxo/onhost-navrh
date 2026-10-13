@@ -13,12 +13,11 @@ const H = level;
 </header>
 <style>
   .shead { display: grid; gap: 18px; margin-bottom: clamp(36px, 5vw, 64px); }
-  .shead__main { display: grid; gap: 18px; max-width: 18ch; }
-  .shead:not(.shead--split) .shead__main { max-width: 22ch; }
+  .shead__main { display: grid; gap: 18px; max-width: 24ch; }
   .shead__title { font-size: var(--fs-h2); font-weight: 700; }
   @media (min-width: 960px) {
-    .shead--split { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); align-items: end; gap: 48px; }
-    .shead--split .shead__main { max-width: 20ch; }
+    .shead--split { grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); align-items: end; gap: 56px; }
+    .shead--split .shead__main { max-width: none; }
     .shead--split .shead__lead { padding-bottom: 8px; }
   }
 </style>

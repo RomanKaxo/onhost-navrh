@@ -8,6 +8,7 @@ export async function getStaticPaths() {
   return (await allPages()).filter(p => p.data.slug !== 'home').map(page => ({params: {slug: page.data.slug}, props: {page}}));
 }
 const {page} = Astro.props as {page: Page};
-const kind = page.data.kind;
+// Časté dotazy jsou dlouhý seskupený text → čtou se lépe jako článek s obsahem.
+const kind = page.data.slug === 'faq' ? 'article' : page.data.kind;
 ---
 {kind === 'listing' ? <ListingLayout page={page} /> : ['article', 'legal'].includes(kind) ? <ArticleLayout page={page} /> : <LandingLayout page={page} />}

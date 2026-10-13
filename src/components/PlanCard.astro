@@ -7,10 +7,19 @@ const {name, price, period, features = [], featured = false, href = 'https://onh
   <h3 class="plan__name">{name}</h3>
   <p class="plan__price"><strong>{price}</strong>{period && <span>/ {period}</span>}</p>
   <ul class="plan__features">{features.map(f => <li>{f}</li>)}</ul>
-  <a class="plan__cta" href={href}>Objednat {name}<span aria-hidden="true">→</span></a>
+  <a class="plan__cta" href={href} aria-label={`Objednat tarif ${name}`}>Objednat<span aria-hidden="true">→</span></a>
 </article>
 <style>
   .plan { display: flex; flex-direction: column; gap: 18px; }
+  /* „Nabití“: po najetí oběhne rámeček světlo (kuželový přechod maskovaný na 1px okraj). */
+  .plan::after { content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none; opacity: 0;
+    background: conic-gradient(from var(--charge, 0deg), transparent 0 62%, var(--lilac-200) 74%, var(--pink-hot) 82%, transparent 90%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+    transition: opacity var(--t-move) var(--ease); }
+  .plan:hover::after, .plan:focus-within::after { opacity: 1; animation: charge 2.4s linear infinite; }
+  .plan--featured::after { opacity: .7; animation: charge 5s linear infinite; }
+  @property --charge { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+  @keyframes charge { to { --charge: 360deg; } }
   .plan--featured { border-color: color-mix(in srgb, var(--pink) 70%, transparent);
     background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 72%, transparent), color-mix(in srgb, #2a0544 70%, transparent)); box-shadow: 0 30px 80px -40px color-mix(in srgb, var(--pink) 70%, transparent); }
   .plan__badge { position: absolute; top: -12px; left: 22px; margin: 0; padding: 5px 12px; border-radius: 999px; background: var(--pink); color: #fff; font: 600 12px/1 var(--font-body); }
