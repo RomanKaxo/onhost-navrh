@@ -1,0 +1,20 @@
+---
+// Logo vždy z originální geometrie; barvy jen schválené varianty z brandmanuálu (tone).
+import horizontal from '../../public/brand/onhost-horizontal.svg?raw';
+import symbol from '../../public/brand/onhost-symbol.svg?raw';
+interface Props { variant?: 'horizontal' | 'symbol'; tone?: 'on-dark' | 'on-light' | 'on-pink'; class?: string; label?: string }
+const {variant = 'horizontal', tone = 'on-dark', class: className = '', label = 'ONhost'} = Astro.props;
+const svg = (variant === 'symbol' ? symbol : horizontal).replace(/aria-label="[^"]*"/, `aria-label="${label}"`);
+---
+<span class:list={['logo', `logo--${variant}`, `logo--${tone}`, className]} set:html={svg} />
+<style>
+  .logo { display: inline-block; line-height: 0; }
+  .logo :global(svg) { width: 100%; height: auto; }
+  /* Schválené barevné varianty (brandmanuál, s. 4). */
+  .logo--on-dark { --logo-mark: #fff; --logo-bar: var(--pink); }
+  .logo--on-light { --logo-mark: var(--brand-deep); --logo-bar: var(--pink); }
+  .logo--on-pink { --logo-mark: #000; --logo-bar: #000; }
+  /* Minimální šířka 50 px (digitál). */
+  .logo--horizontal { min-width: 50px; }
+  .logo--symbol { min-width: 24px; }
+</style>

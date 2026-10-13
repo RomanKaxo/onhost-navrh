@@ -1,6 +1,212 @@
 ---
-import Base from '../layouts/Base.astro';
+import Site from '../layouts/Site.astro';
+import Logo from '../components/Logo.astro';
+import Button from '../components/Button.astro';
+import SectionHead from '../components/SectionHead.astro';
+import PlanCard from '../components/PlanCard.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import {getEntry} from 'astro:content';
+import {url} from '../data/nav';
+const page = await getEntry('pages', 'home');
+const d = page?.data;
+// Produkty jako planety na oběžných drahách kolem symbolu (pořadí = vzdálenost od středu).
+const planets = [
+  {label: 'Webhosting', href: 'webhosting', orbit: 1, at: 20, hue: 'pink'},
+  {label: 'WordPress', href: 'wordpress-hosting', orbit: 1, at: 200, hue: 'lilac'},
+  {label: 'VPS', href: 'vps', orbit: 2, at: 70, hue: 'lilac'},
+  {label: 'Domény', href: 'domeny', orbit: 2, at: 250, hue: 'pink'},
+  {label: 'Gamehosting', href: 'gamehosting', orbit: 3, at: 130, hue: 'pink'},
+  {label: 'E-mail', href: 'mailhosting', orbit: 3, at: 310, hue: 'lilac'},
+  {label: 'Dedikované servery', href: 'dedikovane-servery', orbit: 4, at: 20, hue: 'lilac'},
+  {label: 'Databáze', href: 'databaze', orbit: 4, at: 190, hue: 'pink'},
+];
+const pillars = [
+  {title: 'Rychlost', text: 'NVMe disky a moderní PHP. Web se načte dřív, než návštěvník stihne odejít.'},
+  {title: 'Bezpečnost', text: 'SSL ke každému webu, šifrované přihlašovací údaje a izolace zákazníků.'},
+  {title: 'Spolehlivost', text: 'Denní zálohy, monitoring dostupnosti 24/7 a datacentrum Tier III v Praze.'},
+  {title: 'Automatizace', text: 'Služba se zřídí sama po zaplacení. WordPress na jedno kliknutí, AI asistent v panelu.'},
+];
 ---
-<Base title="Hosting" description="Návrh nového webu ONhost.">
-  <main class="wrap" style="padding:20vh 0"><h1>ONhost — návrh se připravuje</h1></main>
-</Base>
+<Site title={d?.title ?? 'Hosting'} description={d?.description ?? ''}>
+  <section class="hero" data-power-scene>
+    <div class="hero__cosmos" data-cosmos aria-hidden="true"></div>
+    <div class="wrap hero__inner">
+      <button class="hero__switch" type="button" aria-pressed="false" data-power aria-label="Zapnout vesmír ONhost">
+        <Logo variant="symbol" tone="on-dark" label="ONhost — zapnout" />
+      </button>
+      <p class="hero__hint" data-power-hint>Zmáčkněte a zapněte svůj web</p>
+      <div class="hero__copy">
+        <p class="hero__eyebrow">{d?.eyebrow ?? 'Hosting ONhost'}</p>
+        <h1>Zapněte svůj web.<br/><span>My se postaráme o zbytek.</span></h1>
+        <p class="hero__lead">{d?.lead}</p>
+        <form class="domain" action={url('domeny')} method="get" role="search">
+          <label class="sr-only" for="domain-q">Najděte si doménu</label>
+          <input id="domain-q" name="q" placeholder="vase-firma.cz" autocomplete="off" />
+          <Button type="submit" variant="primary">Ověřit doménu</Button>
+        </form>
+        <p class="hero__meta">SSL zdarma · denní zálohy · podpora v češtině</p>
+      </div>
+    </div>
+    <a class="hero__scroll" href="#produkty" aria-label="Posunout na produkty"><span></span></a>
+  </section>
+
+  <section class="section" id="produkty">
+    <div class="wrap system">
+      <div class="system__text">
+        <SectionHead eyebrow="Produkty" title="Jeden vesmír, všechno pro váš web." lead="Od prvního webu po dedikovaný server. Vše na jedné platformě, s jedním účtem a jednou podporou." />
+        <ul class="system__list" data-reveal>
+          {planets.map(p => <li><a href={url(p.href)}><span class:list={['dot', `dot--${p.hue}`]}></span>{p.label}<span aria-hidden="true">→</span></a></li>)}
+        </ul>
+      </div>
+      <div class="system__orbit" aria-hidden="true">
+        {[1, 2, 3, 4].map(o => <div class={`ring ring--${o}`} style={`--ring:${o}`}>
+          {planets.filter(p => p.orbit === o).map(p => <span class="arm" style={`--at:${p.at}deg`}><a class={`planet planet--${p.hue}`} href={url(p.href)} tabindex="-1"><span class="planet__upright"><span class="planet__label">{p.label}</span></span></a></span>)}
+        </div>)}
+        <div class="system__core"><Logo variant="symbol" tone="on-dark" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pillars">
+    <div class="wrap">
+      <SectionHead eyebrow="Proč ONhost" title="Prémiový hosting, který nemusíte hlídat." align="center" />
+      <div class="pillars__grid">
+        {pillars.map((p, i) => <article class="pillar" data-reveal style={`transition-delay:${i * 80}ms`}><span class="pillar__index">0{i + 1}</span><h3>{p.title}</h3><p>{p.text}</p></article>)}
+      </div>
+    </div>
+  </section>
+
+  {d?.plans && <section class="section" id="cenik">
+    <div class="wrap">
+      <SectionHead eyebrow="Ceník" title="Férové ceny. Bez hvězdiček." lead="Ceny jsou bez DPH. Tarif můžete kdykoli změnit." align="center" />
+      <div class="plans">{d.plans.map(p => <PlanCard {...p} />)}</div>
+    </div>
+  </section>}
+
+  <section class="section dc">
+    <div class="wrap dc__inner">
+      <div data-reveal>
+        <SectionHead eyebrow="Infrastruktura" title="Datacentrum v srdci Evropy." lead="Vlastní infrastruktura v datacentru Tier III v Praze. Redundantní napájení i konektivita, SLA 99,9 %." />
+        <Button href={url('datacenter')} variant="ghost">Prohlédnout datacentrum</Button>
+      </div>
+      <div class="dc__constellation" aria-hidden="true" data-constellation data-reveal>
+        <svg viewBox="0 0 400 300">
+          <g class="dc__lines"><path d="M60 220 L150 140 L230 170 L320 80 M150 140 L190 60 L320 80 M230 170 L300 230" /></g>
+          <g class="dc__stars">{[[60,220],[150,140],[230,170],[320,80],[190,60],[300,230]].map(([x, y], i) => <circle cx={x} cy={y} r={i === 1 ? 7 : 4} />)}</g>
+        </svg>
+        <p class="dc__label">Praha · Tier III</p>
+      </div>
+    </div>
+  </section>
+
+  {d?.faq && <section class="section">
+    <div class="wrap"><SectionHead eyebrow="Časté dotazy" title="Na co se nás ptáte." align="center" /><Faq items={d.faq} /></div>
+  </section>}
+
+  {d?.cta && <CtaBand title={d.cta.title} text={d.cta.text} primary={d.cta.primary} secondary={d.cta.secondary} />}
+</Site>
+
+<script>
+  // Vypínač: „stisk“ = rovnoměrné zmenšení symbolu, zapnutí rozsvítí vesmír kolem. Logo se jinak nemění.
+  const scene = document.querySelector('[data-power-scene]');
+  const button = document.querySelector('[data-power]');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const setOn = (on) => { scene?.classList.toggle('is-on', on); button?.setAttribute('aria-pressed', String(on)); window.dispatchEvent(new CustomEvent('onhost:power', {detail: {on}})); };
+  button?.addEventListener('click', () => { button.classList.remove('is-pressed'); void button.offsetWidth; button.classList.add('is-pressed'); setOn(!scene?.classList.contains('is-on')); });
+  if (reduce) setOn(true); else setTimeout(() => { if (!scene?.classList.contains('is-on')) setOn(true); }, 2600);
+</script>
+
+<style>
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  /* HERO — začíná ve tmě, po „zapnutí“ se rozsvítí mlhovina a hvězdy. */
+  .hero { position: relative; min-height: calc(100svh - 32px); margin-top: -76px; padding-top: 76px; display: grid; align-items: center; overflow: hidden; isolation: isolate; }
+  .hero__cosmos { position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity var(--t-scene) var(--ease);
+    background:
+      radial-gradient(1px 1px at 12% 18%, #fff 40%, transparent 60%), radial-gradient(1px 1px at 72% 32%, var(--lilac-200) 40%, transparent 60%),
+      radial-gradient(1.5px 1.5px at 40% 76%, #fff 40%, transparent 60%), radial-gradient(1px 1px at 86% 70%, var(--pink-hot) 40%, transparent 60%),
+      radial-gradient(1px 1px at 26% 52%, var(--lilac) 40%, transparent 60%), radial-gradient(1px 1px at 58% 12%, #fff 40%, transparent 60%),
+      radial-gradient(900px 600px at 70% 40%, color-mix(in srgb, var(--brand) 85%, transparent), transparent 70%),
+      radial-gradient(700px 500px at 20% 80%, color-mix(in srgb, var(--pink) 28%, transparent), transparent 70%), var(--space-0); }
+  .hero.is-on .hero__cosmos { opacity: 1; }
+  .hero__inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); align-items: center; gap: clamp(32px, 6vw, 96px); padding-block: 48px; }
+  .hero__switch { justify-self: center; width: clamp(160px, 22vw, 300px); aspect-ratio: 1; border-radius: 50%; border: 0; background: none; cursor: pointer; padding: 0; position: relative;
+    transition: translate var(--t-move) var(--ease); }
+  .hero__switch::before { content: ''; position: absolute; inset: -18%; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--lilac) 0%, transparent); transition: border-color var(--t-scene) var(--ease), inset var(--t-scene) var(--ease); }
+  .hero.is-on .hero__switch::before { inset: -26%; border-color: color-mix(in srgb, var(--lilac) 30%, transparent); }
+  .hero__switch :global(.logo) { width: 100%; }
+  .hero__switch.is-pressed :global(.logo) { animation: press 220ms var(--ease); }
+  @keyframes press { 50% { scale: .94; } }
+  .hero__switch:focus-visible { outline: 2px solid var(--lilac-200); outline-offset: 12px; }
+  .hero__hint { position: absolute; left: 0; right: 0; bottom: 14%; margin: 0; text-align: center; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; color: var(--lilac-200); transition: opacity var(--t-move) var(--ease); }
+  .hero.is-on .hero__hint { opacity: 0; pointer-events: none; }
+  .hero__copy { display: grid; gap: 22px; opacity: .15; translate: 0 18px; transition: opacity var(--t-scene) var(--ease), translate var(--t-scene) var(--ease); }
+  .hero.is-on .hero__copy { opacity: 1; translate: 0 0; }
+  .hero__eyebrow { margin: 0; font: 600 13px/1 var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: var(--lilac); }
+  .hero h1 { font-size: clamp(40px, 5.2vw, 76px); font-weight: 700; color: #fff; text-wrap: balance; }
+  .hero h1 span { color: var(--lilac-200); }
+  .hero__lead { margin: 0; max-width: 52ch; font-size: clamp(17px, 1.6vw, 20px); color: color-mix(in srgb, var(--lilac-50) 85%, transparent); }
+  .domain { display: flex; gap: 8px; max-width: 560px; padding: 8px; border-radius: 999px; background: color-mix(in srgb, var(--space-0) 55%, transparent); border: 1px solid color-mix(in srgb, var(--lilac) 26%, transparent); backdrop-filter: blur(12px); }
+  .domain input { flex: 1; min-width: 0; border: 0; background: none; color: #fff; font: 500 16px var(--font-body); padding: 0 16px; }
+  .domain input::placeholder { color: color-mix(in srgb, var(--lilac-200) 60%, transparent); }
+  .domain input:focus { outline: none; }
+  .domain:focus-within { border-color: var(--lilac-200); }
+  .hero__meta { margin: 0; font-size: 14px; color: var(--lilac-200); }
+  .hero__scroll { position: absolute; left: 50%; bottom: 28px; translate: -50% 0; width: 26px; height: 42px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--lilac) 40%, transparent); }
+  .hero__scroll span { position: absolute; left: 50%; top: 9px; width: 3px; height: 8px; margin-left: -1.5px; border-radius: 2px; background: var(--lilac-200); animation: scrolly 2s var(--ease) infinite; }
+  @keyframes scrolly { 60% { translate: 0 12px; opacity: 0; } }
+
+  /* PRODUKTY JAKO SOUSTAVA */
+  #produkty { overflow-x: clip; }
+  .system { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(32px, 6vw, 80px); align-items: center; }
+  .system__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .system__list a { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px; text-decoration: none; font-weight: 600; border: 1px solid color-mix(in srgb, var(--lilac) 14%, transparent); transition: background-color var(--t-micro) var(--ease), border-color var(--t-micro) var(--ease); }
+  .system__list a span:last-child { margin-left: auto; opacity: .5; }
+  .system__list a:hover { background: color-mix(in srgb, var(--brand) 40%, transparent); border-color: color-mix(in srgb, var(--lilac) 40%, transparent); }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .dot--pink { background: var(--pink); box-shadow: 0 0 12px var(--pink); } .dot--lilac { background: var(--lilac); box-shadow: 0 0 12px var(--lilac); }
+  .system__orbit { position: relative; aspect-ratio: 1; width: 100%; max-width: 620px; justify-self: center; }
+  /* Prstence se otáčejí; planeta sedí na kružnici (rameno natočené na úhel), popisek se otáčí opačně, takže zůstává rovně. */
+  .ring { position: absolute; --radius: calc(14% + (var(--ring) - 1) * 11.5%); inset: calc(50% - var(--radius)); border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--lilac) 22%, transparent);
+    --spin: calc(60s + var(--ring) * 25s); animation: orbit var(--spin) linear infinite; }
+  .ring:nth-child(even) { animation-direction: reverse; }
+  @keyframes orbit { to { rotate: 360deg; } }
+  .arm { position: absolute; inset: 0; rotate: var(--at); pointer-events: none; }
+  .planet { position: absolute; left: 50%; top: 0; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; pointer-events: auto; }
+  .planet--pink { background: radial-gradient(circle at 30% 30%, #ff9cc9, var(--pink) 60%, #7a0b3e); box-shadow: 0 0 24px color-mix(in srgb, var(--pink) 70%, transparent); }
+  .planet--lilac { background: radial-gradient(circle at 30% 30%, #fff, var(--lilac) 55%, #4b2a7a); box-shadow: 0 0 24px color-mix(in srgb, var(--lilac) 60%, transparent); }
+  .planet__upright { position: absolute; left: 50%; top: 50%; rotate: calc(-1 * var(--at)); }
+  .planet__label { position: absolute; left: 0; top: 0; translate: -50% 14px; transform-origin: 50% -14px; font: 600 12px/1 var(--font-body); white-space: nowrap; color: var(--lilac-50); opacity: .85;
+    animation: orbit var(--spin) linear infinite reverse; }
+  .ring:nth-child(even) .planet__label { animation-direction: normal; }
+  .system__core { position: absolute; inset: 41%; display: grid; place-items: center; }
+  .system__core :global(.logo) { width: 100%; }
+
+  /* PILÍŘE */
+  .pillars__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .pillar { padding: 28px 24px 30px; border-radius: var(--radius); border: 1px solid color-mix(in srgb, var(--lilac) 14%, transparent); background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 22%, transparent), transparent); display: grid; gap: 12px; align-content: start; }
+  .pillar__index { font: 600 13px/1 var(--font-body); color: var(--pink-hot); letter-spacing: .1em; }
+  .pillar h3 { font-size: 28px; color: #fff; }
+  .pillar p { margin: 0; color: color-mix(in srgb, var(--lilac-50) 82%, transparent); font-size: 16px; }
+
+  .plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; align-items: stretch; }
+  @media (min-width: 1200px) { .plans { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+
+  /* DATACENTRUM — souhvězdí */
+  .dc__inner { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 80px); align-items: center; }
+  .dc__constellation { position: relative; border-radius: calc(var(--radius) * 1.4); padding: 24px; background: radial-gradient(circle at 40% 45%, color-mix(in srgb, var(--brand) 60%, transparent), transparent 70%); }
+  .dc__lines path { fill: none; stroke: color-mix(in srgb, var(--lilac) 45%, transparent); stroke-width: 1; stroke-dasharray: 500; stroke-dashoffset: 500; transition: stroke-dashoffset 2.4s var(--ease); }
+  .dc__constellation.is-in .dc__lines path { stroke-dashoffset: 0; }
+  .dc__stars circle { fill: var(--lilac-50); filter: drop-shadow(0 0 6px var(--lilac)); }
+  .dc__stars circle:nth-child(2) { fill: var(--pink); filter: drop-shadow(0 0 10px var(--pink)); }
+  .dc__label { position: absolute; left: 34%; top: 38%; margin: 0; font: 600 13px/1 var(--font-body); color: #fff; }
+
+  @media (max-width: 960px) {
+    .hero__inner, .system, .dc__inner { grid-template-columns: minmax(0, 1fr); }
+    .hero__switch { width: 150px; }
+    .hero__hint { bottom: auto; top: 46%; }
+    .pillars__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .planet__label { display: none; }
+  }
+  @media (max-width: 560px) { .pillars__grid, .system__list { grid-template-columns: minmax(0, 1fr); } .domain { flex-direction: column; border-radius: 22px; } .domain :global(.btn) { width: 100%; } .domain input { padding: 12px 14px; } }
+</style>

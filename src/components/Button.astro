@@ -1,0 +1,19 @@
+---
+interface Props { href?: string; variant?: 'primary' | 'ghost' | 'light'; size?: 'md' | 'lg'; class?: string; type?: 'button' | 'submit' }
+const {href, variant = 'primary', size = 'md', class: className = '', type = 'button'} = Astro.props;
+const Tag = href ? 'a' : 'button';
+---
+<Tag href={href} type={href ? undefined : type} class:list={['btn', `btn--${variant}`, `btn--${size}`, className]}><slot /></Tag>
+<style>
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .55em; border-radius: 999px; border: 1px solid transparent;
+    font: 600 15px/1 var(--font-body); text-decoration: none; cursor: pointer; white-space: nowrap;
+    padding: 14px 22px; transition: background-color var(--t-micro) var(--ease), border-color var(--t-micro) var(--ease), color var(--t-micro) var(--ease), translate var(--t-micro) var(--ease); }
+  .btn--lg { padding: 18px 28px; font-size: 16px; }
+  .btn--primary { background: var(--pink); color: #fff; }
+  .btn--primary:hover { background: var(--pink-hot); translate: 0 -1px; }
+  .btn--ghost { background: transparent; color: var(--lilac-50); border-color: color-mix(in srgb, var(--lilac) 45%, transparent); }
+  .btn--ghost:hover { border-color: var(--lilac-200); background: color-mix(in srgb, var(--lilac) 12%, transparent); }
+  .btn--light { background: var(--lilac-50); color: var(--brand-deep); }
+  .btn--light:hover { background: #fff; }
+  .btn:focus-visible { outline: 2px solid var(--lilac-200); outline-offset: 3px; }
+</style>

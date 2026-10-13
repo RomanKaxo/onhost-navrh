@@ -1,0 +1,17 @@
+---
+interface Props { eyebrow?: string; title: string; lead?: string; align?: 'left' | 'center'; level?: 'h1' | 'h2' }
+const {eyebrow, title, lead, align = 'left', level = 'h2'} = Astro.props;
+const H = level;
+---
+<header class:list={['shead', `shead--${align}`]} data-reveal>
+  {eyebrow && <p class="shead__eyebrow">{eyebrow}</p>}
+  <H class="shead__title">{title}</H>
+  {lead && <p class="shead__lead">{lead}</p>}
+</header>
+<style>
+  .shead { max-width: 760px; display: grid; gap: 16px; margin-bottom: clamp(32px, 5vw, 56px); }
+  .shead--center { margin-inline: auto; text-align: center; justify-items: center; }
+  .shead__eyebrow { margin: 0; font: 600 13px/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--lilac); }
+  .shead__title { font-size: clamp(34px, 5vw, 60px); font-weight: 700; color: #fff; text-wrap: balance; }
+  .shead__lead { margin: 0; font-size: clamp(17px, 1.6vw, 20px); color: color-mix(in srgb, var(--lilac-50) 82%, transparent); text-wrap: pretty; }
+</style>

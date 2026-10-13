@@ -1,0 +1,29 @@
+---
+interface Props { name: string; price: string; period?: string; features?: string[]; featured?: boolean; href?: string }
+const {name, price, period, features = [], featured = false, href = 'https://onhost.cz/panel'} = Astro.props;
+---
+<article class:list={['plan', {'plan--featured': featured}]} data-reveal>
+  {featured && <p class="plan__badge">Nejoblíbenější</p>}
+  <h3 class="plan__name">{name}</h3>
+  <p class="plan__price"><strong>{price}</strong>{period && <span>/ {period}</span>}</p>
+  <ul class="plan__features">{features.map(f => <li>{f}</li>)}</ul>
+  <a class="plan__cta" href={href}>Objednat<span aria-hidden="true">→</span></a>
+</article>
+<style>
+  .plan { position: relative; display: flex; flex-direction: column; gap: 18px; padding: 28px 22px; border-radius: var(--radius); border: 1px solid color-mix(in srgb, var(--lilac) 18%, transparent);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 26%, transparent), color-mix(in srgb, var(--space-0) 60%, transparent)); }
+  .plan--featured { border-color: color-mix(in srgb, var(--pink) 70%, transparent); background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 70%, transparent), color-mix(in srgb, #2a0544 80%, transparent)); }
+  .plan__badge { position: absolute; top: -12px; left: 28px; margin: 0; padding: 5px 12px; border-radius: 999px; background: var(--pink); color: #fff; font: 600 12px/1 var(--font-body); }
+  .plan__name { font-size: 24px; color: #fff; }
+  .plan__price { flex-wrap: wrap; }
+  .plan__price { margin: 0; display: flex; align-items: baseline; gap: 8px; }
+  .plan__price strong { font: 700 clamp(32px, 3vw, 42px)/1 var(--font-display); color: #fff; white-space: nowrap; }
+  .plan__price span { color: var(--lilac-200); }
+  .plan__features { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; color: color-mix(in srgb, var(--lilac-50) 88%, transparent); font-size: 15px; flex: 1; }
+  .plan__features li { padding-left: 22px; position: relative; }
+  .plan__features li::before { content: ''; position: absolute; left: 0; top: .55em; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 0 4px color-mix(in srgb, var(--pink) 20%, transparent); }
+  .plan__cta { display: inline-flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-radius: 999px; text-decoration: none; font-weight: 600;
+    background: color-mix(in srgb, var(--lilac) 14%, transparent); color: #fff; transition: background-color var(--t-micro) var(--ease); }
+  .plan--featured .plan__cta { background: var(--pink); }
+  .plan__cta:hover { background: var(--pink-hot); }
+</style>

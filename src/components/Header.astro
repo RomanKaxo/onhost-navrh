@@ -1,0 +1,94 @@
+---
+import Logo from './Logo.astro';
+import Button from './Button.astro';
+import {nav, url} from '../data/nav';
+const current = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '').replace(/^\/|\/$/g, '');
+---
+<header class="site-header" data-header>
+  <div class="wrap site-header__bar">
+    <a class="site-header__brand" href={url()} aria-label="ONhost — úvod"><Logo tone="on-dark" /></a>
+    <nav class="site-nav" aria-label="Hlavní navigace">
+      <ul class="site-nav__list">
+        {nav.map(group => (
+          <li class="site-nav__group">
+            <button class="site-nav__trigger" type="button" aria-expanded="false">{group.label}<span aria-hidden="true" class="site-nav__chev">▾</span></button>
+            <div class="site-nav__panel">
+              <ul>
+                {group.items.map(item => (
+                  <li><a href={url(item.href)} aria-current={current === item.href ? 'page' : undefined}><strong>{item.label}</strong>{item.note && <small>{item.note}</small>}</a></li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="site-header__actions">
+      <Button href="https://onhost.cz/panel" variant="ghost" class="site-header__login">Klientská zóna</Button>
+      <button class="site-header__menu" type="button" aria-expanded="false" aria-controls="mobile-nav" data-menu-toggle><span class="sr-only">Menu</span><span aria-hidden="true"></span></button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobile-nav" hidden>
+    <div class="wrap">
+      {nav.map(group => (
+        <details>
+          <summary>{group.label}</summary>
+          <ul>{group.items.map(item => <li><a href={url(item.href)}>{item.label}</a></li>)}</ul>
+        </details>
+      ))}
+      <Button href="https://onhost.cz/panel" variant="primary" class="mobile-nav__login">Klientská zóna</Button>
+    </div>
+  </div>
+</header>
+<script>
+  const header = document.querySelector('[data-header]');
+  const onScroll = () => header?.classList.toggle('is-scrolled', scrollY > 24);
+  addEventListener('scroll', onScroll, {passive: true}); onScroll();
+  // Rozbalovací skupiny: kliknutí i klávesnice; Escape zavře.
+  document.querySelectorAll('.site-nav__trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const open = trigger.getAttribute('aria-expanded') === 'true';
+      document.querySelectorAll('.site-nav__trigger').forEach(t => t.setAttribute('aria-expanded', 'false'));
+      trigger.setAttribute('aria-expanded', String(!open));
+    });
+  });
+  addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.site-nav__trigger').forEach(t => t.setAttribute('aria-expanded', 'false')); });
+  addEventListener('click', e => { if (!(e.target as Element).closest('.site-nav__group')) document.querySelectorAll('.site-nav__trigger').forEach(t => t.setAttribute('aria-expanded', 'false')); });
+  const toggle = document.querySelector('[data-menu-toggle]'), panel = document.getElementById('mobile-nav');
+  toggle?.addEventListener('click', () => { const open = toggle.getAttribute('aria-expanded') === 'true'; toggle.setAttribute('aria-expanded', String(!open)); if (panel) panel.hidden = open; });
+</script>
+<style>
+  .site-header { position: sticky; top: 0; z-index: 40; transition: background-color var(--t-move) var(--ease), border-color var(--t-move) var(--ease); border-bottom: 1px solid transparent; }
+  .site-header.is-scrolled { background: color-mix(in srgb, var(--space-0) 78%, transparent); backdrop-filter: blur(14px) saturate(140%); border-bottom-color: color-mix(in srgb, var(--lilac) 14%, transparent); }
+  .site-header__bar { display: flex; align-items: center; gap: 28px; min-height: 76px; }
+  .site-header__brand { width: 132px; flex: none; }
+  .site-nav { flex: 1; }
+  .site-nav__list { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+  .site-nav__group { position: relative; }
+  .site-nav__trigger { display: inline-flex; gap: 6px; align-items: center; padding: 10px 14px; border: 0; border-radius: 999px; background: none; color: var(--lilac-50); font: 500 15px/1 var(--font-body); cursor: pointer; }
+  .site-nav__trigger:hover, .site-nav__trigger[aria-expanded="true"] { background: color-mix(in srgb, var(--lilac) 12%, transparent); }
+  .site-nav__trigger:focus-visible { outline: 2px solid var(--lilac-200); outline-offset: 2px; }
+  .site-nav__chev { font-size: 11px; opacity: .7; transition: rotate var(--t-micro) var(--ease); }
+  .site-nav__trigger[aria-expanded="true"] .site-nav__chev { rotate: 180deg; }
+  .site-nav__panel { position: absolute; top: calc(100% + 10px); left: 0; min-width: 300px; padding: 10px; border-radius: var(--radius); border: 1px solid color-mix(in srgb, var(--lilac) 18%, transparent);
+    background: color-mix(in srgb, #1d0533 92%, transparent); backdrop-filter: blur(18px); box-shadow: 0 30px 80px -20px #000a;
+    opacity: 0; translate: 0 -6px; pointer-events: none; transition: opacity var(--t-micro) var(--ease), translate var(--t-micro) var(--ease); }
+  .site-nav__trigger[aria-expanded="true"] + .site-nav__panel { opacity: 1; translate: 0 0; pointer-events: auto; }
+  .site-nav__panel ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .site-nav__panel a { display: grid; gap: 2px; padding: 10px 12px; border-radius: 12px; text-decoration: none; }
+  .site-nav__panel a:hover, .site-nav__panel a:focus-visible { background: color-mix(in srgb, var(--lilac) 12%, transparent); outline: none; }
+  .site-nav__panel strong { font: 600 15px/1.2 var(--font-body); color: #fff; }
+  .site-nav__panel small { font-size: 13px; color: color-mix(in srgb, var(--lilac-200) 80%, transparent); }
+  .site-nav__panel a[aria-current="page"] strong { color: var(--pink-hot); }
+  .site-header__actions { display: flex; gap: 10px; align-items: center; }
+  .site-header__menu { display: none; width: 44px; height: 44px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--lilac) 35%, transparent); background: none; cursor: pointer; position: relative; }
+  .site-header__menu span[aria-hidden] { position: absolute; inset: 0; margin: auto; width: 18px; height: 2px; background: var(--lilac-50); box-shadow: 0 -6px 0 var(--lilac-50), 0 6px 0 var(--lilac-50); }
+  .mobile-nav { border-top: 1px solid color-mix(in srgb, var(--lilac) 14%, transparent); background: var(--space-0); padding: 12px 0 24px; max-height: calc(100vh - 76px); overflow: auto; }
+  .mobile-nav details { border-bottom: 1px solid color-mix(in srgb, var(--lilac) 12%, transparent); }
+  .mobile-nav summary { padding: 16px 0; font: 600 18px/1 var(--font-display); cursor: pointer; }
+  .mobile-nav ul { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 4px; }
+  .mobile-nav a { display: block; padding: 10px 0; text-decoration: none; color: var(--lilac-200); }
+  .mobile-nav :global(.mobile-nav__login) { margin-top: 18px; width: 100%; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media (max-width: 1080px) { .site-nav, .site-header__actions :global(.site-header__login) { display: none; } .site-header__menu { display: block; } .site-header__bar { justify-content: space-between; } }
+</style>

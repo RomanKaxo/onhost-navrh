@@ -1,0 +1,25 @@
+---
+import Button from './Button.astro';
+interface Props { title: string; text?: string; primary?: {label: string; href: string}; secondary?: {label: string; href: string} }
+const {title, text, primary = {label: 'Vybrat hosting', href: 'webhosting'}, secondary} = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const href = (h: string) => /^https?:/.test(h) ? h : `${base}/${h.replace(/^\//, '')}`;
+---
+<section class="cta wrap" data-reveal>
+  <div class="cta__inner">
+    <h2>{title}</h2>
+    {text && <p>{text}</p>}
+    <div class="cta__actions">
+      <Button href={href(primary.href)} variant="light" size="lg">{primary.label}</Button>
+      {secondary && <Button href={href(secondary.href)} variant="ghost" size="lg">{secondary.label}</Button>}
+    </div>
+  </div>
+</section>
+<style>
+  .cta__inner { position: relative; overflow: hidden; border-radius: calc(var(--radius) * 1.6); padding: clamp(48px, 7vw, 96px) clamp(24px, 6vw, 80px);
+    background: linear-gradient(120deg, var(--brand) 0%, #7a1a8a 55%, var(--pink) 100%); display: grid; gap: 20px; justify-items: start; }
+  .cta__inner::after { content: ''; position: absolute; right: -10%; top: -40%; width: 60%; aspect-ratio: 1; border-radius: 50%; border: 2px solid #ffffff22; box-shadow: 0 0 0 60px #ffffff08, 0 0 0 140px #ffffff05; pointer-events: none; }
+  .cta h2 { font-size: clamp(34px, 5vw, 64px); color: #fff; max-width: 16ch; text-wrap: balance; }
+  .cta p { margin: 0; font-size: 19px; max-width: 52ch; color: #fff; opacity: .9; }
+  .cta__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+</style>
