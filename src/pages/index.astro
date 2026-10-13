@@ -9,6 +9,7 @@ import Steps from '../components/Steps.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Cosmos from '../components/motion/Cosmos.astro';
+import WorldMap from '../components/WorldMap.astro';
 import {getEntry, getCollection} from 'astro:content';
 import PlanetArt from '../components/PlanetArt.astro';
 import {nav} from '../data/nav';
@@ -40,7 +41,6 @@ const fromPrice = (slug: string) => {
 };
 const noteOf = (slug: string) => nav.flatMap(g => g.items).find(i => i.href === slug)?.note ?? '';
 const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p.href)}));
-const dcStars: [number, number][] = [[60, 220], [150, 140], [230, 170], [320, 80], [190, 60], [300, 230]];
 ---
 <Site title={d?.title ?? 'Hosting'} description={d?.description ?? ''}>
   <section class="hero" data-power-scene>
@@ -97,21 +97,16 @@ const dcStars: [number, number][] = [[60, 220], [150, 140], [230, 170], [320, 80
 
   {d?.steps?.length && <Steps items={d.steps} title={stepsTitle(d.steps.length)} />}
 
-  <section class="section">
-    <div class="wrap dc">
-      <div class="dc__copy" data-reveal>
-        <p class="eyebrow">Infrastruktura</p>
-        <h2>Datacentrum v srdci Evropy.</h2>
-        <p class="lead">Vlastní infrastruktura v datacentru Tier III v Praze. Redundantní napájení i konektivita a SLA 99,9 %.</p>
-        <Button href={url('datacenter')} variant="ghost">Prohlédnout datacentrum</Button>
-      </div>
-      <div class="card dc__map" aria-hidden="true" data-reveal>
-        <svg viewBox="0 0 400 300">
-          <g class="dc__lines"><path pathLength="1" d="M60 220 L150 140 L230 170 L320 80 M150 140 L190 60 L320 80 M230 170 L300 230" /></g>
-          <g class="dc__stars">{dcStars.map(([x, y], i) => <circle cx={x} cy={y} r={i === 1 ? 7 : 4} style={`--d:${300 + i * 140}ms`} />)}</g>
-        </svg>
-        <p class="dc__label">Praha · Tier III</p>
-      </div>
+  <section class="section dc">
+    <div class="wrap">
+      <SectionHead title="Datacentrum v srdci Evropy." lead="Vlastní infrastruktura v datacentru Tier III v Praze. Odtud běží vaše weby, e-maily i servery." />
+      <WorldMap />
+      <ul class="dc__facts" data-reveal>
+        <li><strong>Tier III</strong><span>Praha</span></li>
+        <li><strong>N+1</strong><span>redundance kritických systémů</span></li>
+        <li><strong>99,9 %</strong><span>SLA dostupnosti</span></li>
+        <li class="dc__more"><Button href={url('datacenter')} variant="ghost">Prohlédnout datacentrum</Button></li>
+      </ul>
     </div>
   </section>
 
@@ -218,20 +213,16 @@ const dcStars: [number, number][] = [[60, 220], [150, 140], [230, 170], [320, 80
   @keyframes travel { to { offset-distance: 100%; } }
   .system__orbit.is-paused .orb { animation-play-state: paused; }
 
-  /* DATACENTRUM — souhvězdí, linky se při odkrytí dokreslí a hvězdy rozsvítí. */
-  .dc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 88px); align-items: center; }
-  .dc__copy { display: grid; gap: 20px; justify-items: start; }
-  .dc__copy h2 { font-size: var(--fs-h2); max-width: 14ch; }
-  .dc__map { padding: 28px; background: radial-gradient(circle at 40% 45%, color-mix(in srgb, var(--brand) 60%, transparent), transparent 75%), var(--surface); }
-  .dc__lines path { fill: none; stroke: color-mix(in srgb, var(--lilac) 50%, transparent); stroke-width: 1; stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 2.4s var(--ease) .2s; }
-  .dc__map.reveal-pending .dc__lines path { stroke-dashoffset: 1; }
-  .dc__stars circle { fill: var(--lilac-50); transition: opacity .6s var(--ease) var(--d); }
-  .dc__map.reveal-pending .dc__stars circle { opacity: 0; }
-  .dc__stars circle:nth-child(2) { fill: var(--pink); }
-  .dc__label { position: absolute; left: 36%; top: 40%; margin: 0; font: 600 13px/1 var(--font-body); color: #fff; }
+  /* DATACENTRUM — mapa sítě přes celou šířku, pod ní fakta z živého webu. */
+  .dc :global(.world-map) { margin-inline: calc(var(--gutter) * -0.5); }
+  .dc__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; align-items: center; gap: 24px; margin: 40px 0 0; padding: 28px 0 0; list-style: none; border-top: 1px solid var(--line); }
+  .dc__facts li { display: grid; gap: 4px; }
+  .dc__facts strong { font: 700 clamp(28px, 3vw, 40px)/1 var(--font-display); color: #fff; }
+  .dc__facts span { font-size: 15px; color: var(--text-faint); }
+  @media (max-width: 860px) { .dc__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dc__more { grid-column: 1 / -1; } }
 
   @media (max-width: 960px) {
-    .system, .dc { grid-template-columns: minmax(0, 1fr); }
+    .system { grid-template-columns: minmax(0, 1fr); }
     .system__stage { order: -1; max-width: 420px; }
   }
   @media (max-width: 560px) { .system__price { display: none; } .domain { flex-direction: column; border-radius: 22px; } .domain :global(.btn) { width: 100%; } .domain input { padding: 12px 14px; } }
