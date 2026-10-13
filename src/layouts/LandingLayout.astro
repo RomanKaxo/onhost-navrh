@@ -32,9 +32,7 @@ const Visual = ({developer: Terminal, 'funkce/zalohy': BackupTimeline, 'funkce/a
 ---
 <Site title={d.title} description={d.description}>
   <PageHero crumbs={crumbs(d.slug, d.title)} eyebrow={d.eyebrow} title={d.headline ?? d.title} lead={d.lead}
-    planet={planetOf(d.slug, d.planet)} included={d.included} primary={primary} secondary={secondary}>
-    {Visual && <Visual slot="visual" />}
-  </PageHero>
+    planet={planetOf(d.slug, d.planet)} included={d.included} primary={primary} secondary={secondary} visual={Visual} />
   {d.slug === 'datacenter' && <section class="section map-band"><div class="wrap"><WorldMap /></div></section>}
   {d.highlights?.length && <Highlights items={d.highlights} title={head.title} planet={planetOf(d.slug, d.planet)} />}
   {d.plans?.length && <Plans plans={d.plans} note={d.priceNote} />}

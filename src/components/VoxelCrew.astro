@@ -34,11 +34,12 @@ const crew = [
 </div>
 <style>
   /* Vrstva přes obrázek planety; středem otáčení je střed koule. */
-  .crew { position: absolute; inset: 0; pointer-events: none; z-index: 2; container-type: inline-size; }
-  .walker { position: absolute; left: var(--cx); top: var(--cy); width: 0; height: 0;
+  .crew { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+  /* Vrstva velikosti obrázku, otáčí se kolem středu koule; postavička stojí na jejím horním okraji. */
+  .walker { position: absolute; inset: 0; transform-origin: var(--cx) var(--cy);
     animation: patrol var(--speed) ease-in-out infinite alternate; animation-delay: var(--delay); }
   /* Postavička stojí na povrchu: posun nahoru o poloměr koule (v % šířky obrázku přes kontejner) a natočení po oblouku. */
-  .hero { position: absolute; left: 0; bottom: 0; width: calc(var(--r) * .24cqw); height: auto; translate: -50% calc(var(--r) * -1cqw); transform-origin: 50% 100%;
+  .hero { position: absolute; left: var(--cx); top: calc(var(--cy) - var(--r) * 1%); width: calc(var(--r) * .26%); height: auto; translate: -50% -100%; transform-origin: 50% 100%;
     animation: face var(--speed) steps(1) infinite alternate; animation-delay: var(--delay); overflow: visible; }
   @keyframes patrol { from { rotate: calc(var(--arc) * -1); } to { rotate: var(--arc); } }
   /* Otočení čelem po směru chůze: první polovinu cesty jde doprava, při návratu doleva. */
@@ -51,7 +52,7 @@ const crew = [
   @keyframes bob { to { translate: 0 -.8px; } }
   /* Druhá postavička občas vyskočí; první občas máchne mečem. */
   .walker--jump .hero { animation: face var(--speed) steps(1) infinite alternate, jump 4.2s ease-in-out infinite; animation-delay: var(--delay), -1s; }
-  @keyframes jump { 0%, 70%, 100% { translate: -50% calc(var(--r) * -1cqw); } 80% { translate: -50% calc(var(--r) * -1cqw - 9cqw); } 90% { translate: -50% calc(var(--r) * -1cqw); } }
+  @keyframes jump { 0%, 70%, 100% { translate: -50% -100%; } 80% { translate: -50% -160%; } 90% { translate: -50% -100%; } }
   .walker:not(.walker--jump) .arm--front { animation: swing .6s ease-in-out infinite alternate, slash 5s ease-in-out infinite; }
   @keyframes slash { 0%, 84%, 100% { rotate: 0deg; } 88% { rotate: -150deg; } 94% { rotate: 20deg; } }
   @media (prefers-reduced-motion: reduce) { .walker, .hero, .leg, .arm, .body-bob { animation: none !important; } }

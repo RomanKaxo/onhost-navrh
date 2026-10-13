@@ -4,21 +4,29 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import Planet from './Planet.astro';
+import VoxelCrew from './VoxelCrew.astro';
 interface Props { name?: string; size?: string; power?: boolean; class?: string; transitionName?: string; tracks?: number; eager?: boolean; small?: boolean }
 const {name = 'web', size = 'min(100%, 520px)', power = false, class: className, transitionName, tracks = 2, eager = false, small = false} = Astro.props;
 const dir = path.join(process.cwd(), 'public', 'planets');
 const has = fs.existsSync(path.join(dir, `${name}.webp`));
+// Gamehosting: když existuje planeta bez postav (game-base), chodí po ní animované postavičky.
+// Poloha koule v obrázku (střed a poloměr v % šířky) je v public/planets/crew.json.
+const crewFile = path.join(dir, 'crew.json');
+const crew = !small && name === 'game' && fs.existsSync(path.join(dir, 'game-base.webp')) && fs.existsSync(crewFile) ? JSON.parse(fs.readFileSync(crewFile, 'utf8')) : null;
+const file = crew ? 'game-base' : name;
 const manifestFile = path.join(dir, 'manifest.json');
 const alts: Record<string, string> = fs.existsSync(manifestFile) ? JSON.parse(fs.readFileSync(manifestFile, 'utf8')) : {};
 const alt = typeof alts[name] === 'string' ? alts[name] : '';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const src = `${base}/planets/${name}.webp`, sm = `${base}/planets/${name}-sm.webp`;
+const src = `${base}/planets/${file}.webp`, sm = `${base}/planets/${name}-sm.webp`, md = `${base}/planets/${file}-md.webp`;
+const hasMd = fs.existsSync(path.join(dir, `${file}-md.webp`));
 ---
 {has ? (
   <div class:list={['pa', {'pa--power': power, 'pa--small': small}, className]} style={`--size:${size}`} transition:name={transitionName}>
     {!small && Array.from({length: Math.min(tracks, 2)}, (_, i) => <div class="pa__track pa__track--back" style={`--i:${i}`} aria-hidden="true"><span class="pa__packet"></span><span class="pa__packet pa__packet--2"></span></div>)}
-    <img src={small ? sm : src} srcset={small ? undefined : `${sm} 256w, ${src} 1024w`} sizes={small ? undefined : size}
+    <img src={small ? sm : src} srcset={small ? undefined : crew ? `${hasMd ? `${md} 512w, ` : ''}${src} 1024w` : `${sm} 256w, ${hasMd ? `${md} 512w, ` : ''}${src} 1024w`} sizes={small ? undefined : size}
       alt={alt} width={small ? 256 : 1024} height={small ? 256 : 1024} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : undefined} />
+    {crew && <VoxelCrew cx={crew.cx} cy={crew.cy} r={crew.r} />}
     {!small && Array.from({length: Math.min(tracks, 2)}, (_, i) => <div class="pa__track pa__track--front" style={`--i:${i}`} aria-hidden="true"><span class="pa__packet"></span><span class="pa__packet pa__packet--2"></span></div>)}
   </div>
 ) : <Planet name={name} size={size} power={power} class={className} transitionName={transitionName} />}

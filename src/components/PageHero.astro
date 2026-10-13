@@ -7,8 +7,10 @@ interface Crumb { label: string; href: string }
 interface Props {
   crumbs: Crumb[]; eyebrow?: string; title: string; lead?: string; planet?: string; included?: string[];
   primary?: {label: string; href: string}; secondary?: {label: string; href: string}; compact?: boolean; meta?: string[];
+  // Vlastní ilustrace místo planety (komponenta bez vlastností).
+  visual?: any;
 }
-const {crumbs, eyebrow, title, lead, planet, included, primary, secondary, compact = false, meta} = Astro.props;
+const {crumbs, eyebrow, title, lead, planet, included, primary, secondary, compact = false, meta, visual: Visual} = Astro.props;
 // Nadpis se odkrývá po slovech zpod masky (jen vzhled; čtečka přečte celý nadpis z aria-label).
 const words = title.split(/\s+/);
 ---
@@ -28,8 +30,8 @@ const words = title.split(/\s+/);
       </div>}
       {included && included.length > 0 && <ul class="chips phero__chips" aria-label="V ceně">{included.map(i => <li>{i}</li>)}</ul>}
     </div>
-    {!compact && <div class:list={['phero__visual', {'phero__visual--custom': Astro.slots.has('visual')}]}>
-      {Astro.slots.has('visual') ? <slot name="visual" /> : <>
+    {!compact && <div class:list={['phero__visual', {'phero__visual--custom': Visual}]}>
+      {Visual ? <Visual /> : <>
         <div class="phero__orbits"><span></span><span></span></div>
         <PlanetArt name={planet} power eager size="100%" transitionName={planet ? `planet-${planet}` : undefined} />
       </>}
