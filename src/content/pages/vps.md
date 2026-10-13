@@ -2,23 +2,61 @@
 slug: vps
 kind: product
 title: Cloud / VPS
-description: "KVM virtuální servery s NVMe SSD, plným root přístupem a IPv4/IPv6 v ceně. VPS od 149 Kč měsíčně bez DPH. České datacentrum."
-eyebrow: Výkonné virtuální servery
-lead: "Výkon bez sdílení, kontrola bez kompromisů. KVM, NVMe a plný root přístup v každém tarifu."
+description: "Virtuální servery KVM s NVMe, plným root přístupem a IPv4 i /64 IPv6 v ceně. Denní zálohy a DDoS ochrana. Od 149 Kč měsíčně bez DPH."
+eyebrow: Virtuální servery KVM
+headline: "Výkon, který nesdílíte s nikým."
+lead: "Virtuální server pro aplikace, e-shopy i CI. KVM izolace, lokální NVMe a plný root přístup v každém tarifu, od 149 Kč měsíčně bez DPH."
 planet: vps
+included:
+  - KVM virtualizace
+  - NVMe SSD úložiště
+  - Plný root přístup
+  - IPv4 a /64 IPv6
+  - Denní zálohy (14 dní)
+  - Anti-DDoS ochrana
 highlights:
-  - title: KVM virtualizace
-    text: "Plný root přístup, vlastní ISO a dedikovaná CPU vlákna. Výkon nesdílíte s ostatními zákazníky."
-  - title: NVMe úložiště
+  - title: Výkon bez hlučných sousedů
+    text: "KVM izoluje vCPU, RAM i I/O mezi zákazníky. CPU vlákna máte dedikovaná, ne sdílená."
+  - title: Disky pro náročná data
     text: "Lokální NVMe pole s vysokým IOPS. Pro databáze, cache i náročné aplikace."
-  - title: Snapshoty a zálohy
-    text: "Denní zálohy s retencí 14 dní. Před každým zásahem do systému si uděláte vlastní snapshot."
-  - title: Rychlá síť
-    text: "Gigabitové uplinky v českém datacentru. Nízká latence a DDoS ochrana v ceně."
-  - title: IPv4 + IPv6
-    text: "Dedikovaná IPv4 a celý /64 IPv6 prefix. V každém tarifu, bez příplatku."
-  - title: Volitelná správa
+  - title: Nasazujete bez obav
+    text: "Před každým zásahem si uděláte snapshot. Denní zálohy uchováváme 14 dní a obnovu spustíte sami v klientské zóně."
+  - title: Nízká latence, ochrana v ceně
+    text: "Gigabitové uplinky v českém datacentru. DDoS ochranu neplatíte zvlášť."
+  - title: Adresy bez příplatku
+    text: "Dedikovaná IPv4 a celý /64 IPv6 prefix v každém tarifu."
+  - title: Správa podle potřeby
     text: "Od holého serveru po plně spravované řešení s OS, aktualizacemi a monitoringem."
+steps:
+  - title: Vyberte tarif a systém
+    text: "Zvolte velikost serveru a Linux, Windows Server nebo vlastní ISO na vyžádání."
+  - title: Dokončete objednávku
+    text: "Objednáte v klientské zóně, server zřídíme po úhradě zálohové faktury."
+  - title: Přihlaste se jako root
+    text: "Systém nainstalujeme automaticky při zřízení a server předáme s plným root přístupem."
+specs:
+  - label: Virtualizace
+    value: "KVM, dedikovaná CPU vlákna"
+  - label: Úložiště
+    value: "Lokální NVMe SSD"
+  - label: Síť
+    value: "Gigabitové uplinky, české datacentrum"
+  - label: IP adresy
+    value: "Dedikovaná IPv4, /64 IPv6"
+  - label: Linux
+    value: "Debian 12, Ubuntu 24.04 LTS, AlmaLinux 9, Rocky Linux 9"
+  - label: Windows
+    value: "Windows Server 2022, Windows Server 2019"
+  - label: Vlastní systém
+    value: "Vlastní ISO na vyžádání"
+  - label: Panely (volitelně)
+    value: "cPanel, Plesk, DirectAdmin"
+  - label: Doplňky
+    value: "IPMI / KVM konzole, rDNS záznam"
+  - label: Zálohy
+    value: "Denně, retence 14 dní, ruční snapshoty"
+  - label: SLA
+    value: "99,9 % měsíčně (síť a napájení)"
 plans:
   - name: VPS Nano
     price: "149 Kč"
@@ -40,36 +78,30 @@ plans:
     period: "měsíc"
     features: ["Náročné aplikace a e-shopy", "8 CPU", "RAM 8 GB", "Disk 160 GB", "Data 4 000 GB"]
     featured: false
+priceNote: "Ceny jsou uvedeny bez DPH."
+faq:
+  - q: Mohu tarif později zvětšit?
+    a: "Ano. Tarif lze kdykoli povýšit a rozdíl ceny se dopočítá poměrně. Na nižší tarif přejdete ke konci fakturačního období."
+  - q: Jakou dostupnost garantujete?
+    a: "99,9 % měsíčně pro síť a napájení. Při výpadku nad rámec SLA vám na vyžádání připíšeme kredit 5 % měsíční ceny za každou započatou hodinu, nejvýš 100 %."
+  - q: Mohu použít vlastní systém?
+    a: "Ano. Vlastní ISO je k dispozici na vyžádání. Jinak vybíráte z Debianu 12, Ubuntu 24.04 LTS, AlmaLinuxu 9, Rocky Linuxu 9 a Windows Serveru 2019 nebo 2022."
+  - q: Musím server spravovat sám?
+    a: "Ne. Vedle holého serveru nabízíme i plně spravované řešení s OS, aktualizacemi a monitoringem. Napište nám, jakou správu potřebujete."
+  - q: Jak rychle reaguje podpora?
+    a: "Na urgentní výpadky do 1 hodiny, nepřetržitě. Vysokou prioritu řešíme do 4 hodin, běžné dotazy do 1 pracovního dne."
+  - q: Zavazuji se na delší dobu?
+    a: "Ne. Službu můžete vypovědět kdykoli ke konci uhrazeného období."
 cta:
-  title: Potřebujete poradit?
-  text: "Odpovíme do 1 hodiny. Pomůžeme s výběrem i konfigurací."
+  title: Zapněte svůj server
+  text: "S výběrem tarifu i konfigurací poradíme, odpovíme do 1 hodiny."
   primary: { label: Vybrat tarif, href: "#tarify" }
-  secondary: { label: Poradit se, href: /kontakt }
+  secondary: { label: Poradit se s výběrem, href: /kontakt }
+related: [webhosting, dedikovane-servery, ddos-ochrana]
 sample: false
 ---
-## Každý VPS obsahuje
+## VPS, webhosting, nebo dedikovaný server?
 
-KVM virtualizaci, NVMe SSD úložiště, plný root přístup, dedikovanou IPv4 a /64 IPv6, denní zálohy (14 dní) a anti-DDoS ochranu.
-
-## Snapshoty a zálohy
-
-Zálohujeme denně a uchováváme 14 dní. Před každým nasazením si vytvoříte ruční snapshot. Obnovu spustíte sami z klientské zóny. Na podporu čekat nemusíte.
-
-## KVM virtualizace s NVMe
-
-vCPU, RAM i I/O jsou mezi zákazníky plně izolované. Data leží na lokálním NVMe poli s vysokým IOPS. Žádný „hlučný soused“ ze sdíleného úložiště.
-
-## Podporované operační systémy
-
-Systém nainstalujeme automaticky při zřízení VPS.
-
-- **Linux:** Debian 12, Ubuntu 24.04 LTS, AlmaLinux 9, Rocky Linux 9
-- **Windows:** Windows Server 2022, Windows Server 2019, vlastní ISO na vyžádání
-- **Doplňky:** cPanel / Plesk (volitelně), DirectAdmin (volitelně), IPMI / KVM konzole, rDNS záznam
-
-## Kam dál
-
-- **Sdílený webhosting** — rychlý NVMe hosting bez správy serveru. Od 49 Kč měsíčně.
-- **Dedikované servery** — výhradní hardware, plný výkon a IPMI přístup.
-
-Ceny jsou uvedeny bez DPH.
+- **Webhosting**, když nechcete spravovat server. Rychlý NVMe hosting od 49 Kč měsíčně bez DPH.
+- **Cloud VPS**, když potřebujete root, vlastní systém a výkon, který nesdílíte s ostatními zákazníky.
+- **Dedikovaný server**, když projekt potřebuje celý fyzický stroj, IPMI přístup a sestavu na míru.

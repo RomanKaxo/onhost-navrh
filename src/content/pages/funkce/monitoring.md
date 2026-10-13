@@ -2,37 +2,62 @@
 slug: funkce/monitoring
 kind: feature
 title: Monitoring 24/7
-description: "Monitoring 24/7 v ceně tarifu. Kontrola dostupnosti webu každou minutu, hlídání SSL certifikátů, okamžité notifikace a historie incidentů."
-eyebrow: V ceně tarifu
-lead: "Hlídáme dostupnost vašeho webu i SSL certifikáty. Výpadek zachytíme dřív, než vám zavolá zákazník."
+description: "Monitoring 24/7 v ceně tarifu: kontrola dostupnosti webu každou minutu, hlídání SSL certifikátu, okamžité notifikace a historie incidentů."
+eyebrow: Dohled 24/7
+headline: "O výpadku víte dřív než zákazníci."
+lead: "Dostupnost webu kontrolujeme každou minutu a hlídáme platnost SSL certifikátu. Monitoring se spustí sám a je v ceně každého tarifu."
+included:
+  - Kontrola každou minutu
+  - Hlídání SSL certifikátu
+  - E-mailové notifikace
+  - Historie incidentů
 highlights:
-  - title: Kontroly každou minutu
+  - title: Výpadek zachytíme včas
     text: "Dostupnost přes HTTP/HTTPS ověřujeme z monitorovacích bodů každou minutu."
-  - title: Platnost SSL
-    text: "Hlídáme expiraci certifikátu. Upozorníme vás 30, 14 a 7 dní předem. Let's Encrypt obnovujeme automaticky."
-  - title: Notifikace
-    text: "E-mail a zpráva do klientské zóny. Ihned při výpadku i při obnovení dostupnosti."
-  - title: Historie incidentů
-    text: "Přehledná časová osa výpadků s příčinami a délkou trvání. Vše ve vašem dashboardu."
-  - title: Podklady pro SLA
-    text: "Záznamy monitoringu slouží k výpočtu kompenzací dle SLA. Transparentně a automaticky."
-  - title: V každém tarifu
-    text: "Monitoring dostupnosti a SSL běží automaticky u každé služby. Bez příplatku."
+  - title: Certifikát nevyprší potichu
+    text: "Expiraci SSL hlídáme a upozorníme vás 30, 14 a 7 dní předem. Let's Encrypt obnovujeme automaticky."
+  - title: Zpráva ve chvíli výpadku
+    text: "E-mail a notifikace v klientské zóně ihned při výpadku i po obnovení dostupnosti."
+  - title: Přehled, co se stalo
+    text: "Časová osa výpadků s příčinami a délkou trvání přímo ve vašem dashboardu."
+  - title: Podklad pro SLA
+    text: "Záznamy monitoringu slouží k výpočtu kompenzací podle SLA."
+  - title: Bez nastavování
+    text: "Spustí se automaticky po aktivaci tarifu a hlídá od první minuty, 24 hodin denně."
+steps:
+  - title: Aktivujte webhosting
+    text: "Monitoring se spustí sám, bez jakékoli konfigurace."
+  - title: Hlídáme od první minuty
+    text: "Dostupnost webu a platnost SSL kontrolujeme 24 hodin denně, 7 dní v týdnu."
+  - title: Sledujte stav
+    text: "Notifikace a historii incidentů najdete v klientské zóně."
+specs:
+  - label: Interval kontrol
+    value: "1 minuta"
+  - label: Protokoly
+    value: "HTTP, HTTPS"
+  - label: Upozornění na expiraci SSL
+    value: "30, 14 a 7 dní předem"
+  - label: Notifikace
+    value: "E-mail, klientská zóna"
+  - label: Historie
+    value: "Časová osa incidentů s příčinou a délkou výpadku"
+  - label: Provoz
+    value: "24/7, automaticky od aktivace služby"
+faq:
+  - q: Musím monitoring nastavit?
+    a: "Ne. Spustí se automaticky po aktivaci webhostingu, bez jakékoli konfigurace."
+  - q: Platím za monitoring navíc?
+    a: "Ne. Monitoring dostupnosti a SSL je v ceně každé provozované služby."
+  - q: Jak se o výpadku dozvím?
+    a: "E-mailem a notifikací v klientské zóně, ihned při výpadku i po obnovení dostupnosti."
+  - q: K čemu jsou záznamy incidentů?
+    a: "Ukazují příčinu a délku každého výpadku a slouží jako podklad pro kompenzace. Za každou započatou hodinu nad rámec SLA vám na vyžádání připíšeme kredit 5 % měsíční ceny."
 cta:
-  title: Monitoring se zapne sám
-  text: "Po aktivaci webhostingu se spustí bez jakékoli konfigurace. Web a SSL hlídáme od první minuty, 24 hodin denně, 7 dní v týdnu."
-  primary: { label: Začít s hostingem, href: /webhosting }
+  title: Zapněte web pod nepřetržitým dohledem
+  text: "Monitoring je v ceně každého tarifu a hlídá od první minuty."
+  primary: { label: Vybrat webhosting, href: /webhosting }
+  secondary: { label: Přečíst SLA, href: /sla }
+related: [funkce/zalohy, funkce/ai-asistent, sla]
 sample: false
 ---
-## Monitoring v ceně tarifu
-
-- Kontrola každou minutu
-- Sledování SSL certifikátu
-- E-mailové notifikace
-- Historie incidentů
-
-## Kam dál
-
-- **Webhosting** — NVMe hosting s monitoringem v ceně od 49 Kč měsíčně.
-- **Automatické zálohy** — denní zálohy s retencí 14 dní a obnovou jedním kliknutím.
-- **Podpora** — reakce na urgentní výpadky do 1 hodiny, 24/7.

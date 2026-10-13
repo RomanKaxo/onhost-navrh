@@ -2,38 +2,64 @@
 slug: funkce/zalohy
 kind: feature
 title: Automatické zálohy
-description: "Denní zálohy webu, databáze i e-mailů v ceně tarifu. Retence 14 dní, offsite úložiště a obnova jedním kliknutím, obvykle do 30 minut."
-eyebrow: V ceně tarifu
-lead: "Denní zálohy s obnovou jedním kliknutím. Bez konfigurace, spouštějí se samy."
+description: "Denní zálohy webu, databází i e-mailů v ceně tarifu. Retence 14 dní, offsite úložiště a obnova jedním kliknutím, obvykle do 30 minut."
+eyebrow: Ochrana dat
+headline: "Včerejší web zpátky jedním kliknutím."
+lead: "Web, databáze i e-maily zálohujeme každou noc na oddělené úložiště. Uchováváme je 14 dní a obnova obvykle trvá do 30 minut."
+included:
+  - Denní zálohy
+  - Retence 14 dní
+  - Offsite úložiště
+  - Obnova jedním kliknutím
 highlights:
-  - title: Denní zálohy
-    text: "Web, databáze i e-maily zálohujeme automaticky každý den. Nezávisle na primárním serveru."
-  - title: Retence 14 dní
-    text: "Uchováváme zálohy za posledních 14 dní. Web vrátíte do libovolného dne v tomto okně."
-  - title: Rychlá obnova
-    text: "Přes klientskou zónu nebo ticketem. Obvyklá doba obnovy je do 30 minut."
-  - title: Manuální záloha
-    text: "Nasazujete novou verzi webu? Spusťte zálohu ručně v detailu služby v klientské zóně."
-  - title: Offsite uložení
-    text: "Zálohy ukládáme na fyzicky oddělené úložiště. Výpadek primárního serveru se jich nedotkne."
-  - title: V ceně každého tarifu
-    text: "Zálohy běží automaticky u každého webhostingu. Bez příplatku a bez skrytých poplatků."
+  - title: Záloha bez nastavování
+    text: "Web, databáze i e-maily se zálohují automaticky každou noc. Nic nenastavujete."
+  - title: Návrat k libovolnému dni
+    text: "Uchováváme zálohy za posledních 14 dní. Web obnovíte k libovolnému dni v tomto okně."
+  - title: Zálohy mimo server
+    text: "Ukládáme je na fyzicky oddělené úložiště, takže výpadek primárního serveru se jich nedotkne."
+  - title: Ověřená integrita
+    text: "Po přenosu na offsite úložiště kontrolujeme integritu záloh."
+  - title: Pojistka před nasazením
+    text: "Před vydáním nové verze webu spustíte ruční zálohu v detailu služby."
+  - title: Obnova do 30 minut
+    text: "Jedním kliknutím v klientské zóně, nebo ticketem. Obvyklá doba obnovy je do 30 minut."
+steps:
+  - title: Otevřete detail služby
+    text: "V klientské zóně uvidíte seznam dostupných záloh s datem a velikostí."
+  - title: Vyberte den
+    text: "Zvolte zálohu z kteréhokoli z posledních 14 dní."
+  - title: Klikněte na „Obnovit zálohu“
+    text: "Nebo otevřete ticket a o zbytek se postaráme."
+specs:
+  - label: Frekvence
+    value: "Denně v noci, automaticky"
+  - label: Rozsah
+    value: "Soubory, databáze, e-mailové schránky"
+  - label: Retence
+    value: "14 dní"
+  - label: Úložiště
+    value: "Offsite, fyzicky oddělené od primárního serveru"
+  - label: Kontrola
+    value: "Ověření integrity po přenosu"
+  - label: Obnova
+    value: "Klientská zóna nebo ticket, obvykle do 30 minut"
+  - label: Ruční záloha
+    value: "V detailu služby v klientské zóně"
+faq:
+  - q: Musím zálohy zapnout?
+    a: "Ne. U každého webhostingu se aktivují automaticky, bez příplatku a bez skrytých poplatků."
+  - q: Jak dlouho obnova trvá?
+    a: "Obvykle do 30 minut, ať ji spustíte v klientské zóně, nebo o ni požádáte ticketem."
+  - q: Co když vypadne celý server?
+    a: "Zálohy leží na fyzicky odděleném úložišti, takže výpadek primárního serveru se jich nedotkne."
+  - q: Zálohujete i VPS?
+    a: "Ano. Každý VPS má denní zálohy s retencí 14 dní a před zásahem si navíc uděláte ruční snapshot."
 cta:
-  title: Zálohy v ceně tarifu
-  text: "Denně, automaticky, s retencí 14 dní a offsite úložištěm. Obnova jedním kliknutím."
-  primary: { label: Začít s hostingem, href: /webhosting }
-  secondary: { label: Návody k zálohám, href: /znalostni-baze }
+  title: Zapněte hosting se zálohami v ceně
+  text: "Zálohy běží automaticky u každého webhostingu, bez příplatku."
+  primary: { label: Vybrat webhosting, href: /webhosting }
+  secondary: { label: Prohlédnout návody, href: /znalostni-baze }
+related: [funkce/monitoring, webhosting, vps]
 sample: false
 ---
-## Krok za krokem: jak obnovit zálohu
-
-1. Každou noc se automaticky zazálohují soubory, databáze a e-mailové schránky.
-2. Zálohy se přenesou na offsite úložiště a ověří se jejich integrita.
-3. V klientské zóně v detailu služby vidíte seznam dostupných záloh s datem a velikostí.
-4. Klikněte na „Obnovit zálohu“, nebo otevřete ticket. O zbytek se postaráme.
-
-## Kam dál
-
-- **Webhosting** — NVMe hosting se zálohami v ceně od 49 Kč měsíčně.
-- **Monitoring 24/7** — nepřetržité hlídání dostupnosti webu a SSL certifikátů.
-- **Návody k zálohám** — podrobné postupy pro obnovu webu, databáze i e-mailů.
