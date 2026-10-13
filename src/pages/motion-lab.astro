@@ -9,12 +9,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <Base title="Motion lab" description="Technická ukázka pohybového systému ONhost.">
   <main>
     <section class="scene" aria-labelledby="lab-title">
-      <Cosmos id="lab-cosmos" on={false} />
+      <Cosmos id="lab-cosmos" on={false} planet />
       <div class="scene-content">
         <p class="eyebrow">Motion lab · technická ukázka</p>
         <h1 id="lab-title">Zapni svůj vesmír</h1>
-        <Orbit size="min(76vw, 440px)" rings={2}><PowerSwitch target="lab-cosmos" size={100} /></Orbit>
-        <p>Stiskni symbol. Vesmír kolem něj se rozsvítí.</p>
+        <div class="power-stage"><PowerSwitch target="lab-cosmos" size={100} /></div>
+        <p>Stiskni symbol. Rozsviť síť na horizontu svého vesmíru.</p>
         <a href={`${base}/`}>Zpět na návrh →</a>
       </div>
     </section>
@@ -29,7 +29,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 </Base>
 <style>
   .scene { position:relative; min-height:850px; min-height:min(980px, 100svh); display:grid; place-items:center; padding:64px 16px; }
-  .scene-content { position:relative; z-index:1; display:flex; align-items:center; flex-direction:column; text-align:center; max-width:100%; }
+  .scene-content { position:relative; z-index:1; display:flex; align-items:center; flex-direction:column; text-align:center; max-width:100%; padding-bottom:24svh; }
+  .power-stage { display:grid; place-items:center; height:clamp(220px,32svh,300px); }
   h1 { font-size:clamp(40px,7vw,88px); margin:20px 0; line-height:1; }
   h2 { font-size:clamp(32px,5vw,56px); }
   .eyebrow { font-size:12px; letter-spacing:.15em; text-transform:uppercase; }
@@ -39,5 +40,5 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   article { background:#3c096c25; border:1px solid #bb88eb25; border-radius:18px; padding:24px; }
   .sample { font-family:var(--font-display); font-size:36px; }
   .custom-planet { position:absolute; top:14%; left:19%; width:6px; height:6px; border-radius:50%; background:var(--lilac-200); }
-  @media(max-width:680px) { .cards { grid-template-columns:1fr; } .scene { min-height:760px; } }
+  @media(max-width:680px) { .cards { grid-template-columns:1fr; } .scene { min-height:100svh; } }
 </style>
