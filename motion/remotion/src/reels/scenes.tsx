@@ -98,8 +98,8 @@ export const Backups: React.FC<{ from: number; to: number }> = ({ from, to }) =>
 // Ilustrace planety z webu (public/planets), s maskou do kruhu; bez obrázku záložní koule.
 export const PlanetImg: React.FC<{ name: string; size: number; x: number; y: number; opacity?: number; brightness?: number }> = ({ name, size, x, y, opacity = 1, brightness = 1 }) => {
   const [ok, setOk] = useState(true);
-  const style: React.CSSProperties = { position: 'absolute', left: x - size / 2, top: y - size / 2, width: size, height: size, opacity, filter: brightness < 1 ? `brightness(${brightness})` : undefined,
-    WebkitMaskImage: 'radial-gradient(circle, #000 56%, transparent 71%)', maskImage: 'radial-gradient(circle, #000 56%, transparent 71%)' };
+  const style: React.CSSProperties = { position: 'absolute', left: x - size / 2, top: y - size / 2, width: size, height: size, opacity,
+    filter: `${brightness < 1 ? `brightness(${brightness}) ` : ''}drop-shadow(0 24px 48px #12001Ecc)` }; // ilustrace mají průhledné pozadí
   return ok ? <Img src={staticFile(`planets/${name}.webp`)} style={style} onError={() => setOk(false)} />
     : <div style={{ ...style, borderRadius: '50%', background: `radial-gradient(circle at 34% 30%, ${C.lilac200}, ${C.brand} 55%, ${C.space})` }} />;
 };
