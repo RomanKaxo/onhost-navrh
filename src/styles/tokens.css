@@ -15,4 +15,18 @@
   --radius: 18px; --radius-sm: 10px;
   --gutter: clamp(16px, 4vw, 48px); --maxw: 1240px;
   --logo-mark: #fff; --logo-bar: var(--pink);
+  /* Odvozené role — jediný zdroj pro plochy, linky a text na tmavém. */
+  --text: var(--lilac-50); --text-strong: #fff;
+  --text-dim: color-mix(in srgb, var(--lilac-50) 78%, transparent);
+  --text-faint: color-mix(in srgb, var(--lilac-200) 62%, transparent);
+  --line: color-mix(in srgb, var(--lilac) 15%, transparent);
+  --line-strong: color-mix(in srgb, var(--lilac) 38%, transparent);
+  --surface: linear-gradient(180deg, color-mix(in srgb, var(--brand) 24%, transparent), color-mix(in srgb, var(--space-0) 40%, transparent));
+  --surface-solid: #1c0430;
+  --radius-lg: 28px;
+  --section-y: clamp(84px, 11vw, 150px);
+  --fs-display: clamp(44px, 6.4vw, 92px);
+  --fs-h2: clamp(34px, 4.4vw, 62px);
+  --fs-h3: clamp(21px, 1.8vw, 26px);
+  --fs-lead: clamp(18px, 1.55vw, 21px);
 }

@@ -1,0 +1,23 @@
+---
+import SectionHead from './SectionHead.astro';
+interface Props { items: {title: string; text: string}[]; eyebrow?: string; title: string; lead?: string; columns?: 3 | 4 }
+const {items, eyebrow, title, lead, columns = items.length === 4 ? 4 : 3} = Astro.props;
+---
+<section class="section">
+  <div class="wrap">
+    <SectionHead eyebrow={eyebrow} title={title} lead={lead} />
+    <div class:list={['grid', `grid--${columns}`]}>
+      {items.map((item, i) => (
+        <article class="card highlight" data-reveal style={`--d:${(i % columns) * 70}ms`}>
+          <span class="card__index">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .highlight { display: grid; align-content: start; gap: 12px; }
+  .highlight .card__index { margin-bottom: 14px; }
+</style>

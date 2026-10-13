@@ -1,17 +1,24 @@
 ---
-interface Props { eyebrow?: string; title: string; lead?: string; align?: 'left' | 'center'; level?: 'h1' | 'h2' }
-const {eyebrow, title, lead, align = 'left', level = 'h2'} = Astro.props;
+// Hlavička sekce: vždy zarovnaná vlevo; s perexem se na širokých displejích rozdělí do dvou sloupců.
+interface Props { eyebrow?: string; title: string; lead?: string; level?: 'h1' | 'h2'; split?: boolean; id?: string }
+const {eyebrow, title, lead, level = 'h2', split = true, id} = Astro.props;
 const H = level;
 ---
-<header class:list={['shead', `shead--${align}`]} data-reveal>
-  {eyebrow && <p class="shead__eyebrow">{eyebrow}</p>}
-  <H class="shead__title">{title}</H>
-  {lead && <p class="shead__lead">{lead}</p>}
+<header class:list={['shead', {'shead--split': split && lead}]} data-reveal>
+  <div class="shead__main">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <H class="shead__title" id={id}>{title}</H>
+  </div>
+  {lead && <p class="lead shead__lead">{lead}</p>}
 </header>
 <style>
-  .shead { max-width: 760px; display: grid; gap: 16px; margin-bottom: clamp(32px, 5vw, 56px); }
-  .shead--center { margin-inline: auto; text-align: center; justify-items: center; }
-  .shead__eyebrow { margin: 0; font: 600 13px/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--lilac); }
-  .shead__title { font-size: clamp(34px, 5vw, 60px); font-weight: 700; color: #fff; text-wrap: balance; }
-  .shead__lead { margin: 0; font-size: clamp(17px, 1.6vw, 20px); color: color-mix(in srgb, var(--lilac-50) 82%, transparent); text-wrap: pretty; }
+  .shead { display: grid; gap: 18px; margin-bottom: clamp(36px, 5vw, 64px); }
+  .shead__main { display: grid; gap: 18px; max-width: 18ch; }
+  .shead:not(.shead--split) .shead__main { max-width: 22ch; }
+  .shead__title { font-size: var(--fs-h2); font-weight: 700; }
+  @media (min-width: 960px) {
+    .shead--split { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); align-items: end; gap: 48px; }
+    .shead--split .shead__main { max-width: 20ch; }
+    .shead--split .shead__lead { padding-bottom: 8px; }
+  }
 </style>

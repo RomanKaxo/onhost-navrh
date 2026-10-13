@@ -1,0 +1,38 @@
+---
+import Site from '../layouts/Site.astro';
+import Button from '../components/Button.astro';
+import Planet from '../components/Planet.astro';
+import {url} from '../data/nav';
+---
+<Site title="Stránka nenalezena" description="Tahle stránka se ztratila ve vesmíru.">
+  <section class="lost">
+    <div class="wrap lost__grid">
+      <div class="lost__copy">
+        <p class="eyebrow">Chyba 404</p>
+        <h1>Ztraceno ve vesmíru.</h1>
+        <p class="lead">Stránka, kterou hledáte, tu není — možná se přesunula, možná nikdy neexistovala. Vrátíme vás na známou oběžnou dráhu.</p>
+        <div class="lost__actions">
+          <Button href={url()} size="lg">Zpět na úvod</Button>
+          <Button href={url('podpora')} variant="ghost" size="lg">Centrum podpory</Button>
+        </div>
+      </div>
+      <div class="lost__visual" aria-hidden="true">
+        <Planet name="legal" size="100%" power />
+        <span class="lost__probe"></span>
+      </div>
+    </div>
+  </section>
+</Site>
+<style>
+  .lost { min-height: calc(100svh - 200px); display: grid; align-items: center; padding-block: 64px; }
+  .lost__grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 48px; align-items: center; }
+  .lost__copy { display: grid; gap: 22px; justify-items: start; }
+  .lost h1 { font-size: var(--fs-display); max-width: 11ch; }
+  .lost__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .lost__visual { position: relative; }
+  /* Sonda, která se pomalu vzdaluje — jediný pohyb na stránce. */
+  .lost__probe { position: absolute; left: 12%; top: 18%; width: 10px; height: 10px; border-radius: 50%; background: var(--pink); box-shadow: 0 0 18px var(--pink);
+    animation: drift-away 14s var(--ease) infinite; }
+  @keyframes drift-away { from { translate: 0 0; opacity: 1; } to { translate: -180px -120px; opacity: 0; } }
+  @media (max-width: 860px) { .lost__grid { grid-template-columns: minmax(0, 1fr); } .lost__visual { order: -1; width: min(60vw, 260px); } }
+</style>

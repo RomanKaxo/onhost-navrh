@@ -1,25 +1,41 @@
 ---
+// Závěrečná výzva: přechod fialová → růžová (povolené pozadí z manuálu). Symbol stojí na fialové části,
+// kolem něj se při odkrytí rozběhnou oběžné dráhy — logo samo zůstává beze změny.
 import Button from './Button.astro';
+import Logo from './Logo.astro';
+import {link} from '../data/pages';
 interface Props { title: string; text?: string; primary?: {label: string; href: string}; secondary?: {label: string; href: string} }
-const {title, text, primary = {label: 'Vybrat hosting', href: 'webhosting'}, secondary} = Astro.props;
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const href = (h: string) => /^https?:/.test(h) ? h : `${base}/${h.replace(/^\//, '')}`;
+const {title, text, primary = {label: 'Vybrat hosting', href: '/webhosting'}, secondary} = Astro.props;
 ---
-<section class="cta wrap" data-reveal>
-  <div class="cta__inner">
-    <h2>{title}</h2>
-    {text && <p>{text}</p>}
-    <div class="cta__actions">
-      <Button href={href(primary.href)} variant="light" size="lg">{primary.label}</Button>
-      {secondary && <Button href={href(secondary.href)} variant="ghost" size="lg">{secondary.label}</Button>}
+<section class="section cta-section">
+  <div class="wrap">
+    <div class="cta" data-reveal>
+      <div class="cta__mark" aria-hidden="true"><span></span><span></span><span></span><Logo variant="symbol" tone="on-dark" /></div>
+      <div class="cta__copy">
+        <h2>{title}</h2>
+        {text && <p>{text}</p>}
+        <div class="cta__actions">
+          <Button href={link(primary.href)} variant="light" size="lg">{primary.label}</Button>
+          {secondary && <Button href={link(secondary.href)} variant="ghost" size="lg" class="cta__ghost">{secondary.label}</Button>}
+        </div>
+      </div>
     </div>
   </div>
 </section>
 <style>
-  .cta__inner { position: relative; overflow: hidden; border-radius: calc(var(--radius) * 1.6); padding: clamp(48px, 7vw, 96px) clamp(24px, 6vw, 80px);
-    background: linear-gradient(120deg, var(--brand) 0%, #7a1a8a 55%, var(--pink) 100%); display: grid; gap: 20px; justify-items: start; }
-  .cta__inner::after { content: ''; position: absolute; right: -10%; top: -40%; width: 60%; aspect-ratio: 1; border-radius: 50%; border: 2px solid #ffffff22; box-shadow: 0 0 0 60px #ffffff08, 0 0 0 140px #ffffff05; pointer-events: none; }
-  .cta h2 { font-size: clamp(34px, 5vw, 64px); color: #fff; max-width: 16ch; text-wrap: balance; }
-  .cta p { margin: 0; font-size: 19px; max-width: 52ch; color: #fff; opacity: .9; }
+  .cta { position: relative; overflow: hidden; border-radius: var(--radius-lg); display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: clamp(28px, 6vw, 88px);
+    padding: clamp(40px, 6vw, 88px) clamp(24px, 6vw, 88px); background: linear-gradient(115deg, var(--brand) 0%, var(--brand) 30%, #7a1a8a 62%, var(--pink) 100%); }
+  .cta__mark { position: relative; width: clamp(96px, 13vw, 168px); aspect-ratio: 1; display: grid; place-items: center; }
+  .cta__mark :global(.logo) { width: 100%; position: relative; }
+  .cta__mark span { position: absolute; inset: -30%; border-radius: 50%; border: 1px solid #ffffff2e; transition: scale 1.6s var(--ease), opacity 1.6s var(--ease); }
+  .cta__mark span:nth-child(2) { inset: -62%; border-color: #ffffff1c; transition-delay: .15s; }
+  .cta__mark span:nth-child(3) { inset: -100%; border-color: #ffffff12; transition-delay: .3s; }
+  .cta.reveal-pending .cta__mark span { scale: .6; opacity: 0; }
+  .cta__copy { position: relative; display: grid; gap: 18px; justify-items: start; }
+  .cta h2 { font-size: var(--fs-h2); color: #fff; max-width: 15ch; }
+  .cta p { margin: 0; font-size: var(--fs-lead); max-width: 48ch; color: #fff; opacity: .9; }
   .cta__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+  .cta :global(.cta__ghost) { border-color: #ffffff66; color: #fff; }
+  .cta :global(.cta__ghost:hover) { background: #ffffff1f; border-color: #fff; }
+  @media (max-width: 760px) { .cta { grid-template-columns: minmax(0, 1fr); } .cta__mark { width: 88px; margin: 12px 0 0 12px; } }
 </style>

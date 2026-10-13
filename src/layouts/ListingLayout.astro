@@ -1,0 +1,45 @@
+---
+// Rozcestníky (blog, znalostní báze): karty podřízených stránek.
+import Site from './Site.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import {render} from 'astro:content';
+import {url} from '../data/nav';
+import {allPages, crumbs, readingTime, type Page} from '../data/pages';
+import {planetOf} from '../data/defaults';
+interface Props { page: Page }
+const {page} = Astro.props;
+const d = page.data;
+const {Content} = await render(page);
+const children = (await allPages()).filter(p => p.data.slug.startsWith(`${d.slug}/`));
+const isGuide = d.slug === 'znalostni-baze';
+---
+<Site title={d.title} description={d.description}>
+  <PageHero crumbs={crumbs(d.slug, d.title)} eyebrow={d.eyebrow} title={d.headline ?? d.title} lead={d.lead} planet={planetOf(d.slug, d.planet)} included={d.included} />
+  <section class="section listing">
+    <div class="wrap">
+      <div class="grid listing__grid">
+        {children.map((p, i) => (
+          <a class="card entry" href={url(p.data.slug)} data-reveal style={`--d:${(i % 3) * 70}ms`}>
+            <span class="card__index">{isGuide ? `Návod ${String(i + 1).padStart(2, '0')}` : `${readingTime(p.body)} min čtení`}</span>
+            <h2>{p.data.title}</h2>
+            <p>{p.data.lead ?? p.data.description}</p>
+            <span class="entry__more">{isGuide ? 'Otevřít návod' : 'Číst článek'} <span aria-hidden="true">→</span></span>
+          </a>
+        ))}
+      </div>
+      {page.body?.trim() && <div class="prose listing__body" data-reveal><Content /></div>}
+    </div>
+  </section>
+  {d.cta && <CtaBand title={d.cta.title} text={d.cta.text} primary={d.cta.primary} secondary={d.cta.secondary} />}
+</Site>
+<style>
+  .listing { padding-top: 0; }
+  .listing__grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); }
+  .entry { display: flex !important; flex-direction: column; gap: 12px; min-height: 260px; }
+  .entry h2 { font-size: clamp(22px, 2vw, 28px); }
+  .entry p { flex: 1; }
+  .entry__more { color: var(--lilac-200); font-weight: 600; font-size: 15px; }
+  .entry:hover .entry__more { color: #fff; }
+  .listing__body { margin-top: 56px; }
+</style>

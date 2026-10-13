@@ -1,0 +1,59 @@
+---
+// Úvod každé podstránky. Stejná skladba všude: drobečky, nadtitulek, H1, perex, akce, „v ceně“, planeta.
+import Planet from './Planet.astro';
+import Button from './Button.astro';
+import {link} from '../data/pages';
+interface Crumb { label: string; href: string }
+interface Props {
+  crumbs: Crumb[]; eyebrow?: string; title: string; lead?: string; planet?: string; included?: string[];
+  primary?: {label: string; href: string}; secondary?: {label: string; href: string}; compact?: boolean; meta?: string[];
+}
+const {crumbs, eyebrow, title, lead, planet, included, primary, secondary, compact = false, meta} = Astro.props;
+---
+<section class:list={['phero', {'phero--compact': compact}]}>
+  <div class="wrap phero__grid">
+    <div class="phero__copy">
+      <nav class="crumbs" aria-label="Drobečková navigace">
+        <ol>{crumbs.map((c, i) => <li>{c.href && i < crumbs.length - 1 ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}</li>)}</ol>
+      </nav>
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1>{title}</h1>
+      {lead && <p class="lead">{lead}</p>}
+      {meta && meta.length > 0 && <p class="phero__meta">{meta.join(' · ')}</p>}
+      {(primary || secondary) && <div class="phero__actions">
+        {primary && <Button href={link(primary.href)} size="lg">{primary.label}</Button>}
+        {secondary && <Button href={link(secondary.href)} variant="ghost" size="lg">{secondary.label}</Button>}
+      </div>}
+      {included && included.length > 0 && <ul class="chips phero__chips" aria-label="V ceně">{included.map(i => <li>{i}</li>)}</ul>}
+    </div>
+    {!compact && <div class="phero__visual">
+      <div class="phero__orbits"><span></span><span></span></div>
+      <Planet name={planet} power size="100%" transitionName={planet ? `planet-${planet}` : undefined} />
+    </div>}
+  </div>
+</section>
+<style>
+  .phero { position: relative; padding-block: clamp(40px, 7vw, 96px) clamp(48px, 7vw, 104px); }
+  .phero__grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .phero--compact .phero__grid { grid-template-columns: minmax(0, 1fr); }
+  .phero__copy { display: grid; gap: 22px; justify-items: start; animation: rise 1.1s var(--ease) both; }
+  .phero h1 { font-size: var(--fs-display); font-weight: 700; max-width: 14ch; }
+  .phero--compact h1 { font-size: clamp(38px, 5vw, 68px); max-width: 22ch; }
+  .phero__meta { margin: 0; font-size: 14px; color: var(--text-faint); }
+  .phero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+  .phero__chips { margin-top: 8px; }
+  .crumbs ol { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 6px; padding: 0; list-style: none; font-size: 13.5px; color: var(--text-faint); }
+  .crumbs li + li::before { content: '/'; margin-right: 6px; opacity: .5; }
+  .crumbs a { text-decoration: none; } .crumbs a:hover { color: #fff; }
+  .crumbs [aria-current] { color: var(--lilac-200); }
+  .phero__visual { position: relative; display: grid; place-items: center; }
+  .phero__orbits { position: absolute; inset: -6%; pointer-events: none; }
+  .phero__orbits span { position: absolute; inset: 0; border-radius: 50%; border: 1px dashed var(--line); animation: spin 140s linear infinite; }
+  .phero__orbits span + span { inset: 12%; border-style: solid; border-color: color-mix(in srgb, var(--lilac) 9%, transparent); animation-duration: 200s; animation-direction: reverse; }
+  @keyframes spin { to { rotate: 360deg; } }
+  @keyframes rise { from { opacity: 0; translate: 0 18px; } }
+  @media (max-width: 900px) {
+    .phero__grid { grid-template-columns: minmax(0, 1fr); }
+    .phero__visual { order: -1; width: min(72vw, 320px); justify-self: center; margin-bottom: -8px; }
+  }
+</style>

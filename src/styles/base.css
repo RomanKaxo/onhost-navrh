@@ -1,9 +1,81 @@
+/* Základ celého návrhu: typografie, rytmus, karty, štítky a text z Markdownu.
+   Komponenty tyto role jen skládají; vlastní barvy a velikosti nezavádějí. */
 *,*::before,*::after{box-sizing:border-box}
-html{background:var(--space-0);color:var(--lilac-50);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
-body{margin:0;min-height:100vh;line-height:1.6}
-h1,h2,h3,h4{font-family:var(--font-display);line-height:1.05;letter-spacing:-.01em;margin:0}
+html{background:var(--space-0);color:var(--text);font-family:var(--font-body);-webkit-font-smoothing:antialiased;scroll-padding-top:96px}
+body{margin:0;min-height:100vh;line-height:1.6;font-size:17px;overflow-x:clip}
+h1,h2,h3,h4{font-family:var(--font-display);line-height:1.04;letter-spacing:-.015em;margin:0;color:var(--text-strong);text-wrap:balance}
+p{text-wrap:pretty}
 a{color:inherit}
 img,svg,video{max-width:100%;display:block}
+::selection{background:var(--pink);color:#fff}
+:focus-visible{outline:2px solid var(--lilac-200);outline-offset:3px}
 .wrap{width:min(100% - 2*var(--gutter), var(--maxw));margin-inline:auto}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .draft-banner{position:relative;z-index:50;background:var(--pink);color:#fff;text-align:center;font:600 13px/1.4 var(--font-body);padding:6px 12px}
-@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important;scroll-behavior:auto!important}}
+
+/* Rytmus sekcí — všude stejný. */
+.section{position:relative;padding-block:var(--section-y)}
+.section + .section{padding-top:calc(var(--section-y) * .55)}
+
+/* Nadtitulek s růžovou čárkou — tvar převzatý z čárky symbolu (logo samo se nemění). */
+.eyebrow{display:inline-flex;align-items:center;gap:12px;margin:0;font:600 12.5px/1 var(--font-body);letter-spacing:.16em;text-transform:uppercase;color:var(--lilac)}
+.eyebrow::before{content:'';width:4px;height:14px;border-radius:2px;background:var(--pink);flex:none}
+.lead{margin:0;font-size:var(--fs-lead);line-height:1.55;color:var(--text-dim);max-width:58ch}
+
+/* Karta — jediná podoba panelu pro výhody, ceník, dotazy, odkazy i specifikace. */
+.card{position:relative;border-radius:var(--radius);border:1px solid var(--line);background:var(--surface);padding:clamp(22px,2.4vw,30px);
+  transition:border-color var(--t-micro) var(--ease),translate var(--t-move) var(--ease);isolation:isolate}
+.card::before{content:'';position:absolute;inset:0;border-radius:inherit;z-index:-1;opacity:0;transition:opacity var(--t-move) var(--ease);
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--lilac) 13%,transparent),transparent 60%)}
+.card:hover::before{opacity:1}
+a.card{text-decoration:none;display:block}
+a.card:hover,.card--interactive:hover{border-color:var(--line-strong)}
+.card h3{font-size:var(--fs-h3)}
+.card p{margin:0;color:var(--text-dim)}
+.card__index{display:block;margin-bottom:18px;font:600 12.5px/1 var(--font-body);letter-spacing:.12em;color:var(--pink-hot)}
+
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.grid--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid--4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:1080px){.grid--4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:860px){.grid--3{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:560px){.grid--4{grid-template-columns:minmax(0,1fr)}}
+
+/* Štítky „v ceně“. */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.chips li{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,var(--space-0) 50%,transparent);font-size:14px;color:var(--lilac-200)}
+.chips li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--pink);box-shadow:0 0 10px var(--pink)}
+
+.sample-tag{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;font:600 11px/1.6 var(--font-body);letter-spacing:.04em;color:var(--space-0);background:var(--lilac-200);vertical-align:middle}
+
+/* Delší text z Markdownu (články, návody, právní stránky). */
+.prose{max-width:72ch;font-size:18px;line-height:1.7;color:var(--text-dim)}
+.prose > :first-child{margin-top:0}
+.prose h2{font-size:clamp(26px,2.6vw,34px);margin:2.2em 0 .6em}
+.prose h3{font-size:22px;margin:1.8em 0 .5em}
+.prose p,.prose ul,.prose ol,.prose blockquote,.prose table{margin:0 0 1.1em}
+.prose strong{color:var(--text-strong);font-weight:600}
+.prose a{color:var(--lilac-200);text-decoration-color:color-mix(in srgb,var(--pink) 70%,transparent);text-underline-offset:3px}
+.prose a:hover{color:#fff}
+.prose ul,.prose ol{padding-left:1.3em}
+.prose li{margin:.35em 0}
+.prose li::marker{color:var(--pink)}
+.prose ol{counter-reset:step;list-style:none;padding-left:0}
+.prose ol > li{counter-increment:step;position:relative;padding-left:46px;min-height:32px}
+.prose ol > li::before{content:counter(step);position:absolute;left:0;top:-1px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+  font:700 14px/1 var(--font-display);color:#fff;background:color-mix(in srgb,var(--brand) 80%,transparent);border:1px solid var(--line-strong)}
+.prose blockquote{padding:16px 20px;border-radius:var(--radius-sm);border:1px solid var(--line);border-left:3px solid var(--pink);background:color-mix(in srgb,var(--brand) 18%,transparent);color:var(--text)}
+.prose blockquote p{margin:0}
+.prose code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;padding:.12em .4em;border-radius:6px;background:color-mix(in srgb,var(--lilac) 14%,transparent);color:var(--lilac-50)}
+.prose pre{padding:18px 20px;border-radius:var(--radius-sm);border:1px solid var(--line);background:#0c0016;overflow:auto}
+.prose pre code{padding:0;background:none}
+.prose table{width:100%;border-collapse:collapse;font-size:16px}
+.prose th,.prose td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line)}
+.prose th{color:var(--text-strong);font-weight:600}
+.prose hr{border:0;border-top:1px solid var(--line);margin:2.4em 0}
+
+/* Odkrývání při scrollu (stav nastavuje src/motion/site.js; bez JS je vše vidět). */
+.reveal-pending{opacity:0;translate:0 22px}
+[data-reveal]{transition:opacity var(--t-move) var(--ease),translate var(--t-move) var(--ease);transition-delay:var(--d,0ms)}
+
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;transition-duration:1ms!important;scroll-behavior:auto!important}.reveal-pending{opacity:1;translate:none}}

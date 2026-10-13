@@ -1,0 +1,39 @@
+---
+// Kroky jako souhvězdí: body spojené linkou, která se při odkrytí dokreslí.
+import SectionHead from './SectionHead.astro';
+interface Props { items: {title: string; text: string}[]; eyebrow?: string; title: string; lead?: string }
+const {items, eyebrow = 'Jak začít', title, lead} = Astro.props;
+---
+<section class="section">
+  <div class="wrap">
+    <SectionHead eyebrow={eyebrow} title={title} lead={lead} />
+    <ol class="steps" data-reveal style={`--n:${items.length}`}>
+      {items.map((step, i) => (
+        <li class="step">
+          <span class="step__node" aria-hidden="true">{i + 1}</span>
+          <h3>{step.title}</h3>
+          <p>{step.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+<style>
+  .steps { position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); margin: 0; padding: 0; list-style: none; }
+  .steps::before { content: ''; position: absolute; left: 22px; right: 22px; top: 22px; height: 1px; transform-origin: left;
+    background: linear-gradient(90deg, var(--pink), var(--lilac) 60%, color-mix(in srgb, var(--lilac) 20%, transparent)); transition: scale 1.6s var(--ease) .2s; }
+  .steps.reveal-pending::before { scale: 0 1; }
+  .step { position: relative; display: grid; gap: 12px; align-content: start; }
+  .step__node { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 10px; position: relative;
+    font: 700 17px/1 var(--font-display); color: #fff; background: var(--surface-solid); border: 1px solid var(--line-strong); box-shadow: 0 0 0 6px var(--space-0), 0 0 24px color-mix(in srgb, var(--pink) 35%, transparent); }
+  .step:first-child .step__node { background: var(--pink); border-color: var(--pink); }
+  .step h3 { font-size: var(--fs-h3); }
+  .step p { margin: 0; color: var(--text-dim); max-width: 34ch; }
+  @media (max-width: 760px) {
+    .steps { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .steps::before { left: 22px; right: auto; top: 22px; bottom: 22px; width: 1px; height: auto; transform-origin: top; background: linear-gradient(180deg, var(--pink), var(--lilac) 60%, transparent); }
+    .steps.reveal-pending::before { scale: 1 0; }
+    .step { grid-template-columns: 44px minmax(0, 1fr); column-gap: 18px; }
+    .step__node { grid-row: span 2; margin: 0; }
+  }
+</style>

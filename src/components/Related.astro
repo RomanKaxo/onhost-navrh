@@ -1,0 +1,32 @@
+---
+// Související stránky jako karty s malou planetou (stejná planeta jako v úvodu dané stránky).
+import Planet from './Planet.astro';
+import SectionHead from './SectionHead.astro';
+import {url} from '../data/nav';
+import {noteFor, type Page} from '../data/pages';
+interface Props { pages: Page[]; eyebrow?: string; title?: string }
+const {pages, eyebrow = 'Kam dál', title = 'Mohlo by se hodit'} = Astro.props;
+---
+{pages.length > 0 && <section class="section">
+  <div class="wrap">
+    <SectionHead eyebrow={eyebrow} title={title} split={false} />
+    <div class="grid grid--3">
+      {pages.map((p, i) => (
+        <a class="card related" href={url(p.data.slug)} data-reveal style={`--d:${i * 70}ms`}>
+          <Planet name={p.data.planet} size="64px" class="related__planet" />
+          <span class="related__text"><strong>{p.data.title}</strong><span>{noteFor(p)}</span></span>
+          <span class="related__arrow" aria-hidden="true">→</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>}
+<style>
+  .related { display: flex !important; align-items: center; gap: 16px; }
+  .related__text { display: grid; gap: 2px; flex: 1; }
+  .related__text strong { font: 600 19px/1.2 var(--font-display); color: #fff; }
+  .related__text span { font-size: 14.5px; color: var(--text-faint); }
+  .related__arrow { color: var(--lilac); transition: translate var(--t-micro) var(--ease); }
+  .related:hover .related__arrow { translate: 4px 0; color: #fff; }
+  .related :global(.related__planet) { flex: none; margin: -12px; }
+</style>

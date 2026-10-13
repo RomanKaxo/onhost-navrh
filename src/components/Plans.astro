@@ -1,0 +1,19 @@
+---
+import SectionHead from './SectionHead.astro';
+import PlanCard from './PlanCard.astro';
+interface Plan { name: string; price: string; period?: string; features: string[]; featured: boolean }
+interface Props { plans: Plan[]; note?: string; eyebrow?: string; title?: string; lead?: string; id?: string }
+const {plans, note, eyebrow = 'Ceník', title = 'Vyberte si tarif', lead, id = 'tarify'} = Astro.props;
+---
+<section class="section" id={id}>
+  <div class="wrap">
+    <SectionHead eyebrow={eyebrow} title={title} lead={lead ?? note} />
+    <div class="plans" style={`--count:${plans.length}`}>{plans.map((p, i) => <PlanCard {...p} index={i} />)}</div>
+    {note && lead && <p class="plans__note">{note}</p>}
+  </div>
+</section>
+<style>
+  .plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 14px; align-items: stretch; padding-top: 12px; }
+  @media (min-width: 1200px) { .plans { grid-template-columns: repeat(min(var(--count), 5), minmax(0, 1fr)); } }
+  .plans__note { margin: 20px 0 0; font-size: 14px; color: var(--text-faint); }
+</style>

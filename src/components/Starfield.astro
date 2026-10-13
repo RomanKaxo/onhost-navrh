@@ -1,0 +1,40 @@
+---
+// Společné pozadí všech stránek: tři vrstvy hvězd (různá hloubka) a dvě mlhoviny.
+// Hvězdy se generují při buildu deterministicky, takže se mezi stránkami nemění.
+let seed = 7;
+const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const colors = ['#ffffff', '#F1E2FF', '#E0BEFF', '#BB88EB', '#F72585'];
+const layer = (count: number, size: number) => Array.from({length: count}, () => {
+  const c = colors[Math.floor(rand() ** 2.2 * colors.length)];
+  return `${Math.round(rand() * 2600)}px ${Math.round(rand() * 2600)}px 0 ${size}px ${c}`;
+}).join(',');
+const layers = [layer(110, 0), layer(46, .5), layer(16, 1)];
+---
+<div class="starfield" aria-hidden="true">
+  <div class="starfield__nebula"></div>
+  {layers.map((shadow, i) => <div class={`starfield__layer starfield__layer--${i}`}><span style={`box-shadow:${shadow}`}></span><span style={`box-shadow:${shadow}`}></span></div>)}
+</div>
+<style>
+  .starfield { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: var(--space-0); }
+  .starfield__nebula { position: absolute; inset: -10%;
+    background:
+      radial-gradient(50% 40% at 82% 12%, color-mix(in srgb, var(--brand) 55%, transparent), transparent 70%),
+      radial-gradient(40% 35% at 8% 78%, color-mix(in srgb, var(--pink) 12%, transparent), transparent 70%),
+      radial-gradient(60% 50% at 50% 110%, color-mix(in srgb, var(--brand) 40%, transparent), transparent 70%); }
+  .starfield__layer { position: absolute; inset: 0; }
+  /* Dvě kopie pod sebou dovolují plynulý nekonečný posun. */
+  .starfield__layer span { position: absolute; left: 0; top: 0; width: 1px; height: 1px; border-radius: 50%; }
+  .starfield__layer span + span { top: 2600px; }
+  .starfield__layer--0 { opacity: .55; animation: drift 240s linear infinite; }
+  .starfield__layer--1 { opacity: .7; animation: drift 160s linear infinite; }
+  .starfield__layer--2 { opacity: .9; animation: drift 110s linear infinite, twinkle 6s ease-in-out infinite alternate; }
+  @keyframes drift { to { translate: 0 -2600px; } }
+  @keyframes twinkle { to { opacity: .5; } }
+  /* Hloubka při scrollu tam, kde to prohlížeč umí (vrstvy se posouvají různě rychle). */
+  @supports (animation-timeline: scroll()) {
+    .starfield__layer--1 span { animation: parallax linear both; animation-timeline: scroll(root); --depth: -120px; }
+    .starfield__layer--2 span { animation: parallax linear both; animation-timeline: scroll(root); --depth: -260px; }
+    @keyframes parallax { to { translate: 0 var(--depth); } }
+  }
+  @media (prefers-reduced-motion: reduce) { .starfield__layer, .starfield__layer span { animation: none !important; } }
+</style>

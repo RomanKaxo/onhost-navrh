@@ -1,0 +1,47 @@
+---
+// Produkty, funkce, firma a podpora: jedna skladba, sekce se zobrazí podle toho, co obsah má.
+import Site from './Site.astro';
+import PageHero from '../components/PageHero.astro';
+import Highlights from '../components/Highlights.astro';
+import Plans from '../components/Plans.astro';
+import Steps from '../components/Steps.astro';
+import Specs from '../components/Specs.astro';
+import Faq from '../components/Faq.astro';
+import Related from '../components/Related.astro';
+import CtaBand from '../components/CtaBand.astro';
+import {render} from 'astro:content';
+import {allPages, crumbs, type Page} from '../data/pages';
+import {planetOf, highlightsHead, stepsTitle} from '../data/defaults';
+interface Props { page: Page }
+const {page} = Astro.props;
+const d = page.data;
+const {Content} = await render(page);
+const hasBody = Boolean(page.body?.trim());
+const pages = await allPages();
+const related = (d.related ?? []).map(s => pages.find(p => p.data.slug === s)).filter((p): p is Page => Boolean(p)).slice(0, 3);
+const primary = d.plans?.length ? {label: 'Vybrat tarif', href: '#tarify'} : d.cta?.primary;
+const secondary = d.plans?.length ? (d.cta?.secondary ?? {label: 'Napsat podpoře', href: '/kontakt'}) : d.cta?.secondary;
+const head = highlightsHead(d.kind, d.slug, d.title);
+---
+<Site title={d.title} description={d.description}>
+  <PageHero crumbs={crumbs(d.slug, d.title)} eyebrow={d.eyebrow} title={d.headline ?? d.title} lead={d.lead}
+    planet={planetOf(d.slug, d.planet)} included={d.included} primary={primary} secondary={secondary} />
+  {d.highlights?.length && <Highlights items={d.highlights} eyebrow={head.eyebrow} title={head.title} />}
+  {d.plans?.length && <Plans plans={d.plans} note={d.priceNote} />}
+  {d.steps?.length && <Steps items={d.steps} title={stepsTitle(d.steps.length)} />}
+  {d.specs?.length && <Specs items={d.specs} />}
+  {hasBody && <section class="section">
+    <div class="wrap body">
+      <p class="eyebrow body__label">Podrobněji</p>
+      <div class="prose" data-reveal>{d.sample && <p><span class="sample-tag">ukázkový text</span></p>}<Content /></div>
+    </div>
+  </section>}
+  {d.faq?.length && <Faq items={d.faq} />}
+  <Related pages={related} />
+  {d.cta && <CtaBand title={d.cta.title} text={d.cta.text} primary={d.cta.primary} secondary={d.cta.secondary} />}
+</Site>
+<style>
+  .body { display: grid; grid-template-columns: minmax(0, .5fr) minmax(0, 1.5fr); gap: clamp(24px, 5vw, 80px); align-items: start; }
+  .body__label { position: sticky; top: 110px; }
+  @media (max-width: 900px) { .body { grid-template-columns: minmax(0, 1fr); } .body__label { position: static; } }
+</style>

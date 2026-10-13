@@ -1,0 +1,22 @@
+---
+import SectionHead from './SectionHead.astro';
+interface Props { items: {label: string; value: string}[]; eyebrow?: string; title?: string; lead?: string }
+const {items, eyebrow = 'Parametry', title = 'Technické parametry', lead} = Astro.props;
+---
+<section class="section">
+  <div class="wrap">
+    <SectionHead eyebrow={eyebrow} title={title} lead={lead} />
+    <dl class="card specs" data-reveal>
+      {items.map(item => <div class="specs__row"><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
+    </dl>
+  </div>
+</section>
+<style>
+  .specs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; margin: 0; padding-block: 8px; }
+  .specs__row { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  dt { color: var(--text-faint); font-size: 15px; }
+  dd { margin: 0; color: var(--text-strong); font-weight: 500; font-variant-numeric: tabular-nums; }
+  @media (max-width: 760px) { .specs { grid-template-columns: minmax(0, 1fr); } }
+  @media (min-width: 761px) { .specs__row:nth-last-child(-n + 2):nth-child(odd), .specs__row:last-child { border-bottom: 0; } }
+  @media (max-width: 760px) { .specs__row:last-child { border-bottom: 0; } }
+</style>

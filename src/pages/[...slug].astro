@@ -1,0 +1,13 @@
+---
+// Všechny podstránky ze sitemapy; šablonu volí druh obsahu (kind).
+import LandingLayout from '../layouts/LandingLayout.astro';
+import ArticleLayout from '../layouts/ArticleLayout.astro';
+import ListingLayout from '../layouts/ListingLayout.astro';
+import {allPages, type Page} from '../data/pages';
+export async function getStaticPaths() {
+  return (await allPages()).filter(p => p.data.slug !== 'home').map(page => ({params: {slug: page.data.slug}, props: {page}}));
+}
+const {page} = Astro.props as {page: Page};
+const kind = page.data.kind;
+---
+{kind === 'listing' ? <ListingLayout page={page} /> : ['article', 'legal'].includes(kind) ? <ArticleLayout page={page} /> : <LandingLayout page={page} />}
