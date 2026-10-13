@@ -2,43 +2,45 @@
 slug: website-builder
 kind: product
 title: Website builder
-description: "Website builder od ONhostu připravujeme. Web bez programování: vizuální editor, šablony, SSL a doména a integrace s hostingem."
-eyebrow: Již brzy
-lead: "Postavte web bez programování. Builder právě připravujeme."
+description: "Website builder od ONhostu připravujeme: web bez programování s vizuálním editorem, šablonami, SSL certifikátem a napojením na hosting."
+eyebrow: Připravujeme
+headline: "Web bez programování, rovnou s hostingem."
+lead: "Připravujeme jednoduchého průvodce tvorbou webu. Vyberete šablonu, upravíte obsah a web zveřejníte, bez kódování a s hostingem na jednom místě."
 planet: builder
+included:
+  - "Vizuální editor"
+  - "Desítky šablon"
+  - "SSL certifikát zdarma"
+  - "Hosting v ceně"
+  - "Denní zálohy"
 highlights:
-  - title: Vizuální editor
-    text: "Bloky přetáhnete, texty a obrázky upravíte přímo na stránce. Bez kódování a technických znalostí."
-  - title: Prémiové šablony
+  - title: "Úpravy přímo na stránce"
+    text: "Bloky budete přetahovat a texty i obrázky upravovat přímo na stránce. Bez kódu a bez technických znalostí."
+  - title: "Hotové šablony"
     text: "Desítky moderních šablon pro portfolio, firemní prezentaci, e-shop i blog."
-  - title: SSL a doména zdarma
+  - title: "HTTPS a adresa od začátku"
     text: "Každý web automaticky dostane certifikát Let's Encrypt a vlastní doménu nebo subdoménu."
-  - title: Rychlý hosting v ceně
-    text: "Builder bude plně propojený s NVMe hostingem. Správa webu i hosting na jednom místě."
-  - title: Automatické zálohy
-    text: "Stránky se budou každý den automaticky zálohovat. Návrat k předchozí verzi na jedno kliknutí."
-  - title: Podpora v češtině
-    text: "Builder i dokumentace budou v češtině. Podpora vám pomůže s každým krokem."
+  - title: "Web i hosting na jednom místě"
+    text: "Builder bude plně propojený s NVMe hostingem, správu webu i hostingu najdete pohromadě."
+  - title: "Návrat o krok zpět"
+    text: "Stránky se budou každý den automaticky zálohovat. K předchozí verzi webu se vrátíte jedním kliknutím."
+  - title: "Česky od editoru po podporu"
+    text: "Builder i dokumentace budou v češtině a naše podpora vám pomůže s každým krokem."
+faq:
+  - q: "Kdy builder spustíte?"
+    a: "Builder je ve vývoji. Jakmile ho spustíme, dáme vědět všem, kdo se přihlásí k odběru."
+  - q: "Budu k builderu kupovat hosting zvlášť?"
+    a: "Ne. Rychlý NVMe hosting bude v ceně a builder bude plně propojený s vaším hostingovým účtem."
+  - q: "Web potřebuji hned. Co teď?"
+    a: "Zvolte webhosting a WordPress si nainstalujte jedním kliknutím. Tarify začínají na 49 Kč měsíčně bez DPH."
 cta:
-  title: Buďte mezi prvními
-  text: "Zanechte nám svůj e-mail. Ozveme se, jakmile builder spustíme."
-  primary: { label: Chci být informován, href: /kontakt }
-  secondary: { label: Webhostingové tarify, href: /webhosting }
+  title: "Až builder zapneme, dozvíte se to první"
+  text: "Zanechte nám e-mail a ozveme se, jakmile builder spustíme."
+  primary: { label: "Odebírat novinky", href: /kontakt }
+  secondary: { label: "Prohlédnout webhosting", href: /webhosting }
+related: ["webhosting", "wordpress-hosting", "domeny"]
 sample: false
 ---
-## Průvodce tvorbou webu — již brzy
+## Stav vývoje
 
-Připravujeme jednoduchý nástroj, se kterým vytvoříte profesionální web bez kódování. Vyberete šablonu, upravíte obsah a zveřejníte.
-
-- Vizuální editor drag & drop
-- Desítky profesionálních šablon
-- Vlastní doména a SSL zdarma
-- Plná integrace s hostingovým účtem
-
-Všechny uvedené funkce jsou plánované. Builder zatím není spuštěný.
-
-## Kam dál
-
-- **Webhosting** — NVMe hosting s PHP 8.3, SSL zdarma a denními zálohami od 49 Kč/měs.
-- **WordPress hosting** — optimalizovaný hosting pro WordPress s automatickými aktualizacemi.
-- **Zeptejte se nás** — máte o builder zájem nebo chcete zprávu o spuštění? Napište nám.
+Všechny funkce na této stránce jsou plánované. Builder zatím není spuštěný.

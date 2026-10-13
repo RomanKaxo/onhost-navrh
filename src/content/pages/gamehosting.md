@@ -2,45 +2,43 @@
 slug: gamehosting
 kind: product
 title: Gamehosting
-description: "Herní servery pro Minecraft, Valheim, CS2, ARK, Rust a další. Pterodactyl panel, anti-DDoS a české datacentrum. Gamehosting brzy spustíme."
+description: "Gamehosting připravujeme: herní servery pro Minecraft, Valheim, CS2, ARK, Rust a další. Panel Pterodactyl, anti-DDoS a české datacentrum."
 eyebrow: Připravujeme
-lead: "Herní servery s nízkou latencí. Gamehosting brzy spustíme — přihlaste se a dáme vám vědět jako prvním."
+headline: "Herní servery s nízkou latencí. Již brzy."
+lead: "Připravujeme servery pro Minecraft, Valheim, CS2 a další hry, s panelem Pterodactyl a ochranou proti DDoS. Přihlaste se a o spuštění se dozvíte jako první."
 planet: game
+included:
+  - "Panel Pterodactyl"
+  - "Anti-DDoS ochrana"
+  - "NVMe SSD úložiště"
+  - "Zálohy světů"
+  - "České datacentrum"
+  - "Podpora v češtině"
 highlights:
-  - title: Pterodactyl panel
-    text: "Webový panel pro správu serveru, modifikace, sledování výkonu a konzoli v reálném čase. Na mobilu i desktopu."
-  - title: Anti-DDoS ochrana
-    text: "Filtrujeme volumetrické i aplikační útoky na síťové vrstvě."
-  - title: Nízká latence
-    text: "České datacentrum zajišťuje ping pod 5 ms pro české a slovenské hráče."
-  - title: Hry na 1 klik
-    text: "Minecraft (Java + Bedrock), Valheim, CS2, ARK, Rust, Terraria, Palworld, V Rising a Stardew Valley. Instalace přímo z panelu."
-  - title: NVMe a zálohy světů
-    text: "NVMe SSD úložiště a zálohy vašich světů v ceně každého serveru."
-  - title: Podpora v češtině
-    text: "Podporu k serveru dostanete v češtině."
+  - title: "Ping pod 5 ms"
+    text: "Pro české a slovenské hráče. Servery poběží v českém datacentru."
+  - title: "Ochrana proti DDoS"
+    text: "Volumetrické i aplikační útoky budeme filtrovat na síťové vrstvě."
+  - title: "Celý server v prohlížeči"
+    text: "Panel Pterodactyl pro správu serveru, instalaci modifikací, sledování výkonu a konzoli v reálném čase. Na mobilu i desktopu."
+  - title: "Hry na jedno kliknutí"
+    text: "Minecraft, Valheim, CS2, ARK, Rust a další hry budete instalovat jedním kliknutím přímo z panelu."
+  - title: "Světy v bezpečí"
+    text: "NVMe SSD úložiště a zálohy světů budou v ceně každého serveru."
 faq:
-  - q: Kdy gamehosting spustíte?
-    a: "Herní servery s Pterodactyl panelem jsou ve vývoji. Přihlaste se k odběru nebo nás kontaktujte. Jakmile spustíme, ozveme se vám jako prvním."
-  - q: Které hry budou k dispozici?
-    a: "Minecraft (Java + Bedrock), Valheim, CS2, ARK, Rust, Terraria, Palworld, V Rising a Stardew Valley."
-  - q: Provozujeme více serverů. Máte nabídku pro klany?
+  - q: "Kdy gamehosting spustíte?"
+    a: "Herní servery s panelem Pterodactyl jsou ve vývoji. Přihlaste se k odběru nebo nám napište a o spuštění vám dáme vědět jako prvním."
+  - q: "Které hry budou k dispozici?"
+    a: "Minecraft (Java i Bedrock), Valheim, CS2, ARK, Rust, Terraria, Palworld, V Rising a Stardew Valley."
+  - q: "Provozujeme více serverů. Máte nabídku pro klany?"
     a: "Ano. Napište nám a připravíme vám množstevní nabídku."
-  - q: Potřebuji server hned. Co teď?
-    a: "Podívejte se na VPS servery. Pro velké komunity a esportové organizace nabízíme dedikované servery s výhradním hardwarem."
+  - q: "Server potřebuji hned. Co teď?"
+    a: "Sáhněte po VPS s plným root přístupem. Pro velké komunity a esportové organizace nabízíme dedikované servery s výhradním hardwarem."
 cta:
-  title: Gamehosting brzy spustíme
-  text: "Přihlaste se k odběru a dáme vám vědět jako prvním."
-  primary: { label: Chci být informován, href: /kontakt }
-  secondary: { label: Prohlédnout VPS servery, href: /vps }
+  title: "Dáme vám vědět, až servery zapneme"
+  text: "Přihlaste se k odběru a o spuštění gamehostingu se dozvíte jako první."
+  primary: { label: "Odebírat novinky", href: /kontakt }
+  secondary: { label: "Prohlédnout VPS servery", href: /vps }
+related: ["vps", "dedikovane-servery", "ddos-ochrana"]
 sample: false
 ---
-## V ceně každého serveru
-
-Pterodactyl panel, anti-DDoS ochrana, NVMe SSD úložiště, zálohy světů, české datacentrum a podpora v češtině.
-
-## Kam dál
-
-- **Webhosting** — sdílený NVMe webhosting s PHP 8.3 a SSL zdarma. Od 49 Kč měsíčně.
-- **Dedikované servery** — pro velké komunity a esportové organizace. Výhradní hardware.
-- **Sleva pro klany** — provozujete více serverů? Napište nám o množstevní nabídku.

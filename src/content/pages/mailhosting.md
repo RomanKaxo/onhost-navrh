@@ -2,23 +2,51 @@
 slug: mailhosting
 kind: product
 title: Mailhosting
-description: "Firemní e-mail na vlastní doméně. Antispam, SPF/DKIM/DMARC, webmail, IMAP a zálohy schránek. Mailhosting od 49 Kč měsíčně bez DPH."
-eyebrow: Firemní e-mail
-lead: "Firemní e-mail na vlastní doméně. Profesionálně a bez technických starostí."
+description: "Firemní e-mail na vlastní doméně s antispamem, SPF/DKIM/DMARC, webmailem, IMAP a zálohami schránek. Od 49 Kč měsíčně bez DPH."
+eyebrow: Pošta pro firmy
+headline: "Firemní e-mail na vlastní doméně."
+lead: "Schránky ve tvaru jmeno@vase-firma.cz s antispamem, webmailem a denními zálohami. Tarif s pěti schránkami stojí 49 Kč měsíčně."
 planet: mail
+included:
+  - "E-mail na vlastní doméně"
+  - "Antispam a antivir"
+  - "SPF, DKIM a DMARC"
+  - "Webmail, IMAP a POP3"
+  - "Zálohy schránek"
+  - "Aliasy a přesměrování"
 highlights:
-  - title: E-mail na vlastní doméně
+  - title: "Adresa, která patří vám"
     text: "Schránky ve tvaru jmeno@vase-firma.cz. Bez reklam a bez omezení formátu."
-  - title: Antispam a antivir
-    text: "Vícevrstvá ochrana. Reputační databáze, Bayesův filtr a skenování příloh v reálném čase."
-  - title: SPF / DKIM / DMARC
-    text: "Záznamy pro ověření odesílatele nastavíme automaticky. Vaše pošta tak nemíří do spamu."
-  - title: Webmail i IMAP/POP3
-    text: "Moderní webmail v prohlížeči. A standardní protokoly pro Outlook, Thunderbird i telefon."
-  - title: Zálohy schránek
-    text: "Denní zálohy. Obnovíte jednotlivé zprávy i celé schránky."
-  - title: Aliasy a přesměrování
-    text: "Neomezený počet aliasů. info@, objednavky@ i fakturace@ na jednom tarifu."
+  - title: "Ochrana před spamem a viry"
+    text: "Vícevrstvá ochrana: reputační databáze, Bayesův filtr a skenování příloh v reálném čase."
+  - title: "Ověřený odesílatel"
+    text: "Záznamy SPF, DKIM a DMARC nastavíme automaticky, aby příjemci mohli ověřit, že zprávy posíláte vy."
+  - title: "Pošta všude, kde pracujete"
+    text: "Webmail v prohlížeči a IMAP/POP3 pro Outlook, Thunderbird i telefon."
+  - title: "Obnova i jediné zprávy"
+    text: "Schránky zálohujeme denně a zálohy držíme 14 dní. Obnovíme jednotlivé zprávy i celé schránky."
+  - title: "Adresa pro každé oddělení"
+    text: "Neomezený počet aliasů: info@, objednavky@ i fakturace@ na jednom tarifu."
+steps:
+  - title: "Vyberte tarif"
+    text: "Podle počtu schránek, které potřebujete: 5, 25 nebo 250."
+  - title: "Založte schránky"
+    text: "V klientské zóně zadáte název schránky, doménu a heslo."
+  - title: "Nasměrujte MX záznamy"
+    text: "Jakmile MX záznamy domény ukazují na naše servery, pošta začne chodit do nových schránek."
+specs:
+  - label: "Webmail"
+    value: "mail.vasedomena.cz"
+  - label: "IMAP"
+    value: "imap.vasedomena.cz, port 993 (SSL)"
+  - label: "POP3"
+    value: "pop.vasedomena.cz, port 995 (SSL)"
+  - label: "SMTP"
+    value: "smtp.vasedomena.cz, port 587 (STARTTLS)"
+  - label: "Autentizace pošty"
+    value: "SPF, DKIM, DMARC (nastavení automaticky)"
+  - label: "Antispam"
+    value: "Reputační databáze, Bayesův filtr, skenování příloh"
 plans:
   - name: Mail Start
     price: "49 Kč"
@@ -35,29 +63,21 @@ plans:
     period: "měsíc"
     features: ["250 schránek", "Disk 200 GB", "Data 1 000 GB"]
     featured: false
+priceNote: "Ceny jsou uvedeny bez DPH."
+faq:
+  - q: "Přenesete schránky od současného poskytovatele?"
+    a: "Ano, zdarma. Schránky přeneseme včetně historické pošty a bez výpadku. Postará se o to náš tým."
+  - q: "Mám u vás webhosting. Potřebuji ještě mailhosting?"
+    a: "Ne. E-mailové schránky jsou součástí každého webhostingového tarifu, od 5 u tarifu Start po 250 u Managed WordPress, bez příplatku."
+  - q: "Bude mi pošta fungovat v Outlooku a v telefonu?"
+    a: "Ano. Kromě webmailu podporujeme IMAP i POP3, takže poštu nastavíte v Outlooku, Thunderbirdu i v telefonu."
+  - q: "Používáme Microsoft 365 nebo Google Workspace. Pomůžete?"
+    a: "Ano. Pro větší firmy připravíme řešení na míru s Microsoft 365, Google Workspace nebo vlastním poštovním serverem."
 cta:
-  title: Přecházíte od jiného poskytovatele?
-  text: "Schránky přeneseme zdarma, včetně historické pošty a bez výpadku. Postará se o to náš tým."
-  primary: { label: Vybrat tarif, href: "#tarify" }
-  secondary: { label: Domluvit migraci, href: /kontakt }
+  title: "Přeneseme vaše schránky zdarma"
+  text: "Včetně historické pošty a bez výpadku. Postará se o to náš tým."
+  primary: { label: "Vybrat tarif", href: "#tarify" }
+  secondary: { label: "Domluvit migraci", href: /kontakt }
+related: ["email-security", "webhosting", "domeny"]
 sample: false
 ---
-## Každý tarif obsahuje
-
-E-mail na vlastní doméně, antispam a antivir, SPF / DKIM / DMARC, webmail s IMAP/POP3, zálohy schránek, aliasy a přesměrování.
-
-## E-mail je součástí každého webhostingu
-
-Provozujete web? E-mailové schránky máte v každém webhostingovém tarifu. Od 5 schránek u tarifu Start po 250 u Managed WordPress. Bez příplatku.
-
-## Migrace schránek zdarma
-
-Přeneseme vaše schránky včetně historické pošty. Bez výpadku. Celý přechod zajistí náš tým.
-
-## Kam dál
-
-- **Webhosting + e-mail** — e-mail je součástí každého webhostingového tarifu. Bez příplatku.
-- **Nastavení e-mailu** — návody pro Outlook, Thunderbird, webmail a mobilní zařízení.
-- **Enterprise řešení** — Microsoft 365, Google Workspace nebo vlastní poštovní server na míru.
-
-Ceny jsou uvedeny bez DPH.

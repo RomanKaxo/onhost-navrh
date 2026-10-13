@@ -2,22 +2,30 @@
 slug: home
 kind: home
 title: Webhosting, domény a cloud
-description: "Webhosting, domény a cloud v ČR. NVMe servery, SSL zdarma, denní zálohy a AI asistent. Moderní hosting s férovými cenami a podporou v češtině."
-eyebrow: Hosting ONhost
-lead: "Moderní hosting s férovými cenami a AI asistencí. Vyberte tarif, zvolte doménu a o zbytek se postaráme my."
+description: "Webhosting, VPS a domény v ČR. NVMe disky, SSL zdarma, denní zálohy a AI asistent. Tarify od 49 Kč měsíčně bez DPH, podpora v češtině."
+eyebrow: "Webhosting, domény, cloud"
+headline: "Zapněte svůj web. O zbytek se postaráme."
+lead: "Hosting pro firemní weby, e-shopy i vývojáře. Služba se zřídí automaticky po zaplacení, SSL certifikát a denní zálohy máte v ceně."
+included:
+  - "SSL zdarma"
+  - "Denní zálohy"
+  - "Podpora v češtině"
 highlights:
-  - title: AI asistent
-    text: "Doporučí tarif, vysvětlí DNS a navrhne odpovědi podpory."
-  - title: Monitoring 24/7
-    text: "Nepřetržitě hlídáme dostupnost webu i SSL. Při problému vás upozorníme."
-  - title: Denní zálohy
-    text: "Automatické zálohy s retencí 14 dní. Obnova je rychlá."
-  - title: WordPress na 1 klik
-    text: "WordPress nainstalujete během chvilky. Bez ruční konfigurace."
-  - title: SSL zdarma
-    text: "Certifikát Let's Encrypt ke každému webu. HTTPS bez starostí."
-  - title: NVMe disky
-    text: "Rychlé úložiště pro svižné načítání webu."
+  - title: "Rychlý web"
+    text: "Weby běží na NVMe discích s PHP 8.3 a OPcache."
+  - title: "Data v bezpečí"
+    text: "Ke každému webu vystavíme SSL certifikát zdarma, přihlašovací údaje šifrujeme a zákazníky od sebe izolujeme."
+  - title: "Web pod dohledem"
+    text: "Dostupnost kontrolujeme každou minutu, zálohujeme denně a servery běží v datacentru Tier III v Praze."
+  - title: "Bez čekání"
+    text: "Služba se zřídí sama hned po zaplacení a WordPress nainstalujete jedním kliknutím."
+steps:
+  - title: "Vyberte tarif"
+    text: "Začněte tarifem Start za 49 Kč měsíčně a později ho kdykoli změňte."
+  - title: "Ověřte doménu"
+    text: "Zjistěte, zda je adresa volná, nebo k nám převeďte doménu, kterou už máte."
+  - title: "Zaplaťte a začněte"
+    text: "Po úhradě se služba zřídí automaticky, u platby kartou obvykle do minuty."
 plans:
   - name: Start
     price: "49 Kč"
@@ -44,36 +52,38 @@ plans:
     period: "měsíc"
     features: ["WordPress bez starostí", "Disk 100 GB", "Data 1 000 GB", "50 databází", "250 e-mailových schránek"]
     featured: false
+priceNote: "Ceny jsou uvedeny bez DPH. Tarif můžete kdykoli změnit."
 faq:
-  - q: Jak rychle bude hosting aktivní?
-    a: "Ihned po zaplacení. Zřízení probíhá automaticky a přihlašovací údaje dostanete e-mailem během pár minut."
-  - q: Mohu platit kreditem?
-    a: "Ano. Peněženku si dobijete v klientské zóně a faktury uhradíte jedním kliknutím."
-  - q: Dostanu daňový doklad?
-    a: "Ano. Po úhradě zálohové faktury se daňový doklad vystaví automaticky."
-  - q: Umíte i WordPress?
-    a: "Ano. Tarif Managed WordPress zahrnuje i instalaci na jedno kliknutí."
+  - q: "Jak rychle bude hosting aktivní?"
+    a: "Ihned po zaplacení. Služba se zřídí automaticky a u platby kartou je obvykle aktivní do minuty."
+  - q: "Mohu k vám přejít od jiného poskytovatele?"
+    a: "Ano. S přenosem webu, e-mailů i domény vám zdarma pomůže naše podpora."
+  - q: "Co když mi tarif přestane stačit?"
+    a: "Tarif můžete kdykoli zvýšit a rozdíl v ceně se dopočítá poměrně. Snížit ho můžete ke konci fakturačního období."
+  - q: "Jak mohu platit?"
+    a: "Kartou přes Comgate (Visa, Mastercard), bankovním převodem nebo z kreditu v klientské zóně. Daňový doklad se vystaví automaticky po úhradě."
+  - q: "Zavazuji se na delší dobu?"
+    a: "Ne. Služby zrušíte kdykoli ke konci uhrazeného období, bez výpovědní lhůty. U nových webhostingových tarifů navíc platí 30denní garance vrácení peněz."
+  - q: "Jak rychle odpovídá podpora?"
+    a: "Na urgentní výpadky reagujeme do 1 hodiny, 24/7. Na běžné dotazy odpovíme do 1 pracovního dne a AI asistent v klientské zóně odpovídá okamžitě."
 cta:
-  title: Spusťte svůj web ještě dnes
-  text: "Vyberte tarif, zvolte doménu a o zbytek se postará ONhost."
-  primary: { label: Začít s hostingem, href: /webhosting }
-  secondary: { label: Ověřit doménu, href: /domeny }
+  title: "Spusťte svůj web ještě dnes"
+  text: "Vyberte tarif a doménu. Služba se zřídí automaticky hned po zaplacení."
+  primary: { label: "Vybrat hosting", href: /webhosting }
+  secondary: { label: "Ověřit doménu", href: /domeny }
+related: ["webhosting", "vps", "domeny"]
 sample: false
 ---
-## Tři cesty, jeden vesmír
+## Webhosting, VPS a domény
 
-- **Webhosting** — rychlý NVMe hosting s SSL zdarma. Od 49 Kč měsíčně. 50–1000 GB dat, 5–250 e-mailových schránek.
-- **Cloud / VPS** — výkonné virtuální servery s plným root přístupem. Od 149 Kč měsíčně. 1–8 jader CPU, 1–8 GB RAM, NVMe SSD.
-- **Domény** — registrace, převody a správa. Doména .cz od 199 Kč za rok, .com od 299 Kč. DNS zdarma, DNSSEC v ceně.
+- **Webhosting** — NVMe hosting se SSL certifikátem zdarma. 50–1 000 GB dat a 5–250 e-mailových schránek podle tarifu. Od 49 Kč měsíčně.
+- **Cloud VPS** — virtuální servery s plným root přístupem. 1–8 jader CPU, 1–8 GB RAM a NVMe disk. Od 149 Kč měsíčně.
+- **Domény** — registrace, převody a správa. Doména .cz od 199 Kč ročně, .com od 299 Kč. DNS zdarma, DNSSEC v ceně.
 
-## Datacentrum v srdci Evropy
+## Datacentrum Tier III v Praze
 
-Vlastní infrastruktura v datacentru Tier III v Praze. SLA 99,9 %, redundantní napájení i konektivita.
+Vlastní infrastruktura s redundantním napájením i konektivitou. SLA garantuje dostupnost 99,9 % měsíčně.
 
 ## Bezpečnost a důvěra
 
 Přihlašovací údaje šifrujeme. Každou operaci zapisujeme do auditního logu. Zákazníky od sebe izolujeme a citlivé akce důsledně schvalujeme.
-
-V ceně: SSL certifikát, denní zálohy s retencí 14 dní, monitoring dostupnosti 24/7, e-mailové schránky, PHP 8.3 / MySQL / MariaDB a podpora v češtině.
-
-Ceny jsou uvedeny bez DPH. Tarif můžete kdykoli změnit.

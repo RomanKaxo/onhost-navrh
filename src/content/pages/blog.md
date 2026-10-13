@@ -2,33 +2,20 @@
 slug: blog
 kind: listing
 title: Blog a novinky
-description: "Technické návody, tipy a aktuální zprávy o serverech a službách ONhost. Hosting, domény a správa webu srozumitelně."
-eyebrow: Blog
-lead: "Technické návody, tipy a aktuální zprávy o serverech a službách ONhost."
-highlights:
-  - title: Proč je rychlost hostingu klíčová pro SEO a konverze
-    text: "SEO a výkon · 24. 6. 2026. Jak vybrat hosting, který váš web nezbrzdí."
-  - title: Jak vybrat správný hosting pro firemní web
-    text: "Průvodce · 19. 6. 2026. Sdílený hosting, VPS, nebo dedikovaný server? Pomůžeme vám vybrat."
+description: "Návody a tipy ONhostu: jak vybrat hosting pro firemní web a proč rychlost serveru rozhoduje o SEO i konverzích."
+eyebrow: Blog a novinky
+headline: Rady pro web, který běží.
+lead: "Technické návody, tipy a novinky o serverech a službách ONhost. Jak vybrat správné řešení a jak web zrychlit."
 cta:
   title: Nenašli jste, co hledáte?
-  text: "Napište nám. Odpovíme do hodiny."
-  primary: { label: Kontaktujte nás, href: /kontakt }
-  secondary: { label: Znalostní báze, href: /znalostni-baze }
+  text: "Podívejte se do znalostní báze, nebo nám rovnou napište."
+  primary: { label: Napsat nám, href: /kontakt }
+  secondary: { label: Projít návody, href: /znalostni-baze }
+related: [znalostni-baze, faq]
 sample: false
 ---
-## Nejnovější články
-
-- [Proč je rychlost hostingu klíčová pro SEO a konverze](/blog/proc-je-rychlost-hostingu-dulezita-pro-seo) — SEO a výkon, 24. 6. 2026
-- [Jak vybrat správný hosting pro firemní web](/blog/jak-vybrat-hosting-pro-firemni-web) — Průvodce, 19. 6. 2026
-
-## Kategorie
-
-- Průvodce
-- SEO a výkon
-
 ## Kam dál
 
-- [Znalostní báze](/znalostni-baze) — podrobné návody krok za krokem.
-- [Časté dotazy](/faq) — rychlé odpovědi na nejčastější otázky o hostingu.
-- [Kontakt](/kontakt) — napište nám, když odpověď nenajdete.
+- [Znalostní báze](/znalostni-baze): podrobné návody krok za krokem.
+- [Časté dotazy](/faq): rychlé odpovědi na nejčastější otázky o hostingu.
+- [Kontakt](/kontakt): napište nám, když odpověď nenajdete.

@@ -2,26 +2,32 @@
 slug: kontakt
 kind: company
 title: Kontakt
-description: "Kontakty na ONhost: technická podpora 24/7, fakturace a obchod. Urgentní výpadky řešíme s reakcí do 1 hodiny."
-eyebrow: Jsme tu pro vás
-lead: "Nejrychleji nás zastihnete přes klientskou zónu. Tickety řešíme nepřetržitě."
+description: "Kontakty na ONhost: technická podpora 24/7, fakturace a obchod. Na urgentní výpadky reagujeme do 1 hodiny."
+eyebrow: Kontakt
+headline: Jsme tu pro vás.
+lead: "Nejrychleji nás zastihnete ticketem v klientské zóně. Tickety řešíme nepřetržitě, na urgentní výpadky reagujeme do 1 hodiny."
 highlights:
-  - title: Technická podpora
-    text: "Tickety řešíme 24/7. Na urgentní výpadky reagujeme do 1 hodiny."
+  - title: Ticket v klientské zóně
+    text: "Nejrychlejší cesta k odpovědi. Tickety řešíme 24/7, na urgentní výpadky reagujeme do 1 hodiny."
   - title: E-mail
     text: "Podpora: podpora@onhost.cz. Fakturace: fakturace@onhost.cz. Obchod: obchod@onhost.cz."
   - title: Sídlo v Brně
     text: "Molákova 2145/5, Brno-Líšeň, Česká republika."
 faq:
   - q: Kam se obrátit při výpadku?
-    a: "Otevřete ticket v klientské zóně. Urgentní výpadky řešíme nepřetržitě s reakcí do 1 hodiny."
+    a: "Otevřete ticket v klientské zóně. Urgentní výpadky řešíme nepřetržitě a reagujeme do 1 hodiny."
+  - q: Kam poslat dotaz k faktuře?
+    a: "Na fakturace@onhost.cz. Ve formuláři můžete také vybrat oddělení Fakturace."
+  - q: Jak nahlásit zneužití nebo porušení autorských práv?
+    a: "Ve formuláři vyberte oddělení Abuse / DMCA a popište, o co jde."
   - q: Kde najdu návody?
-    a: "Ve znalostní bázi. Najdete tam postupy pro DNS, e-mail, SSL, WordPress a zálohy."
+    a: "Ve znalostní bázi. Najdete tam postupy pro DNS, e-mail, SSL, nahrávání přes FTP a změnu verze PHP."
 cta:
   title: Potřebujete pomoc hned?
-  text: "Otevřete ticket. Uvidíte jeho průběh v reálném čase a zůstane vám v historii."
-  primary: { label: Centrum podpory, href: /podpora }
-  secondary: { label: Časté dotazy, href: /faq }
+  text: "Otevřete ticket. Jeho průběh sledujete v reálném čase a zůstane vám v historii."
+  primary: { label: Přejít na podporu, href: /podpora }
+  secondary: { label: Projít časté dotazy, href: /faq }
+related: [podpora, faq, znalostni-baze]
 sample: false
 ---
 ## Kontaktní kanály
@@ -49,7 +55,14 @@ E-mail: [info@onhost.cz](mailto:info@onhost.cz)
 
 ## Napište nám
 
-Vyplňte formulář a ozveme se co nejdříve. Vyberte oddělení: technická podpora, fakturace, obchod, nebo abuse / DMCA. Urgentní záležitosti řešte raději ticketem.
+Vyplňte formulář a ozveme se vám co nejdříve. Vyberte oddělení:
+
+- technická podpora,
+- fakturace,
+- obchodní oddělení,
+- abuse / DMCA.
+
+Urgentní záležitosti řešte raději ticketem.
 
 ## Odběr novinek
 
