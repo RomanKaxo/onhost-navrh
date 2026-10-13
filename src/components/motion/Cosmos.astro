@@ -1,0 +1,23 @@
+---
+interface Props { id: string; on?: boolean; dpr?: number; class?: string; }
+const { id, on = true, dpr = 1.5, class: className } = Astro.props;
+---
+<div id={id} class:list={['cosmos', className]} data-cosmos data-power={on ? 'on' : 'off'} data-dpr={dpr} aria-hidden="true" style={`--cosmos-power:${on ? 1 : 0}`}>
+  <div class="cosmos-fallback"></div>
+  <canvas></canvas>
+</div>
+<style>
+  .cosmos { position:absolute; inset:0; overflow:hidden; background:var(--space-0, #12001e); pointer-events:none; }
+  .cosmos-fallback { position:absolute; inset:0; opacity:var(--cosmos-power,1); background:radial-gradient(ellipse at 65% 40%,#3c096c 0%,transparent 65%),radial-gradient(ellipse at 20% 70%,#3c096c 0%,#12001e 70%); }
+  canvas { width:100%; height:100%; display:block; opacity:0; }
+  [data-renderer='webgl'] canvas { opacity:1; }
+  @media(prefers-reduced-motion:reduce) { .cosmos[data-power='off']:not([data-renderer]) .cosmos-fallback { opacity:1; } }
+</style>
+<script>
+  import { createCosmos } from '../../motion/cosmos.js';
+  import { onPage } from '../../motion/lifecycle.js';
+  onPage(() => {
+    const scenes = Array.from(document.querySelectorAll<HTMLElement>('[data-cosmos]')).map(host => createCosmos(host, { on: host.dataset.power !== 'off', dpr: Number(host.dataset.dpr) }));
+    return () => scenes.forEach(scene => scene.destroy());
+  });
+</script>
