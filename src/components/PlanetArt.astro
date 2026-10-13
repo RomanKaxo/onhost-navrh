@@ -35,14 +35,14 @@ const hasMd = fs.existsSync(path.join(dir, `${file}-md.webp`));
   .pa { position: relative; width: var(--size); aspect-ratio: 1; isolation: isolate; }
   /* Čtvercový obrázek se do stránky rozplyne: maska drží jen planetu a její atmosféru. */
   /* Ilustrace mají průhledné pozadí: žádná maska, jen měkká záře za planetou a pomalé vznášení. */
-  .pa img { position: relative; width: 100%; height: auto; animation: drift 14s ease-in-out infinite alternate; filter: drop-shadow(0 30px 60px #12001Ecc); }
+  .pa img { position: relative; width: 100%; height: auto; animation: pa-drift 14s ease-in-out infinite alternate; filter: drop-shadow(0 30px 60px #12001Ecc); }
   .pa__glow { position: absolute; inset: 14%; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--pink) 34%, transparent), color-mix(in srgb, var(--brand) 30%, transparent) 45%, transparent 70%); filter: blur(30px); }
-  .pa--power .pa__glow { animation: glow-on 2.2s var(--ease) both; }
-  @keyframes glow-on { from { opacity: 0; scale: .6; } }
-  @keyframes drift { to { translate: 0 -1.6%; } }
+  .pa--power .pa__glow { animation: pa-glow 2.2s var(--ease) both; }
+  @keyframes pa-glow { from { opacity: 0; scale: .6; } }
+  @keyframes pa-drift { to { translate: 0 -1.6%; } }
   .pa--small img { animation: none; }
-  .pa--power img { animation: power-on 2s var(--ease) both, drift 14s ease-in-out 2s infinite alternate; }
-  @keyframes power-on { 0% { filter: brightness(.06) saturate(.2) drop-shadow(0 30px 60px #12001Ecc); } 35% { filter: brightness(.25) saturate(.5) drop-shadow(0 30px 60px #12001Ecc); } 100% { filter: drop-shadow(0 30px 60px #12001Ecc); } }
+  .pa--power img { animation: pa-power 2s var(--ease) both, pa-drift 14s ease-in-out 2s infinite alternate; }
+  @keyframes pa-power { 0% { filter: brightness(.06) saturate(.2) drop-shadow(0 30px 60px #12001Ecc); } 35% { filter: brightness(.25) saturate(.5) drop-shadow(0 30px 60px #12001Ecc); } 100% { filter: drop-shadow(0 30px 60px #12001Ecc); } }
   /* Dráhy: vlasové elipsy s pakety (malé čtverečky), přední polovina před planetou, zadní za ní. */
   .pa__track { position: absolute; inset: calc(6% - var(--i) * 5%); rotate: calc(-18deg + var(--i) * 34deg); pointer-events: none; }
   /* Stejná dráha dvakrát: zadní kopie pod planetou, přední (jen spodní půlka elipsy) nad ní. */
@@ -50,10 +50,10 @@ const hasMd = fs.existsSync(path.join(dir, `${file}-md.webp`));
   .pa__track--front { z-index: 1; clip-path: inset(50% 0 0 0); }
   .pa__track::before { content: ''; position: absolute; inset: 33% 0; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--lilac) 26%, transparent); }
   .pa__packet { position: absolute; left: 50%; top: 50%; width: 5px; height: 5px; margin: -2.5px; border-radius: 1px; background: var(--lilac-50); box-shadow: 0 0 8px var(--lilac-200);
-    offset-path: ellipse(50% 17% at 50% 50%); offset-rotate: 0deg; animation: packet calc(16s + var(--i) * 7s) linear infinite; }
+    offset-path: ellipse(50% 17% at 50% 50%); offset-rotate: 0deg; animation: pa-packet calc(16s + var(--i) * 7s) linear infinite; }
   .pa__packet--2 { background: var(--pink-hot); box-shadow: 0 0 8px var(--pink); animation-delay: calc(-6s - var(--i) * 3s); }
-  @keyframes packet { from { offset-distance: 0%; } to { offset-distance: 100%; } }
-  .pa--power .pa__track::before { animation: draw 1.6s var(--ease) both .5s; }
-  @keyframes draw { from { opacity: 0; scale: .85; } }
+  @keyframes pa-packet { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+  .pa--power .pa__track::before { animation: pa-draw 1.6s var(--ease) both .5s; }
+  @keyframes pa-draw { from { opacity: 0; scale: .85; } }
   @media (prefers-reduced-motion: reduce) { .pa img, .pa__packet, .pa__track::before { animation: none !important; } }
 </style>

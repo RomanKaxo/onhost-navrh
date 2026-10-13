@@ -26,23 +26,23 @@ const pick = 3;
   .bk__head b { color: var(--lilac-200); font-weight: 600; }
   .bk__track { position: relative; display: grid; grid-template-columns: repeat(14, 1fr); align-items: center; margin: 0; padding: 0; list-style: none; height: 28px; }
   .bk__track::before { content: ''; position: absolute; left: 4px; right: 4px; top: 50%; height: 1px; background: linear-gradient(90deg, var(--line), var(--line-strong)); }
-  .bk__dot { position: relative; justify-self: center; width: 9px; height: 9px; border-radius: 50%; background: var(--lilac); opacity: 0; scale: .4; animation: dot .5s var(--ease) forwards; animation-delay: calc(.5s + var(--i) * 60ms); }
+  .bk__dot { position: relative; justify-self: center; width: 9px; height: 9px; border-radius: 50%; background: var(--lilac); opacity: 0; scale: .4; animation: bk-dot .5s var(--ease) forwards; animation-delay: calc(.5s + var(--i) * 60ms); }
   .bk__dot--today { background: var(--pink); box-shadow: 0 0 12px var(--pink); }
   /* Výběr bodu obnovy: kroužek „přijede“ z dneška na zálohu před 3 dny. */
-  .bk__dot--pick::after { content: ''; position: absolute; inset: -7px; border-radius: 50%; border: 1.5px solid var(--lilac-50); opacity: 0; animation: ring .6s var(--ease) forwards 1.9s; }
+  .bk__dot--pick::after { content: ''; position: absolute; inset: -7px; border-radius: 50%; border: 1.5px solid var(--lilac-50); opacity: 0; animation: bk-ring .6s var(--ease) forwards 1.9s; }
   .bk__labels { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--text-faint); }
   .bk__card { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 22px; padding: 16px 18px; border-radius: 14px; border: 1px solid var(--line-strong);
-    background: color-mix(in srgb, var(--brand) 30%, transparent); opacity: 0; translate: 0 10px; animation: rise .6s var(--ease) forwards 2.3s; }
+    background: color-mix(in srgb, var(--brand) 30%, transparent); opacity: 0; translate: 0 10px; animation: bk-rise .6s var(--ease) forwards 2.3s; }
   .bk__title { margin: 0; font-weight: 600; color: #fff; }
   .bk__meta { margin: 2px 0 0; font-size: 13.5px; color: var(--text-faint); }
-  .bk__btn { padding: 9px 16px; border-radius: 999px; background: var(--pink); color: #fff; font-weight: 600; font-size: 14px; animation: press .24s var(--ease) 3.1s; }
-  .bk__progress { height: 3px; margin-top: 18px; border-radius: 3px; background: var(--line); overflow: hidden; opacity: 0; animation: show .2s forwards 3.3s; }
-  .bk__progress span { display: block; height: 100%; width: 100%; transform-origin: left; scale: 0 1; background: linear-gradient(90deg, var(--pink), var(--lilac-200)); animation: fill 2.6s var(--ease) forwards 3.4s; }
-  .bk__status { margin: 10px 0 0; font-size: 13px; color: var(--text-faint); opacity: 0; animation: show .4s forwards 3.4s; }
-  @keyframes dot { to { opacity: 1; scale: 1; } }
-  @keyframes ring { from { scale: .4; } to { opacity: 1; scale: 1; } }
-  @keyframes rise { to { opacity: 1; translate: 0 0; } }
-  @keyframes press { 50% { scale: .94; } }
-  @keyframes show { to { opacity: 1; } }
-  @keyframes fill { to { scale: 1 1; } }
+  .bk__btn { padding: 9px 16px; border-radius: 999px; background: var(--pink); color: #fff; font-weight: 600; font-size: 14px; animation: bk-press .24s var(--ease) 3.1s; }
+  .bk__progress { height: 3px; margin-top: 18px; border-radius: 3px; background: var(--line); overflow: hidden; opacity: 0; animation: bk-show .2s forwards 3.3s; }
+  .bk__progress span { display: block; height: 100%; width: 100%; transform-origin: left; scale: 0 1; background: linear-gradient(90deg, var(--pink), var(--lilac-200)); animation: bk-fill 2.6s var(--ease) forwards 3.4s; }
+  .bk__status { margin: 10px 0 0; font-size: 13px; color: var(--text-faint); opacity: 0; animation: bk-show .4s forwards 3.4s; }
+  @keyframes bk-dot { to { opacity: 1; scale: 1; } }
+  @keyframes bk-ring { from { scale: .4; } to { opacity: 1; scale: 1; } }
+  @keyframes bk-rise { to { opacity: 1; translate: 0 0; } }
+  @keyframes bk-press { 50% { scale: .94; } }
+  @keyframes bk-show { to { opacity: 1; } }
+  @keyframes bk-fill { to { scale: 1 1; } }
 </style>

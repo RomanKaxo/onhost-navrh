@@ -175,16 +175,16 @@ const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p
   .hero__stage { position: relative; display: grid; place-items: center; width: clamp(92px, 9vw, 128px); aspect-ratio: 1; margin: 18px 0 10px; }
   .hero__switch { width: 100%; aspect-ratio: 1; border-radius: 50%; border: 0; background: none; cursor: pointer; padding: 0; }
   .hero__switch :global(.logo) { width: 100%; }
-  .hero__switch.is-pressed :global(.logo) { animation: press 220ms var(--ease); }
-  @keyframes press { 50% { scale: .94; } }
+  .hero__switch.is-pressed :global(.logo) { animation: hero-press 220ms var(--ease); }
+  @keyframes hero-press { 50% { scale: .94; } }
   .hero__switch:focus-visible { outline: 2px solid var(--lilac-200); outline-offset: 14px; }
   /* Dráhy kolem symbolu (mimo ochrannou zónu) se po zapnutí roztáhnou a rozsvítí. */
   .hero__ring { position: absolute; inset: -38%; border-radius: 50%; border: 1px solid transparent; scale: .7; opacity: 0;
     transition: scale var(--t-scene) var(--ease), opacity var(--t-scene) var(--ease), border-color var(--t-scene) var(--ease); }
   .hero__ring--2 { inset: -66%; border-style: dashed; transition-delay: .2s; }
   .hero.is-on .hero__ring { scale: 1; opacity: 1; border-color: color-mix(in srgb, var(--lilac) 30%, transparent); }
-  .hero.is-on .hero__ring--2 { border-color: color-mix(in srgb, var(--lilac) 16%, transparent); animation: spin 120s linear infinite; }
-  @keyframes spin { to { rotate: 360deg; } }
+  .hero.is-on .hero__ring--2 { border-color: color-mix(in srgb, var(--lilac) 16%, transparent); animation: hero-spin 120s linear infinite; }
+  @keyframes hero-spin { to { rotate: 360deg; } }
   .hero__state { margin: 26px 0 0; font: 600 12px/1 var(--font-body); letter-spacing: .32em; color: var(--text-faint); transition: color var(--t-move) var(--ease); }
   .hero.is-on .hero__state { color: var(--pink-hot); }
   .hero__copy { display: grid; gap: 22px; justify-items: center; margin-top: clamp(24px, 4vh, 44px); opacity: .12; translate: 0 16px; transition: opacity var(--t-scene) var(--ease) .15s, translate var(--t-scene) var(--ease) .15s; }
@@ -213,15 +213,17 @@ const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p
   .system__text strong { font: 600 17px/1.25 var(--font-display); color: #fff; }
   .system__text small { font-size: 13.5px; color: var(--text-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .system__price { font-size: 14px; font-weight: 600; color: var(--lilac-200); white-space: nowrap; }
-  .system__stage { position: relative; aspect-ratio: 1; width: 100%; max-width: 600px; justify-self: center; display: grid; place-items: center; }
-  .system__focus { grid-area: 1 / 1; width: 64%; opacity: 0; scale: .9; transition: opacity .6s var(--ease), scale .8s var(--ease); }
+  /* Scéna: čtverec s pevnou výškou přes padding (spolehlivé i v Safari), vše uvnitř je umístěné absolutně. */
+  .system__stage { position: relative; width: 100%; max-width: 600px; justify-self: center; }
+  .system__stage::before { content: ''; display: block; padding-top: 100%; }
+  .system__focus { position: absolute; left: 18%; top: 18%; width: 64%; opacity: 0; scale: .9; transition: opacity .6s var(--ease), scale .8s var(--ease); pointer-events: none; }
   .system__focus.is-active { opacity: 1; scale: 1; }
   .system__orbit { position: absolute; inset: 0; }
   .ring { position: absolute; --r: calc(36% + (var(--ring) - 1) * 12%); inset: calc(50% - var(--r)); border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--lilac) 20%, transparent); }
   .orb { position: absolute; left: 0; top: 0; width: 46px; height: 46px; offset-path: circle(50% at 50% 50%); offset-rotate: 0deg; --spin: calc(80s + var(--ring) * 30s);
-    animation: travel var(--spin) linear infinite; animation-delay: calc(var(--spin) * var(--at) * -1); }
+    animation: cat-travel var(--spin) linear infinite; animation-delay: calc(var(--spin) * var(--at) * -1); }
   .ring:nth-child(even) .orb { animation-direction: reverse; width: 38px; height: 38px; }
-  @keyframes travel { to { offset-distance: 100%; } }
+  @keyframes cat-travel { to { offset-distance: 100%; } }
   .system__orbit.is-paused .orb { animation-play-state: paused; }
 
   /* DATACENTRUM — mapa sítě přes celou šířku, pod ní fakta z živého webu. */

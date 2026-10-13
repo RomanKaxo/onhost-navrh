@@ -25,16 +25,16 @@ const layers = [layer(110, 0), layer(46, .5), layer(16, 1)];
   /* Dvě kopie pod sebou dovolují plynulý nekonečný posun. */
   .starfield__layer span { position: absolute; left: 0; top: 0; width: 1px; height: 1px; border-radius: 50%; }
   .starfield__layer span + span { top: 2600px; }
-  .starfield__layer--0 { opacity: .55; animation: drift 240s linear infinite; }
-  .starfield__layer--1 { opacity: .7; animation: drift 160s linear infinite; }
-  .starfield__layer--2 { opacity: .9; animation: drift 110s linear infinite, twinkle 6s ease-in-out infinite alternate; }
-  @keyframes drift { to { translate: 0 -2600px; } }
-  @keyframes twinkle { to { opacity: .5; } }
+  .starfield__layer--0 { opacity: .55; animation: sf-drift 240s linear infinite; }
+  .starfield__layer--1 { opacity: .7; animation: sf-drift 160s linear infinite; }
+  .starfield__layer--2 { opacity: .9; animation: sf-drift 110s linear infinite, sf-twinkle 6s ease-in-out infinite alternate; }
+  @keyframes sf-drift { to { translate: 0 -2600px; } }
+  @keyframes sf-twinkle { to { opacity: .5; } }
   /* Hloubka při scrollu tam, kde to prohlížeč umí (vrstvy se posouvají různě rychle). */
   @supports (animation-timeline: scroll()) {
-    .starfield__layer--1 span { animation: parallax linear both; animation-timeline: scroll(root); --depth: -120px; }
-    .starfield__layer--2 span { animation: parallax linear both; animation-timeline: scroll(root); --depth: -260px; }
-    @keyframes parallax { to { translate: 0 var(--depth); } }
+    .starfield__layer--1 span { animation: sf-parallax linear both; animation-timeline: scroll(root); --depth: -120px; }
+    .starfield__layer--2 span { animation: sf-parallax linear both; animation-timeline: scroll(root); --depth: -260px; }
+    @keyframes sf-parallax { to { translate: 0 var(--depth); } }
   }
   @media (prefers-reduced-motion: reduce) { .starfield__layer, .starfield__layer span { animation: none !important; } }
 </style>
