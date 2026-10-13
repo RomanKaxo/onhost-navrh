@@ -6,7 +6,7 @@ interface Props { title: string; lead?: string; items: Stat[] }
 const {title, lead, items} = Astro.props;
 const fmt = (s: Stat) => `${s.prefix ?? ''}${s.value.toLocaleString('cs-CZ', {minimumFractionDigits: s.decimals ?? 0, maximumFractionDigits: s.decimals ?? 0})}${s.suffix ?? ''}`;
 ---
-<section class="section stats">
+<section class="section stats has-bg" style={`--bg:url(${import.meta.env.BASE_URL.replace(/\/$/, '')}/bg/bg-nebula.webp);--bg-pos:right center;--bg-o:.85`}>
   <div class="wrap">
     <SectionHead title={title} lead={lead} />
     <dl class="stats__grid">

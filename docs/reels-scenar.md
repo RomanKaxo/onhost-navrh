@@ -1,6 +1,6 @@
 # Reels „Zapněte svůj web“ — scénář
 
-_9:16 · 1080×1920 · 30 fps · 36 s · Remotion · bez voiceoveru (titulky jsou obraz), hudba volitelně doplněná až při publikaci._
+_9:16 · 1080×1920 (a 16:9 · 1920×1080) · 30 fps · 40 s · Remotion · bez voiceoveru (titulky jsou obraz), hudba volitelně doplněná až při publikaci._
 
 **Myšlenka:** symbol ONhostu je vypínač. Celé video je jedno „zapnutí“: z tmy přes to, co se děje, když spíte, až k rozsvícenému vesmíru. Prémiovost = klid, přesnost a jeden silný moment, ne rychlé střihy.
 
@@ -16,8 +16,9 @@ _9:16 · 1080×1920 · 30 fps · 36 s · Remotion · bez voiceoveru (titulky jso
 | 0:18–0:22 | Zámek z uzavřených soustředných drah se sevře kolem malé planety. | „SSL certifikát zdarma. Obnoví se sám.“ | webhosting |
 | 0:22–0:26 | Souhvězdí světa, Praha jako růžová hvězda, pulzy dat odcházejí do světa. | „Vlastní infrastruktura. Tier III, Praha.“ | datacenter |
 | 0:26–0:30 | Bublina zprávy a krátký puls. | „Výpadek? Reagujeme do hodiny. Česky.“ | podpora / sla |
-| 0:30–0:33 | Planety produktů vyjedou na oběžné dráhy kolem symbolu (webhosting, VPS, domény, e-mail). | „Od 49 Kč měsíčně bez DPH.“ | webhosting (tarif Start) |
-| 0:33–0:36 | Vesmír se zklidní, nahoře horizontální logo (bílá + růžová čárka na tmavé), pod ním web. | „Zapněte svůj web.“ · onhost.cz | — |
+| 0:30–0:34 | Herní planeta, po povrchu chodí kostičkové postavičky. | „Herní servery. Už brzy.“ | gamehosting (připravujeme) |
+| 0:34–0:37 | Planety produktů (ilustrace z webu) vyjedou na oběžné dráhy kolem symbolu. | „Od 49 Kč měsíčně bez DPH.“ | webhosting (tarif Start) |
+| 0:37–0:40 | Vesmír se zklidní, nahoře horizontální logo (bílá + růžová čárka na tmavé), pod ním web. | „Zapněte svůj web.“ · onhost.cz | — |
 
 **Výstupy:** `public/media/reels-onhost.mp4` (H.264, ~8 Mb/s) + poster PNG. Smyčka: poslední snímek se plynule vrací do tmy, aby šlo video přehrávat dokola.
 

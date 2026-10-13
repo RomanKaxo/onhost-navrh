@@ -1,16 +1,18 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { C, Caption, Label, Stage, Symbol, Universe, ramp, useLayout, W } from './kit';
-import { Backups, Horizon, Monitor, Outro, ProductOrbit, Ssl, Support, WorldNet } from './scenes';
+import { Backups, GameScene, Horizon, Monitor, Outro, ProductOrbit, Ssl, Support, WorldNet } from './scenes';
 
-// Reels „Zapněte svůj web“ — 1080×1920, 30 fps, 1080 snímků (36 s). Scénář: docs/reels-scenar.md.
+// Reels „Zapněte svůj web“ — 1080×1920 (a 1920×1080), 30 fps, 1200 snímků (40 s). Scénář: docs/reels-scenar.md.
 // Intervaly scén [od, do) ve snímcích kompozice:
 const S = {
   dark: [0, 90], press: [90, 150], night: [150, 300], monitor: [300, 420], backups: [420, 540],
-  ssl: [540, 660], world: [660, 780], support: [780, 900], products: [900, 990], outro: [990, 1080],
+  ssl: [540, 660], world: [660, 780], support: [780, 900], game: [900, 1020], products: [1020, 1110], outro: [1110, 1200],
 } as const;
 const PRESS = 96; // snímek stisku vypínače
-export const REELS_FRAMES = 1080;
+export const REELS_FRAMES = 1200;
+// Herní planeta bez postav a poloha její koule v obrázku (měřeno z ilustrace, stejné jako na webu).
+const GAME = { image: 'game-base', geo: { cx: 49.3, cy: 56, r: 31.3 } }; // = public/planets/crew.json
 
 export const Reels: React.FC = () => {
   const frame = useCurrentFrame();
@@ -42,18 +44,20 @@ export const Reels: React.FC = () => {
         <Ssl from={S.ssl[0]} to={S.ssl[1]} />
         <WorldNet from={S.world[0]} to={S.world[1]} />
         <Support from={S.support[0]} to={S.support[1]} />
-        <ProductOrbit from={S.products[0]} to={S.products[1]} names={['web', 'vps', 'domains', 'mail', 'database', 'game']} />
+        <GameScene from={S.game[0]} to={S.game[1]} geo={GAME.geo} image={GAME.image} />
+        <ProductOrbit from={S.products[0]} to={S.products[1]} names={['web', 'wordpress', 'vps', 'domains', 'mail', 'database']} />
         </Stage>
         <Caption lines={[{ text: 'Zapnuto.' }]} from={PRESS + 12} to={S.press[1]} y={1080} />
 
         <Caption lines={[{ text: 'Je 3:00 ráno.' }, { text: 'Váš web běží.', color: C.lilac200 }]} from={S.night[0] + 30} to={S.night[1]} y={560} />
         <Caption lines={[{ text: 'Dostupnost hlídáme' }, { text: 'každou minutu.', color: C.lilac200 }]} from={S.monitor[0] + 6} to={S.monitor[1]} y={1000} />
-        <Caption lines={[{ text: 'Zálohujeme každou noc.' }, { text: '14 dní zpátky.', color: C.lilac200 }]} from={S.backups[0] + 6} to={S.backups[1]} y={1000} />
+        <Caption lines={[{ text: 'Zálohujeme každou noc.' }, { text: '14 dní zpátky.', color: C.lilac200 }]} from={S.backups[0] + 6} to={S.backups[1]} y={1030} />
 
         <Caption lines={[{ text: 'SSL certifikát zdarma.' }, { text: 'Obnoví se sám.', color: C.lilac200 }]} from={S.ssl[0] + 10} to={S.ssl[1]} y={1200} />
         <Caption lines={[{ text: 'Vlastní infrastruktura.' }, { text: 'Tier III, Praha.', color: C.lilac200 }]} from={S.world[0] + 10} to={S.world[1]} y={1200} />
         <Caption lines={[{ text: 'Výpadek? Reagujeme' }, { text: 'do hodiny. Česky.', color: C.lilac200 }]} from={S.support[0] + 8} to={S.support[1]} y={1000} />
 
+        <Caption lines={[{ text: 'Herní servery.' }, { text: 'Už brzy.', color: C.lilac200 }]} from={S.game[0] + 10} to={S.game[1]} y={1200} />
         <Caption lines={[{ text: 'Od 49 Kč měsíčně' }, { text: 'bez DPH.', color: C.lilac200 }]} from={S.products[0] + 8} to={S.products[1]} y={1170} />
 
         <Outro from={S.outro[0]} />

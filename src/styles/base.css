@@ -49,6 +49,10 @@ a.card:hover,.card--interactive:hover{border-color:var(--line-strong)}
 .chips li{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,var(--space-0) 50%,transparent);font-size:14px;color:var(--lilac-200)}
 .chips li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--pink);box-shadow:0 0 10px var(--pink)}
 
+/* Ilustrované pozadí sekce (public/bg) — do stránky se rozplyne nahoře i dole. */
+.has-bg{position:relative;isolation:isolate}
+.has-bg::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--bg) var(--bg-pos,center)/cover no-repeat;opacity:var(--bg-o,.9);
+  -webkit-mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent)}
 .sample-tag{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;font:600 11px/1.6 var(--font-body);letter-spacing:.04em;color:var(--space-0);background:var(--lilac-200);vertical-align:middle}
 
 /* Delší text z Markdownu (články, návody, právní stránky). */

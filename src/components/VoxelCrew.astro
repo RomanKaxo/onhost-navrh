@@ -3,16 +3,18 @@
 // Každá postavička je skupina kvádrů; chůze = kyvadlo nohou a rukou kolem kyčle/ramene, tělo se pohupuje.
 // Celá skupina obíhá po oblouku kolem středu planety (cx, cy, r v procentech obrázku planety).
 interface Props { cx?: number; cy?: number; r?: number }
-const {cx = 50, cy = 55, r = 31} = Astro.props;
+const {cx = 50, cy = 55, r: sphere = 31} = Astro.props;
+// Dráha chůze vede po viditelném povrchu před arénou (78 % poloměru koule).
+const r = Math.round(sphere * .78 * 10) / 10;
 // Barvy jen z brandmanuálu (+ bílá na oči).
 const crew = [
-  {hair: '#3C096C', shirt: '#E91E7A', pants: '#2C0A3E', skin: '#F1E2FF', item: 'sword', speed: 22, delay: 0, arc: 34},
-  {hair: '#F72585', shirt: '#BB88EB', pants: '#3C096C', skin: '#E0BEFF', item: 'block', speed: 28, delay: -9, arc: 26, jump: true},
+  {hair: '#3C096C', shirt: '#E91E7A', pants: '#2C0A3E', skin: '#F1E2FF', item: 'sword', speed: 6.4, delay: 0, arc: 20, center: -24},
+  {hair: '#F72585', shirt: '#BB88EB', pants: '#3C096C', skin: '#E0BEFF', item: 'block', speed: 8, delay: -2.2, arc: 10, center: -13, jump: true},
 ];
 ---
 <div class="crew" style={`--cx:${cx}%;--cy:${cy}%;--r:${r}`} aria-hidden="true">
   {crew.map((c, i) => (
-    <div class:list={['walker', {'walker--jump': c.jump}]} style={`--speed:${c.speed}s;--delay:${c.delay}s;--arc:${c.arc}deg;--i:${i}`}>
+    <div class:list={['walker', {'walker--jump': c.jump}]} style={`--speed:${c.speed / 2}s;--delay:${c.delay}s;--arc:${c.arc}deg;--center:${c.center}deg;--i:${i}`}>
       <svg class="hero" viewBox="0 0 24 40" width="24" height="40">
         <g class="body-bob">
           <g class="leg leg--back"><rect x="8" y="26" width="4" height="12" fill={c.pants} /><rect x="8" y="36" width="4" height="2" fill="#12001E" opacity=".5" /></g>
@@ -39,9 +41,9 @@ const crew = [
   .walker { position: absolute; inset: 0; transform-origin: var(--cx) var(--cy);
     animation: patrol var(--speed) ease-in-out infinite alternate; animation-delay: var(--delay); }
   /* Postavička stojí na povrchu: posun nahoru o poloměr koule (v % šířky obrázku přes kontejner) a natočení po oblouku. */
-  .hero { position: absolute; left: var(--cx); top: calc(var(--cy) - var(--r) * 1%); width: calc(var(--r) * .26%); height: auto; translate: -50% -100%; transform-origin: 50% 100%;
+  .hero { position: absolute; left: var(--cx); top: calc(var(--cy) - var(--r) * 1%); width: calc(var(--r) * .42%); height: auto; translate: -50% -100%; transform-origin: 50% 100%;
     animation: face var(--speed) steps(1) infinite alternate; animation-delay: var(--delay); overflow: visible; }
-  @keyframes patrol { from { rotate: calc(var(--arc) * -1); } to { rotate: var(--arc); } }
+  @keyframes patrol { from { rotate: calc(var(--center) - var(--arc)); } to { rotate: calc(var(--center) + var(--arc)); } }
   /* Otočení čelem po směru chůze: první polovinu cesty jde doprava, při návratu doleva. */
   @keyframes face { 0% { scale: 1 1; } 100% { scale: -1 1; } }
   .hero g { transform-box: fill-box; }

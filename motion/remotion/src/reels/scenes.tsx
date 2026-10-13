@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AbsoluteFill, Img, continueRender, delayRender, staticFile, useCurrentFrame } from 'remotion';
 import { C, H, W, ramp, rng, useLayout } from './kit';
+import { PlanetFx } from './planetfx';
 
 // ── Horizont datové planety: body na kouli (Fibonacciho mřížka), ortografický pohled na horní okraj.
 // Světla „měst“ se rozsvěcují od jednoho místa (Praha) a spojují se tenkými linkami.
@@ -61,41 +62,33 @@ export const Horizon: React.FC<{ enter: number; exit: number; ignite: number }> 
 export const Monitor: React.FC<{ from: number; to: number }> = ({ from, to }) => {
   const frame = useCurrentFrame();
   const show = ramp(frame, from, from + 14) * (1 - ramp(frame, to - 12, to));
-  const d = 'M90 0 H330 L360 0 L380 -110 L410 120 L430 -40 L450 0 H630 L660 0 L680 -90 L710 100 L730 -30 L750 0 H990';
-  const head = ((frame - from) / 60) % 1;
-  return (
-    <svg width={W} height={H} style={{ position: 'absolute', inset: 0, opacity: show }}>
-      <g transform="translate(0 820)">
-        <path d={d} fill="none" stroke={C.lilac} strokeOpacity={.3} strokeWidth={3} />
-        <path d={d} fill="none" stroke={C.hot} strokeWidth={5} pathLength={1} strokeDasharray=".16 .84" strokeDashoffset={-head + .16} strokeLinecap="round" />
-      </g>
-      <circle cx={W / 2} cy={600} r={12 + 10 * ((frame - from) % 30) / 30} fill="none" stroke={C.pink} strokeOpacity={1 - ((frame - from) % 30) / 30} strokeWidth={3} />
-      <circle cx={W / 2} cy={600} r={10} fill={C.pink} />
-    </svg>
-  );
+  return <AbsoluteFill style={{ opacity: show }}><PlanetFx name="monitoring" size={600} x={W / 2} y={620} from={from} /></AbsoluteFill>;
 };
 
 // ── Zálohy: 14 nocí jako body na ose, poslední (dnešní) růžová.
 export const Backups: React.FC<{ from: number; to: number }> = ({ from, to }) => {
   const frame = useCurrentFrame();
   const show = 1 - ramp(frame, to - 12, to);
-  const x0 = 150, step = (W - 300) / 13;
+  const x0 = 150, step = (W - 300) / 13, dy = 950;
   return (
-    <svg width={W} height={H} style={{ position: 'absolute', inset: 0, opacity: show }}>
-      <line x1={x0} x2={W - x0} y1={820} y2={820} stroke={C.lilac} strokeOpacity={.3 * ramp(frame, from, from + 20)} strokeWidth={2} />
-      {Array.from({ length: 14 }, (_, i) => {
-        const p = ramp(frame, from + 6 + i * 4, from + 16 + i * 4);
-        const today = i === 13;
-        return <g key={i}>
-          <circle cx={x0 + i * step} cy={820} r={(today ? 16 : 11) * p} fill={today ? C.pink : C.lilac} />
-          {today && <circle cx={x0 + i * step} cy={820} r={30 + 6 * Math.sin(frame / 6)} fill="none" stroke={C.pink} strokeOpacity={.5 * p} strokeWidth={2} />}
-        </g>;
-      })}
-    </svg>
+    <AbsoluteFill style={{ opacity: show * ramp(frame, from, from + 14) }}>
+      <PlanetFx name="backups" size={560} x={W / 2 - 60} y={600} from={from} />
+      <svg width={W} height={H} style={{ position: 'absolute', inset: 0 }}>
+        <line x1={x0} x2={W - x0} y1={dy} y2={dy} stroke={C.lilac} strokeOpacity={.3 * ramp(frame, from, from + 20)} strokeWidth={2} />
+        {Array.from({ length: 14 }, (_, i) => {
+          const p = ramp(frame, from + 6 + i * 4, from + 16 + i * 4);
+          const today = i === 13;
+          return <g key={i}>
+            <circle cx={x0 + i * step} cy={dy} r={(today ? 14 : 9) * p} fill={today ? C.pink : C.lilac} />
+            {today && <circle cx={x0 + i * step} cy={dy} r={26 + 6 * Math.sin(frame / 6)} fill="none" stroke={C.pink} strokeOpacity={.5 * p} strokeWidth={2} />}
+          </g>;
+        })}
+      </svg>
+    </AbsoluteFill>
   );
 };
 
-// Ilustrace planety z webu (public/planets), s maskou do kruhu; bez obrázku záložní koule.
+// Ilustrace planety z webu (public/planets, průhledné pozadí); bez obrázku záložní koule.
 export const PlanetImg: React.FC<{ name: string; size: number; x: number; y: number; opacity?: number; brightness?: number }> = ({ name, size, x, y, opacity = 1, brightness = 1 }) => {
   const [ok, setOk] = useState(true);
   const style: React.CSSProperties = { position: 'absolute', left: x - size / 2, top: y - size / 2, width: size, height: size, opacity,
@@ -108,13 +101,13 @@ export const PlanetImg: React.FC<{ name: string; size: number; x: number; y: num
 export const Ssl: React.FC<{ from: number; to: number }> = ({ from, to }) => {
   const frame = useCurrentFrame();
   const show = ramp(frame, from, from + 16) * (1 - ramp(frame, to - 12, to));
-  const close = ramp(frame, from + 8, from + 50);
+  const close = ramp(frame, from + 8, from + 40);
   return (
     <AbsoluteFill style={{ opacity: show }}>
-      <PlanetImg name="ssl" size={720} x={W / 2} y={760} brightness={.3 + .7 * close} />
       <svg width={W} height={H} style={{ position: 'absolute', inset: 0 }}>
-        {[0, 1, 2].map(i => <circle key={i} cx={W / 2} cy={760} r={(300 + i * 34) * (1.5 - .5 * close)} fill="none" stroke={i === 0 ? C.pink : C.lilac} strokeOpacity={(.7 - i * .2) * close} strokeWidth={i === 0 ? 3 : 1.5} />)}
+        {[0, 1, 2].map(i => <circle key={i} cx={W / 2} cy={740} r={(330 + i * 36) * (1.5 - .5 * close)} fill="none" stroke={i === 0 ? C.pink : C.lilac} strokeOpacity={(.6 - i * .18) * close} strokeWidth={i === 0 ? 3 : 1.5} />)}
       </svg>
+      <PlanetFx name="ssl" size={720} x={W / 2} y={740} from={from} brightness={.35 + .65 * close} />
     </AbsoluteFill>
   );
 };
@@ -158,37 +151,26 @@ export const WorldNet: React.FC<{ from: number; to: number }> = ({ from, to }) =
 export const Support: React.FC<{ from: number; to: number }> = ({ from, to }) => {
   const frame = useCurrentFrame();
   const show = ramp(frame, from, from + 14) * (1 - ramp(frame, to - 12, to));
-  const ring = ramp(frame, from + 10, from + 90);
-  const r = 150, len = 2 * Math.PI * r;
-  return (
-    <AbsoluteFill style={{ opacity: show }}>
-      <svg width={W} height={H} style={{ position: 'absolute', inset: 0 }}>
-        <circle cx={W / 2} cy={720} r={r} fill="none" stroke={C.lilac} strokeOpacity={.2} strokeWidth={6} />
-        <circle cx={W / 2} cy={720} r={r} fill="none" stroke={C.pink} strokeWidth={6} strokeLinecap="round" strokeDasharray={len} strokeDashoffset={len * (1 - ring)} transform={`rotate(-90 ${W / 2} 720)`} />
-      </svg>
-      <div style={{ position: 'absolute', left: 0, right: 0, top: 650, textAlign: 'center', fontFamily: 'League Spartan', fontWeight: 700, fontSize: 92, color: '#fff' }}>1 h</div>
-    </AbsoluteFill>
-  );
+  return <AbsoluteFill style={{ opacity: show }}><PlanetFx name="support" size={640} x={W / 2} y={640} from={from} /></AbsoluteFill>;
 };
 
 // ── Produkty: planety obíhají kolem symbolu po elipse (přední polovina větší a jasnější).
 export const ProductOrbit: React.FC<{ from: number; to: number; names: string[] }> = ({ from, to, names }) => {
   const frame = useCurrentFrame();
   const show = ramp(frame, from, from + 16) * (1 - ramp(frame, to - 12, to));
+  const items = names.map((name, i) => {
+    const a = (i / names.length) * Math.PI * 2 + (frame - from) / 70;
+    const depth = (Math.sin(a) + 1) / 2; // 0 vzadu, 1 vpředu
+    return { name, i, a, depth };
+  }).sort((p, q) => p.depth - q.depth);
   return (
     <AbsoluteFill style={{ opacity: show }}>
       <svg width={W} height={H} style={{ position: 'absolute', inset: 0 }}>
         <ellipse cx={W / 2} cy={760} rx={420} ry={250} fill="none" stroke={C.lilac} strokeOpacity={.3} strokeWidth={1.5} strokeDasharray="6 10" />
       </svg>
-      {names.map((name, i) => {
-        const a = (i / names.length) * Math.PI * 2 + (frame - from) / 70;
-        const depth = (Math.sin(a) + 1) / 2; // 0 vzadu, 1 vpředu
-        // Nejbližší bod dráhy je 250 px od středu symbolu: poloměr symbolu + ochranná zóna (~125 px) + poloměr planety (max 90 px) se tam vejde.
-        const size = 110 + depth * 70;
-        return <div key={name} style={{ position: 'absolute', inset: 0, zIndex: depth > .5 ? 3 : 1 }}>
-          <PlanetImg name={name} size={size} x={W / 2 + Math.cos(a) * 420} y={760 + Math.sin(a) * 250} brightness={.45 + .55 * depth} opacity={ramp(frame, from + i * 3, from + 14 + i * 3)} />
-        </div>;
-      })}
+      {items.map(({ name, i, a, depth }) => (
+        <PlanetFx key={name} name={name} size={150 + depth * 80} x={W / 2 + Math.cos(a) * 420} y={760 + Math.sin(a) * 250} from={from} brightness={.5 + .5 * depth} opacity={ramp(frame, from + i * 3, from + 14 + i * 3)} />
+      ))}
     </AbsoluteFill>
   );
 };
@@ -198,4 +180,11 @@ export const Outro: React.FC<{ from: number }> = ({ from }) => {
   const show = ramp(frame, from, from + 20);
   const { width, landscape } = useLayout();
   return <Img src={staticFile('brand/onhost-horizontal.svg')} style={{ position: 'absolute', left: width / 2 - 330, top: landscape ? 330 : 700, width: 660, height: 'auto', opacity: show, transform: `scale(${.96 + .04 * show})` }} />;
+};
+
+// ── Gamehosting: herní planeta (bez postav) a po ní chodí kostičkové postavičky.
+export const GameScene: React.FC<{ from: number; to: number; geo: { cx: number; cy: number; r: number }; image: string }> = ({ from, to, geo, image }) => {
+  const frame = useCurrentFrame();
+  const show = ramp(frame, from, from + 16) * (1 - ramp(frame, to - 12, to));
+  return <AbsoluteFill style={{ opacity: show }}><PlanetFx name="game" image={image} crewGeo={geo} size={760} x={W / 2} y={740} from={from} /></AbsoluteFill>;
 };

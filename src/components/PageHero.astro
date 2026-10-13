@@ -14,7 +14,7 @@ const {crumbs, eyebrow, title, lead, planet, included, primary, secondary, compa
 // Nadpis se odkrývá po slovech zpod masky (jen vzhled; čtečka přečte celý nadpis z aria-label).
 const words = title.split(/\s+/);
 ---
-<section class:list={['phero', {'phero--compact': compact}]}>
+<section class:list={['phero', {'phero--compact': compact, 'has-bg': compact}]} style={compact ? `--bg:url(${import.meta.env.BASE_URL.replace(/\/$/, '')}/bg/bg-deep.webp);--bg-pos:right top;--bg-o:.9` : undefined}>
   <div class="wrap phero__grid">
     <div class="phero__copy">
       <nav class="crumbs" aria-label="Drobečková navigace">
