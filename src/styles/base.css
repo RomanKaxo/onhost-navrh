@@ -69,7 +69,7 @@ a.card:hover,.card--interactive:hover{border-color:var(--line-strong)}
   font:700 14px/1 var(--font-display);color:#fff;background:color-mix(in srgb,var(--brand) 80%,transparent);border:1px solid var(--line-strong)}
 .prose blockquote{padding:16px 20px;border-radius:var(--radius-sm);border:1px solid var(--line);border-left:3px solid var(--pink);background:color-mix(in srgb,var(--brand) 18%,transparent);color:var(--text)}
 .prose blockquote p{margin:0}
-.prose code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;padding:.12em .4em;border-radius:6px;background:color-mix(in srgb,var(--lilac) 14%,transparent);color:var(--lilac-50)}
+.prose code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;overflow-wrap:anywhere;padding:.12em .4em;border-radius:6px;background:color-mix(in srgb,var(--lilac) 14%,transparent);color:var(--lilac-50)}
 .prose pre{padding:18px 20px;border-radius:var(--radius-sm);border:1px solid var(--line);background:#0c0016;overflow:auto}
 .prose pre code{padding:0;background:none}
 .prose table{width:100%;border-collapse:collapse;font-size:16px;display:block;overflow-x:auto;max-width:100%}

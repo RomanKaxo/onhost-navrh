@@ -2,7 +2,7 @@
 // Výhody jako mozaika: první dlaždice nese vizuál stránky (planeta), ostatní mají střídavé plochy.
 // Skladba se řídí počtem položek, aby nezůstala prázdná buňka.
 import SectionHead from './SectionHead.astro';
-import Planet from './Planet.astro';
+import PlanetArt from './PlanetArt.astro';
 interface Props { items: {title: string; text: string}[]; eyebrow?: string; title: string; lead?: string; planet?: string }
 const {items, eyebrow, title, lead, planet} = Astro.props;
 const n = Math.min(items.length, 6);
@@ -13,7 +13,7 @@ const n = Math.min(items.length, 6);
     <div class:list={['bento', `bento--${n}`]}>
       {items.slice(0, 6).map((item, i) => (
         <article class:list={['card', 'tile', `tile--${i + 1}`, {'tile--hero': i === 0}]} data-reveal style={`--d:${i * 60}ms`}>
-          {i === 0 && <div class="tile__visual" aria-hidden="true"><Planet name={planet} size="100%" /></div>}
+          {i === 0 && <div class="tile__visual" aria-hidden="true"><PlanetArt name={planet} size="100%" tracks={1} /></div>}
           <div class="tile__copy">
             <span class="card__index">{String(i + 1).padStart(2, '0')}</span>
             <h3>{item.title}</h3>

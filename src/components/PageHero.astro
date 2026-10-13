@@ -1,6 +1,6 @@
 ---
 // Úvod každé podstránky. Stejná skladba všude: drobečky, nadtitulek, H1, perex, akce, „v ceně“, planeta.
-import Planet from './Planet.astro';
+import PlanetArt from './PlanetArt.astro';
 import Button from './Button.astro';
 import {link} from '../data/pages';
 interface Crumb { label: string; href: string }
@@ -31,7 +31,7 @@ const words = title.split(/\s+/);
     {!compact && <div class:list={['phero__visual', {'phero__visual--custom': Astro.slots.has('visual')}]}>
       {Astro.slots.has('visual') ? <slot name="visual" /> : <>
         <div class="phero__orbits"><span></span><span></span></div>
-        <Planet name={planet} power animate size="100%" transitionName={planet ? `planet-${planet}` : undefined} />
+        <PlanetArt name={planet} power eager size="100%" transitionName={planet ? `planet-${planet}` : undefined} />
       </>}
     </div>}
   </div>

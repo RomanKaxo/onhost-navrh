@@ -1,6 +1,7 @@
 ---
 // Související stránky jako karty s malou planetou (stejná planeta jako v úvodu dané stránky).
-import Planet from './Planet.astro';
+import PlanetArt from './PlanetArt.astro';
+import {planetOf} from '../data/defaults';
 import SectionHead from './SectionHead.astro';
 import {url} from '../data/nav';
 import {noteFor, type Page} from '../data/pages';
@@ -13,7 +14,7 @@ const {pages, eyebrow, title = 'Mohlo by se hodit'} = Astro.props;
     <div class="grid grid--3">
       {pages.map((p, i) => (
         <a class="card related" href={url(p.data.slug)} data-reveal style={`--d:${i * 70}ms`}>
-          <Planet name={p.data.planet} size="64px" class="related__planet" />
+          <PlanetArt name={planetOf(p.data.slug, p.data.planet)} size="72px" small class="related__planet" />
           <span class="related__text"><strong>{p.data.title}</strong><span>{noteFor(p)}</span></span>
           <span class="related__arrow" aria-hidden="true">→</span>
         </a>

@@ -9,7 +9,9 @@ import Steps from '../components/Steps.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Cosmos from '../components/motion/Cosmos.astro';
-import {getEntry} from 'astro:content';
+import {getEntry, getCollection} from 'astro:content';
+import PlanetArt from '../components/PlanetArt.astro';
+import {nav} from '../data/nav';
 import {url} from '../data/nav';
 import {planetFor} from '../data/planets';
 import {stepsTitle} from '../data/defaults';
@@ -29,6 +31,15 @@ const planets = [
   {label: 'Dedikované servery', href: 'dedikovane-servery', key: 'dedicated', ring: 4, at: .12},
   {label: 'Databáze', href: 'databaze', key: 'database', ring: 4, at: .6},
 ].map(p => ({...p, look: planetFor(p.key)}));
+// Cena „od“ jen tam, kde má stránka tarify (nejnižší cena z obsahu, beze změny formátu).
+const pages = await getCollection('pages');
+const fromPrice = (slug: string) => {
+  const plans = pages.find(x => x.data.slug === slug)?.data.plans ?? [];
+  const priced = plans.map(pl => ({pl, n: Number(pl.price.replace(/[^\d,]/g, '').replace(',', '.'))})).filter(x => x.n > 0).sort((a, b) => a.n - b.n)[0];
+  return priced ? `od ${priced.pl.price}${priced.pl.period ? ` / ${priced.pl.period}` : ''}` : '';
+};
+const noteOf = (slug: string) => nav.flatMap(g => g.items).find(i => i.href === slug)?.note ?? '';
+const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p.href)}));
 const dcStars: [number, number][] = [[60, 220], [150, 140], [230, 170], [320, 80], [190, 60], [300, 230]];
 ---
 <Site title={d?.title ?? 'Hosting'} description={d?.description ?? ''}>
@@ -57,16 +68,24 @@ const dcStars: [number, number][] = [[60, 220], [150, 140], [230, 170], [320, 80
 
   <section class="section" id="produkty">
     <div class="wrap">
-      <SectionHead eyebrow="Produkty" title="Jeden vesmír. Všechno pro váš web." lead="Od prvního webu po dedikovaný server. Jeden účet, jedna klientská zóna a jedna podpora, která zná celý váš projekt." />
-      <div class="system">
+      <SectionHead title="Jeden vesmír. Všechno pro váš web." lead="Od prvního webu po dedikovaný server. Jeden účet, jedna klientská zóna a jedna podpora, která zná celý váš projekt." />
+      <div class="system" data-catalog>
         <ul class="system__list">
-          {planets.map((p, i) => <li data-reveal style={`--d:${i * 40}ms`}><a class="card" href={url(p.href)}><span class="orb-dot" style={`--c1:${p.look.c1};--c2:${p.look.c2}`}></span>{p.label}<span aria-hidden="true" class="system__arrow">→</span></a></li>)}
+          {catalog.map((p, i) => <li data-reveal style={`--d:${i * 40}ms`}>
+            <a class:list={['card', 'system__item', {'is-active': i === 0}]} href={url(p.href)} data-key={p.key}>
+              <PlanetArt name={p.key} size="44px" small class="system__thumb" />
+              <span class="system__text"><strong>{p.label}</strong><small>{p.note}</small></span>
+              {p.from && <span class="system__price">{p.from}</span>}
+            </a>
+          </li>)}
         </ul>
-        <div class="system__orbit" aria-hidden="true" data-orbit>
-          {[1, 2, 3, 4].map(r => <div class="ring" style={`--ring:${r}`}>
-            {planets.filter(p => p.ring === r).map(p => <a class="orb" href={url(p.href)} tabindex="-1" style={`--at:${p.at};--c1:${p.look.c1};--c2:${p.look.c2}`}><span class="orb-dot"></span><span class="orb__label">{p.label}</span></a>)}
-          </div>)}
-          <div class="system__core"><Logo variant="symbol" tone="on-dark" /></div>
+        <div class="system__stage" aria-hidden="true">
+          <div class="system__orbit" data-orbit>
+            {[1, 2].map(r => <div class="ring" style={`--ring:${r}`}>
+              {catalog.filter((_, i) => i % 2 === r - 1).map((p, i) => <span class="orb" style={`--at:${(i / 4 + r * .11) % 1}`}><PlanetArt name={p.key} size="100%" small /></span>)}
+            </div>)}
+          </div>
+          {catalog.map((p, i) => <div class:list={['system__focus', {'is-active': i === 0}]} data-focus={p.key}><PlanetArt name={p.key} size="100%" tracks={1} /></div>)}
         </div>
       </div>
     </div>
@@ -125,11 +144,20 @@ const dcStars: [number, number][] = [[60, 220], [150, 140], [230, 170], [320, 80
     button.addEventListener('click', press);
     // Bez interakce se vesmír zapne sám; kdo nechce pohyb, vidí rovnou zapnutý stav.
     const timer = reduce ? (setOn(true), 0) : window.setTimeout(() => { if (!scene.classList.contains('is-on')) press(); }, 1400);
+    // Katalog: najetí nebo fokus na produkt vymění planetu uprostřed.
+    const catalog = document.querySelector('[data-catalog]');
+    const pick = (e: Event) => {
+      const item = (e.target as Element).closest<HTMLElement>('[data-key]');
+      if (!item || !catalog) return;
+      catalog.querySelectorAll('[data-key]').forEach(el => el.classList.toggle('is-active', el === item));
+      catalog.querySelectorAll<HTMLElement>('[data-focus]').forEach(el => el.classList.toggle('is-active', el.dataset.focus === item.dataset.key));
+    };
+    catalog?.addEventListener('pointerover', pick); catalog?.addEventListener('focusin', pick);
     // Oběžné dráhy běží jen ve viewportu.
     const orbit = document.querySelector('[data-orbit]');
     const io = orbit && new IntersectionObserver(([e]) => orbit.classList.toggle('is-paused', !e.isIntersecting));
     if (orbit && io) io.observe(orbit);
-    return () => { clearTimeout(timer); button.removeEventListener('click', press); io?.disconnect(); };
+    return () => { clearTimeout(timer); button.removeEventListener('click', press); io?.disconnect(); catalog?.removeEventListener('pointerover', pick); catalog?.removeEventListener('focusin', pick); };
   });
 </script>
 
@@ -168,26 +196,27 @@ const dcStars: [number, number][] = [[60, 220], [150, 140], [230, 170], [320, 80
   .hero.is-on .hero__chips { opacity: 1; }
   @media (max-width: 759px) { .hero { padding-bottom: 120px; } .hero__chips { position: static; translate: none; margin: 28px auto 0; width: auto; padding-inline: 16px; } }
 
-  /* PRODUKTY — planety obíhají po kružnici (offset-path), takže popisky zůstávají vodorovně. */
+  /* PRODUKTY — katalog: seznam vlevo, vpravo velká planeta vybraného produktu a ostatní na oběžné dráze. */
   #produkty { overflow-x: clip; }
-  .system { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(32px, 6vw, 88px); align-items: center; }
-  .system__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .system__list a { display: flex; align-items: center; gap: 12px; padding: 16px 18px; font-weight: 600; color: #fff; }
-  .system__arrow { margin-left: auto; color: var(--lilac); transition: translate var(--t-micro) var(--ease); }
-  .system__list a:hover .system__arrow { translate: 3px 0; color: #fff; }
-  .orb-dot { width: 14px; height: 14px; border-radius: 50%; flex: none; background: radial-gradient(circle at 32% 30%, #fff 0%, var(--c1) 35%, var(--c2) 85%); box-shadow: 0 0 16px color-mix(in srgb, var(--c1) 60%, transparent); }
-  .system__orbit { position: relative; aspect-ratio: 1; width: 100%; max-width: 620px; justify-self: center; }
-  .ring { position: absolute; --r: calc(15% + (var(--ring) - 1) * 11.4%); inset: calc(50% - var(--r)); border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--lilac) 22%, transparent); }
-  .orb { position: absolute; left: 0; top: 0; width: 20px; height: 20px; display: grid; place-items: center; pointer-events: auto;
-    offset-path: circle(50% at 50% 50%); offset-rotate: 0deg; --spin: calc(70s + var(--ring) * 24s);
+  .system { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
+  .system__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .system__item { display: flex !important; align-items: center; gap: 16px; padding: 12px 18px 12px 12px; }
+  .system__item.is-active { border-color: var(--line-strong); background: linear-gradient(90deg, color-mix(in srgb, var(--brand) 55%, transparent), transparent), var(--surface); }
+  .system__item :global(.system__thumb) { flex: none; }
+  .system__text { display: grid; gap: 1px; flex: 1; min-width: 0; }
+  .system__text strong { font: 600 17px/1.25 var(--font-display); color: #fff; }
+  .system__text small { font-size: 13.5px; color: var(--text-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .system__price { font-size: 14px; font-weight: 600; color: var(--lilac-200); white-space: nowrap; }
+  .system__stage { position: relative; aspect-ratio: 1; width: 100%; max-width: 600px; justify-self: center; display: grid; place-items: center; }
+  .system__focus { grid-area: 1 / 1; width: 64%; opacity: 0; scale: .9; transition: opacity .6s var(--ease), scale .8s var(--ease); }
+  .system__focus.is-active { opacity: 1; scale: 1; }
+  .system__orbit { position: absolute; inset: 0; }
+  .ring { position: absolute; --r: calc(36% + (var(--ring) - 1) * 12%); inset: calc(50% - var(--r)); border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--lilac) 20%, transparent); }
+  .orb { position: absolute; left: 0; top: 0; width: 46px; height: 46px; offset-path: circle(50% at 50% 50%); offset-rotate: 0deg; --spin: calc(80s + var(--ring) * 30s);
     animation: travel var(--spin) linear infinite; animation-delay: calc(var(--spin) * var(--at) * -1); }
-  .ring:nth-child(even) .orb { animation-direction: reverse; }
-  .orb .orb-dot { width: 20px; height: 20px; }
-  .orb__label { position: absolute; top: calc(100% + 8px); left: 50%; translate: -50% 0; font: 600 12.5px/1 var(--font-body); white-space: nowrap; color: var(--lilac-50); opacity: .85; text-decoration: none; }
+  .ring:nth-child(even) .orb { animation-direction: reverse; width: 38px; height: 38px; }
   @keyframes travel { to { offset-distance: 100%; } }
   .system__orbit.is-paused .orb { animation-play-state: paused; }
-  .system__core { position: absolute; inset: 41%; display: grid; place-items: center; }
-  .system__core :global(.logo) { width: 100%; }
 
   /* DATACENTRUM — souhvězdí, linky se při odkrytí dokreslí a hvězdy rozsvítí. */
   .dc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 88px); align-items: center; }
@@ -203,7 +232,7 @@ const dcStars: [number, number][] = [[60, 220], [150, 140], [230, 170], [320, 80
 
   @media (max-width: 960px) {
     .system, .dc { grid-template-columns: minmax(0, 1fr); }
-    .orb__label { display: none; }
+    .system__stage { order: -1; max-width: 420px; }
   }
-  @media (max-width: 560px) { .system__list { grid-template-columns: minmax(0, 1fr); } .domain { flex-direction: column; border-radius: 22px; } .domain :global(.btn) { width: 100%; } .domain input { padding: 12px 14px; } }
+  @media (max-width: 560px) { .system__price { display: none; } .domain { flex-direction: column; border-radius: 22px; } .domain :global(.btn) { width: 100%; } .domain input { padding: 12px 14px; } }
 </style>
