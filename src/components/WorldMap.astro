@@ -1,0 +1,47 @@
+---
+import world from '../data/world-network.json';
+interface Props { label?: string; class?: string; compact?: boolean }
+const {label='Praha · Tier III',class:className,compact=false}=Astro.props;
+const origin=world.points[0];
+const hops=[...new Set(world.points.map(p=>p.hop))].sort((a,b)=>a-b);
+const edgePath=(hop:number)=>world.edges.filter(e=>e.hop===hop).map(e=>{const a=world.points[e.a],b=world.points[e.b];return `M${a.x},${a.y}L${b.x},${b.y}`}).join('');
+const routePath=(route:number[])=>route.map((i,n)=>`${n?'L':'M'}${world.points[i].x},${world.points[i].y}`).join('');
+---
+<div class:list={['world-map',className,{'world-map--compact':compact}]} data-reveal>
+  <svg viewBox="0 0 1000 520" role="img" aria-label="Ilustrace světové sítě kolem pražského datacentra. Body na mapě jsou ilustrativní, neoznačují další datacentra.">
+    {hops.map(hop=><g class="network-wave" style={`--wave:${Math.min(hop*45,2100)}ms`}>
+      <g class="network-edges"><path d={edgePath(hop)} pathLength="1" /></g>
+      <g class="network-points">{world.points.filter((p,i)=>i>0&&p.hop===hop).map(p=><circle cx={p.x} cy={p.y} r="1.8" />)}</g>
+    </g>)}
+    <g class="network-pulses" aria-hidden="true">{world.routes.slice(0,compact?3:8).map((route,i)=><circle class="network-packet" r="2.2" fill={i%2?'#E0BEFF':'#E91E7A'} style={`offset-path:path('${routePath(route)}');--duration:${12+i*2}s;--delay:${4+i*1.3}s`} />)}</g>
+    <g transform={`translate(${origin.x} ${origin.y})`} class="network-origin">
+      <circle class="network-halo" r="15" /><circle class="network-halo-inner" r="8" />
+      <path class="network-star" d="M0,-8L2,-2L8,0L2,2L0,8L-2,2L-8,0L-2,-2Z" />
+      <path class="network-label-line" d="M10,-8L27,-31H125" />
+      <text x="30" y="-40"><slot name="label">{label}</slot></text>
+    </g>
+  </svg>
+</div>
+<style is:global>
+  .world-map{width:100%;position:relative;background:radial-gradient(ellipse at 54% 30%,#3c096c30,transparent 58%)}
+  .world-map svg{width:100%;height:auto;overflow:visible}
+  .world-map .network-edges{fill:none;stroke:var(--lilac,#BB88EB);stroke-opacity:.27;stroke-width:.7}
+  .world-map .network-edges path{stroke-dasharray:1;stroke-dashoffset:0;animation:network-draw 900ms var(--ease,ease) both;animation-delay:var(--wave)}
+  .world-map .network-points{fill:var(--lilac-50,#F1E2FF);fill-opacity:.72;animation:network-appear 700ms ease both;animation-delay:var(--wave)}
+  .world-map.reveal-pending .network-edges path,.world-map.reveal-pending .network-points{animation:none;opacity:0}
+  .world-map .network-pulses{opacity:0;animation:network-appear 1s 3.5s forwards}
+  .world-map .network-packet{offset-distance:0%;animation:network-travel var(--duration) var(--delay) linear infinite both}
+  .world-map.reveal-pending .network-pulses,.world-map.reveal-pending .network-packet{animation:none;opacity:0}
+  .world-map .network-halo{fill:#E91E7A;opacity:.09;animation:network-breathe 4s ease-in-out infinite}
+  .world-map .network-halo-inner{fill:#E91E7A;opacity:.16}
+  .world-map .network-star{fill:#E91E7A}
+  .world-map .network-label-line{fill:none;stroke:#E91E7A;stroke-opacity:.6;stroke-width:.8}
+  .world-map text{fill:var(--lilac-50,#F1E2FF);font:500 13px var(--font-body,sans-serif);letter-spacing:.04em}
+  .world-map--compact text{font-size:22px}
+  @media(max-width:600px){.world-map text{font-size:28px}}
+  @keyframes network-travel{from{offset-distance:0%}to{offset-distance:100%}}
+  @keyframes network-draw{from{stroke-dashoffset:1}}
+  @keyframes network-appear{from{opacity:0}to{opacity:1}}
+  @keyframes network-breathe{50%{opacity:.18;transform:scale(1.25)}}
+  @media(prefers-reduced-motion:reduce){.world-map .network-edges path,.world-map .network-points,.world-map .network-halo{animation:none!important;opacity:1;stroke-dashoffset:0}.world-map .network-pulses{display:none}.world-map .network-halo{opacity:.12}}
+</style>

@@ -1,6 +1,7 @@
 // Každý produkt má vlastní planetu, vždy jen z barev brandmanuálu.
-// c1 = světlá strana, c2 = tmavší pás, ring = prstenec, moons = počet měsíců.
-export interface PlanetLook { c1: string; c2: string; ring?: boolean; moons?: number; bands?: boolean }
+// Existing color/shape fields stay compatible; motif selects a technical data globe.
+// c1/c2 are accent tints, never glossy sphere materials.
+export interface PlanetLook { motif?: string; c1: string; c2: string; ring?: boolean; moons?: number; bands?: boolean }
 const pink = '#E91E7A', hot = '#F72585', lilac = '#BB88EB', lilac200 = '#E0BEFF', lilac50 = '#F1E2FF', brand = '#3C096C';
 export const planets: Record<string, PlanetLook> = {
   web: {c1: hot, c2: brand, ring: true, moons: 1},
@@ -28,4 +29,5 @@ export const planets: Record<string, PlanetLook> = {
   knowledge: {c1: lilac200, c2: brand, bands: true, moons: 1},
   legal: {c1: lilac50, c2: brand},
 };
+for (const [key, look] of Object.entries(planets)) look.motif = key;
 export const planetFor = (key?: string): PlanetLook => planets[key ?? ''] ?? planets.web;
