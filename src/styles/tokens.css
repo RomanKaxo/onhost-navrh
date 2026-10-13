@@ -21,8 +21,10 @@
   --text-faint: color-mix(in srgb, var(--lilac-200) 62%, transparent);
   --line: color-mix(in srgb, var(--lilac) 15%, transparent);
   --line-strong: color-mix(in srgb, var(--lilac) 38%, transparent);
-  --surface: linear-gradient(180deg, color-mix(in srgb, var(--brand) 24%, transparent), color-mix(in srgb, var(--space-0) 40%, transparent));
-  --surface-solid: #1c0430;
+  /* Plochy jsou ploché (bez přechodů): přechody nesou ilustrace, karty pod nimi musí být klidné. */
+  --surface: #1a0430;
+  --surface-solid: #1a0430;
+  --surface-raised: #22073d;
   --radius-lg: 28px;
   --section-y: clamp(84px, 11vw, 150px);
   --fs-display: clamp(44px, 6.4vw, 92px);

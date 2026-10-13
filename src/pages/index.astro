@@ -207,7 +207,7 @@ const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p
   .system { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
   .system__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
   .system__item { display: flex !important; align-items: center; gap: 16px; padding: 12px 18px 12px 12px; }
-  .system__item.is-active { border-color: var(--line-strong); background: linear-gradient(90deg, color-mix(in srgb, var(--brand) 55%, transparent), transparent), var(--surface); }
+  .system__item.is-active { border-color: var(--line-strong); background: var(--surface-raised); box-shadow: inset 3px 0 0 var(--pink); }
   .system__item :global(.system__thumb) { flex: none; }
   .system__text { display: grid; gap: 1px; flex: 1; min-width: 0; }
   .system__text strong { font: 600 17px/1.25 var(--font-display); color: #fff; }

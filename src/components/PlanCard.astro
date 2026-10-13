@@ -20,8 +20,7 @@ const {name, price, period, features = [], featured = false, href = 'https://onh
   .plan--featured::after { opacity: .7; animation: charge 5s linear infinite; }
   @property --charge { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
   @keyframes charge { to { --charge: 360deg; } }
-  .plan--featured { border-color: color-mix(in srgb, var(--pink) 70%, transparent);
-    background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 72%, transparent), color-mix(in srgb, #2a0544 70%, transparent)); box-shadow: 0 30px 80px -40px color-mix(in srgb, var(--pink) 70%, transparent); }
+  .plan--featured { border-color: color-mix(in srgb, var(--pink) 70%, transparent); background: var(--surface-raised); }
   .plan__badge { position: absolute; top: -12px; left: 22px; margin: 0; padding: 5px 12px; border-radius: 999px; background: var(--pink); color: #fff; font: 600 12px/1 var(--font-body); }
   .plan__name { font-size: 24px; }
   .plan__price { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }

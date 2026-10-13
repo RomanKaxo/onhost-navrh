@@ -1,10 +1,9 @@
 ---
-// Výhody jako mozaika: první dlaždice nese vizuál stránky (planeta), ostatní mají střídavé plochy.
+// Výhody jako mozaika: první dlaždice je velká s obrysovým číslem, ostatní menší. Všechny ploché (bez přechodů).
 // Skladba se řídí počtem položek, aby nezůstala prázdná buňka.
 import SectionHead from './SectionHead.astro';
-import PlanetArt from './PlanetArt.astro';
 interface Props { items: {title: string; text: string}[]; eyebrow?: string; title: string; lead?: string; planet?: string }
-const {items, eyebrow, title, lead, planet} = Astro.props;
+const {items, eyebrow, title, lead} = Astro.props;
 const n = Math.min(items.length, 6);
 ---
 <section class="section">
@@ -13,9 +12,9 @@ const n = Math.min(items.length, 6);
     <div class:list={['bento', `bento--${n}`]}>
       {items.slice(0, 6).map((item, i) => (
         <article class:list={['card', 'tile', `tile--${i + 1}`, {'tile--hero': i === 0}]} data-reveal style={`--d:${i * 60}ms`}>
-          {i === 0 && <div class="tile__visual" aria-hidden="true"><PlanetArt name={planet} size="100%" tracks={1} /></div>}
+          {i === 0 && <span class="tile__numeral" aria-hidden="true">01</span>}
           <div class="tile__copy">
-            <span class="card__index">{String(i + 1).padStart(2, '0')}</span>
+            {i > 0 && <span class="card__index">{String(i + 1).padStart(2, '0')}</span>}
             <h3>{item.title}</h3>
             <p>{item.text}</p>
           </div>
@@ -26,14 +25,17 @@ const n = Math.min(items.length, 6);
 </section>
 <style>
   .bento { display: grid; gap: 14px; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(200px, auto); }
-  .tile { display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; overflow: hidden; }
+  .tile { display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; }
+  /* Akcent: krátká růžová čárka nahoře místo barevného pozadí. */
+  .tile::after { content: ''; position: absolute; left: clamp(22px, 2.4vw, 30px); top: 0; width: 28px; height: 2px; background: var(--pink); }
   .tile h3 { font-size: var(--fs-h3); }
   .tile__copy { position: relative; display: grid; gap: 10px; }
   .tile .card__index { margin-bottom: 4px; }
-  .tile--hero { grid-column: span 2; grid-row: span 2; min-height: 440px; background: radial-gradient(120% 90% at 70% 20%, color-mix(in srgb, var(--brand) 60%, transparent), transparent 70%), var(--surface); }
+  .tile--hero { grid-column: span 2; grid-row: span 2; min-height: 420px; background: var(--surface-raised); justify-content: space-between; }
   .tile--hero h3 { font-size: clamp(26px, 2.6vw, 36px); }
-  .tile__visual { position: absolute; right: -14%; top: -18%; width: 78%; opacity: .95; pointer-events: none; }
-  .tile--3, .tile--6 { background: linear-gradient(160deg, color-mix(in srgb, var(--pink) 16%, transparent), transparent 60%), var(--surface); }
+  .tile--hero p { font-size: 17px; max-width: 40ch; }
+  /* Velké obrysové číslo — typografie místo obrázku. */
+  .tile__numeral { font: 700 clamp(120px, 14vw, 200px)/.8 var(--font-display); letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 1.5px color-mix(in srgb, var(--lilac) 45%, transparent); margin: 6px 0 0 -4px; }
   /* Skladby: 3 = velká + 2 pod sebou; 4 = velká + široká + 2; 5 = velká + 4; 6 = velká + 4 + široký pás. */
   .bento--3 .tile--2, .bento--3 .tile--3, .bento--4 .tile--2 { grid-column: span 2; }
   .bento--6 .tile--6 { grid-column: span 4; min-height: 0; }
@@ -42,7 +44,7 @@ const n = Math.min(items.length, 6);
   @media (max-width: 960px) {
     .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .tile--hero, .bento--6 .tile--6 { grid-column: span 2; }
-    .tile--hero { grid-row: span 1; min-height: 380px; }
+    .tile--hero { grid-row: span 1; min-height: 320px; }
     .bento--3 .tile--2, .bento--3 .tile--3, .bento--4 .tile--2 { grid-column: span 1; }
     .bento--6 .tile--6 .tile__copy { grid-template-columns: minmax(0, 1fr); }
   }

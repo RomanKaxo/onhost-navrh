@@ -26,10 +26,10 @@ body::after{content:'';position:fixed;inset:0;z-index:100;pointer-events:none;op
 .lead{margin:0;font-size:var(--fs-lead);line-height:1.55;color:var(--text-dim);max-width:60ch}
 
 /* Karta — jediná podoba panelu pro výhody, ceník, dotazy, odkazy i specifikace. */
-.card{position:relative;border-radius:var(--radius);border:1px solid var(--line);background:var(--surface);padding:clamp(22px,2.4vw,30px);
+.card{position:relative;border-radius:var(--radius);border:1px solid var(--line);background:var(--surface);padding:clamp(22px,2.4vw,30px);overflow:hidden;
   transition:border-color var(--t-micro) var(--ease),translate var(--t-move) var(--ease);isolation:isolate}
 .card::before{content:'';position:absolute;inset:0;border-radius:inherit;z-index:-1;opacity:0;transition:opacity var(--t-move) var(--ease);
-  background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--lilac) 13%,transparent),transparent 60%)}
+  background:radial-gradient(360px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--lilac) 8%,transparent),transparent 60%)}
 .card:hover::before{opacity:1}
 a.card{text-decoration:none;display:block}
 a.card:hover,.card--interactive:hover{border-color:var(--line-strong)}

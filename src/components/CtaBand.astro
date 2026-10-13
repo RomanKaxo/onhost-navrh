@@ -1,5 +1,5 @@
 ---
-// Závěrečná výzva: přechod fialová → růžová (povolené pozadí z manuálu). Symbol stojí na fialové části,
+// Závěrečná výzva: plná brandová fialová (povolené pozadí z manuálu), bez přechodu. Symbol stojí vlevo,
 // kolem něj se při odkrytí rozběhnou oběžné dráhy — logo samo zůstává beze změny.
 import Button from './Button.astro';
 import Logo from './Logo.astro';
@@ -24,7 +24,7 @@ const {title, text, primary = {label: 'Vybrat hosting', href: '/webhosting'}, se
 </section>
 <style>
   .cta { position: relative; overflow: hidden; border-radius: var(--radius-lg); display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: clamp(28px, 6vw, 88px);
-    padding: clamp(40px, 6vw, 88px) clamp(24px, 6vw, 88px); background: linear-gradient(115deg, var(--brand) 0%, var(--brand) 30%, #7a1a8a 62%, var(--pink) 100%); }
+    padding: clamp(40px, 6vw, 88px) clamp(24px, 6vw, 88px); background: var(--brand); }
   .cta__mark { position: relative; width: clamp(96px, 13vw, 168px); aspect-ratio: 1; display: grid; place-items: center; }
   .cta__mark :global(.logo) { width: 100%; position: relative; }
   .cta__mark span { position: absolute; inset: -30%; border-radius: 50%; border: 1px solid #ffffff2e; transition: scale 1.6s var(--ease), opacity 1.6s var(--ease); }
