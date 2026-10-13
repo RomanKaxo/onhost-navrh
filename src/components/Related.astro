@@ -5,11 +5,11 @@ import SectionHead from './SectionHead.astro';
 import {url} from '../data/nav';
 import {noteFor, type Page} from '../data/pages';
 interface Props { pages: Page[]; eyebrow?: string; title?: string }
-const {pages, eyebrow = 'Kam dál', title = 'Mohlo by se hodit'} = Astro.props;
+const {pages, eyebrow, title = 'Mohlo by se hodit'} = Astro.props;
 ---
 {pages.length > 0 && <section class="section">
   <div class="wrap">
-    <SectionHead eyebrow={eyebrow} title={title} split={false} />
+    <SectionHead eyebrow={eyebrow} title={title} />
     <div class="grid grid--3">
       {pages.map((p, i) => (
         <a class="card related" href={url(p.data.slug)} data-reveal style={`--d:${i * 70}ms`}>

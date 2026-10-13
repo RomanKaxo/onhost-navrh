@@ -11,6 +11,9 @@ img,svg,video{max-width:100%;display:block}
 :focus-visible{outline:2px solid var(--lilac-200);outline-offset:3px}
 .wrap{width:min(100% - 2*var(--gutter), var(--maxw));margin-inline:auto}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* Filmové zrno přes celý web: dodá tmavým plochám hmotu (statické, levné). */
+body::after{content:'';position:fixed;inset:0;z-index:100;pointer-events:none;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .draft-banner{position:relative;z-index:50;background:var(--pink);color:#fff;text-align:center;font:600 13px/1.4 var(--font-body);padding:6px 12px}
 
 /* Rytmus sekcí — všude stejný. */
@@ -20,7 +23,7 @@ img,svg,video{max-width:100%;display:block}
 /* Nadtitulek s růžovou čárkou — tvar převzatý z čárky symbolu (logo samo se nemění). */
 .eyebrow{display:inline-flex;align-items:center;gap:12px;margin:0;font:600 12.5px/1 var(--font-body);letter-spacing:.16em;text-transform:uppercase;color:var(--lilac)}
 .eyebrow::before{content:'';width:4px;height:14px;border-radius:2px;background:var(--pink);flex:none}
-.lead{margin:0;font-size:var(--fs-lead);line-height:1.55;color:var(--text-dim);max-width:58ch}
+.lead{margin:0;font-size:var(--fs-lead);line-height:1.55;color:var(--text-dim);max-width:60ch}
 
 /* Karta — jediná podoba panelu pro výhody, ceník, dotazy, odkazy i specifikace. */
 .card{position:relative;border-radius:var(--radius);border:1px solid var(--line);background:var(--surface);padding:clamp(22px,2.4vw,30px);
@@ -69,7 +72,7 @@ a.card:hover,.card--interactive:hover{border-color:var(--line-strong)}
 .prose code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;padding:.12em .4em;border-radius:6px;background:color-mix(in srgb,var(--lilac) 14%,transparent);color:var(--lilac-50)}
 .prose pre{padding:18px 20px;border-radius:var(--radius-sm);border:1px solid var(--line);background:#0c0016;overflow:auto}
 .prose pre code{padding:0;background:none}
-.prose table{width:100%;border-collapse:collapse;font-size:16px}
+.prose table{width:100%;border-collapse:collapse;font-size:16px;display:block;overflow-x:auto;max-width:100%}
 .prose th,.prose td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line)}
 .prose th{color:var(--text-strong);font-weight:600}
 .prose hr{border:0;border-top:1px solid var(--line);margin:2.4em 0}

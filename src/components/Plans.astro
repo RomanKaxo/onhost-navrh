@@ -3,7 +3,7 @@ import SectionHead from './SectionHead.astro';
 import PlanCard from './PlanCard.astro';
 interface Plan { name: string; price: string; period?: string; features: string[]; featured: boolean }
 interface Props { plans: Plan[]; note?: string; eyebrow?: string; title?: string; lead?: string; id?: string }
-const {plans, note, eyebrow = 'Ceník', title = 'Vyberte si tarif', lead, id = 'tarify'} = Astro.props;
+const {plans, note, eyebrow, title = 'Vyberte si tarif', lead, id = 'tarify'} = Astro.props;
 ---
 <section class="section" id={id}>
   <div class="wrap">

@@ -2,7 +2,7 @@
 // Kroky jako souhvězdí: body spojené linkou, která se při odkrytí dokreslí.
 import SectionHead from './SectionHead.astro';
 interface Props { items: {title: string; text: string}[]; eyebrow?: string; title: string; lead?: string }
-const {items, eyebrow = 'Jak začít', title, lead} = Astro.props;
+const {items, eyebrow, title, lead} = Astro.props;
 ---
 <section class="section">
   <div class="wrap">

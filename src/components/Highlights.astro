@@ -1,23 +1,50 @@
 ---
+// Výhody jako mozaika: první dlaždice nese vizuál stránky (planeta), ostatní mají střídavé plochy.
+// Skladba se řídí počtem položek, aby nezůstala prázdná buňka.
 import SectionHead from './SectionHead.astro';
-interface Props { items: {title: string; text: string}[]; eyebrow?: string; title: string; lead?: string; columns?: 3 | 4 }
-const {items, eyebrow, title, lead, columns = items.length === 4 ? 4 : 3} = Astro.props;
+import Planet from './Planet.astro';
+interface Props { items: {title: string; text: string}[]; eyebrow?: string; title: string; lead?: string; planet?: string }
+const {items, eyebrow, title, lead, planet} = Astro.props;
+const n = Math.min(items.length, 6);
 ---
 <section class="section">
   <div class="wrap">
     <SectionHead eyebrow={eyebrow} title={title} lead={lead} />
-    <div class:list={['grid', `grid--${columns}`]}>
-      {items.map((item, i) => (
-        <article class="card highlight" data-reveal style={`--d:${(i % columns) * 70}ms`}>
-          <span class="card__index">{String(i + 1).padStart(2, '0')}</span>
-          <h3>{item.title}</h3>
-          <p>{item.text}</p>
+    <div class:list={['bento', `bento--${n}`]}>
+      {items.slice(0, 6).map((item, i) => (
+        <article class:list={['card', 'tile', `tile--${i + 1}`, {'tile--hero': i === 0}]} data-reveal style={`--d:${i * 60}ms`}>
+          {i === 0 && <div class="tile__visual" aria-hidden="true"><Planet name={planet} size="100%" /></div>}
+          <div class="tile__copy">
+            <span class="card__index">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </div>
         </article>
       ))}
     </div>
   </div>
 </section>
 <style>
-  .highlight { display: grid; align-content: start; gap: 12px; }
-  .highlight .card__index { margin-bottom: 14px; }
+  .bento { display: grid; gap: 14px; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(200px, auto); }
+  .tile { display: flex; flex-direction: column; justify-content: flex-end; gap: 10px; overflow: hidden; }
+  .tile h3 { font-size: var(--fs-h3); }
+  .tile__copy { position: relative; display: grid; gap: 10px; }
+  .tile .card__index { margin-bottom: 4px; }
+  .tile--hero { grid-column: span 2; grid-row: span 2; min-height: 440px; background: radial-gradient(120% 90% at 70% 20%, color-mix(in srgb, var(--brand) 60%, transparent), transparent 70%), var(--surface); }
+  .tile--hero h3 { font-size: clamp(26px, 2.6vw, 36px); }
+  .tile__visual { position: absolute; right: -14%; top: -18%; width: 78%; opacity: .95; pointer-events: none; }
+  .tile--3, .tile--6 { background: linear-gradient(160deg, color-mix(in srgb, var(--pink) 16%, transparent), transparent 60%), var(--surface); }
+  /* Skladby: 3 = velká + 2 pod sebou; 4 = velká + široká + 2; 5 = velká + 4; 6 = velká + 4 + široký pás. */
+  .bento--3 .tile--2, .bento--3 .tile--3, .bento--4 .tile--2 { grid-column: span 2; }
+  .bento--6 .tile--6 { grid-column: span 4; min-height: 0; }
+  .bento--6 .tile--6 .tile__copy { grid-template-columns: auto minmax(0, 1fr) minmax(0, 1.4fr); align-items: baseline; column-gap: 28px; }
+  .bento--2 .tile--2 { grid-column: span 2; grid-row: span 2; }
+  @media (max-width: 960px) {
+    .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tile--hero, .bento--6 .tile--6 { grid-column: span 2; }
+    .tile--hero { grid-row: span 1; min-height: 380px; }
+    .bento--3 .tile--2, .bento--3 .tile--3, .bento--4 .tile--2 { grid-column: span 1; }
+    .bento--6 .tile--6 .tile__copy { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 560px) { .bento { grid-template-columns: minmax(0, 1fr); } .tile, .tile--hero, .bento--6 .tile--6 { grid-column: auto; } .bento--3 .tile--2, .bento--3 .tile--3 { grid-column: auto; } }
 </style>

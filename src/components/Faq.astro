@@ -1,13 +1,12 @@
 ---
 // Dotazy: hlavička vlevo (na desktopu drží při scrollu), otázky vpravo.
-interface Props { items: {q: string; a: string}[]; eyebrow?: string; title?: string; lead?: string }
-const {items, eyebrow = 'Časté dotazy', title = 'Na co se nás ptáte', lead = 'Nenašli jste odpověď? Napište nám, odpovídá člověk.'} = Astro.props;
+interface Props { items: {q: string; a: string}[]; title?: string; lead?: string }
+const {items, title = 'Na co se nás ptáte', lead = 'Nenašli jste odpověď? Napište nám, odpovídá člověk.'} = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <section class="section">
   <div class="wrap faq">
     <header class="faq__head" data-reveal>
-      <p class="eyebrow">{eyebrow}</p>
       <h2>{title}</h2>
       <p class="lead">{lead}</p>
       <a class="faq__link" href={`${base}/kontakt`}>Kontaktovat podporu <span aria-hidden="true">→</span></a>

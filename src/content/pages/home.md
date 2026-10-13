@@ -5,7 +5,7 @@ title: Webhosting, domény a cloud
 description: "Webhosting, VPS a domény v ČR. NVMe disky, SSL zdarma, denní zálohy a AI asistent. Tarify od 49 Kč měsíčně bez DPH, podpora v češtině."
 eyebrow: "Webhosting, domény, cloud"
 headline: "Zapněte svůj web. O zbytek se postaráme."
-lead: "Hosting pro firemní weby, e-shopy i vývojáře. Služba se zřídí automaticky po zaplacení, SSL certifikát a denní zálohy máte v ceně."
+lead: "Hosting pro firemní weby, e-shopy i vývojáře. Zřídí se sám po zaplacení, SSL a denní zálohy máte v ceně."
 included:
   - "SSL zdarma"
   - "Denní zálohy"

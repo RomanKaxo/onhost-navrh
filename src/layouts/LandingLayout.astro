@@ -34,7 +34,7 @@ const Visual = ({developer: Terminal, 'funkce/zalohy': BackupTimeline, 'funkce/a
     planet={planetOf(d.slug, d.planet)} included={d.included} primary={primary} secondary={secondary}>
     {Visual && <Visual slot="visual" />}
   </PageHero>
-  {d.highlights?.length && <Highlights items={d.highlights} eyebrow={head.eyebrow} title={head.title} />}
+  {d.highlights?.length && <Highlights items={d.highlights} title={head.title} planet={planetOf(d.slug, d.planet)} />}
   {d.plans?.length && <Plans plans={d.plans} note={d.priceNote} />}
   {d.steps?.length && <Steps items={d.steps} title={stepsTitle(d.steps.length)} />}
   {d.specs?.length && <Specs items={d.specs} />}
