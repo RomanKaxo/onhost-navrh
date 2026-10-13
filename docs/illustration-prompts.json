@@ -1,0 +1,36 @@
+{
+  "tool": "built-in image_gen",
+  "style": "Use case: stylized-concept. Premium polished soft glossy 3D miniature illustration, charming clean product diorama. One smooth magenta-pink to deep violet gradient sphere with soft horizontal bands and a thin glowing tilted orbit ring. Brand palette ONLY #12001E #2C0A3E #3C096C #BB88EB #E0BEFF #F1E2FF #E91E7A #F72585 and white highlights. No blue green orange yellow. Square 1024x1024, centered planet sphere diameter 62% of frame, entire diorama and orbit inside frame with generous margin. Camera slightly above equator, key light upper left, pink rim lower right, soft bloom, rounded glossy materials, high-end animated-film miniature quality, not photorealistic, not flat clipart. Actual transparent background. No text letters numbers logos trademarks watermarks. Few large readable props, clear at 120px.",
+  "anchorSubject": "Two original generic blocky voxel adventurers, pixel-block tree, miniature block arena and gamepad satellite.",
+  "planetSubjects": {
+    "web": "Tiny glowing blank browser windows like lit miniature website houses across surface, three houses and two connection arcs.",
+    "wordpress": "Two orbiting puzzle-piece plugins, stacked blank theme cards, a fountain pen nib and blank blog pages on surface. No W or logo.",
+    "managed": "Two small friendly maintenance robots holding wrenches, a tiny crane tending two server racks, heart-shaped care satellite.",
+    "reseller": "Ring of four tiny storefront shops on planet surface and three small client moons in orderly formation.",
+    "builder": "Two miniature cranes stacking blank header blocks, image tiles and blank text strips into one large web page on surface.",
+    "mail": "Three large envelopes flying along orbit ring and a small rounded mailbox on upper surface.",
+    "email-security": "Clear translucent lilac shield dome over planet, three envelopes protected inside, two small pink spam bugs bouncing off outside dome.",
+    "vps": "Three miniature server racks standing on surface with tiny pink LED lights, three cube-shaped software containers.",
+    "dedicated": "One large single server tower standing prominently on upper surface like a monument with lilac status lights.",
+    "colo": "Orbital docking station carrying two server racks, small generic cargo space shuttle docking to it above sphere.",
+    "ddos": "Strong two-layer transparent lilac force field surrounds sphere; four small violet meteors hitting outside and bursting harmlessly into pink sparks.",
+    "database": "Three glowing database cylinders composed of neatly stacked discs, built like small towers on upper surface.",
+    "developer": "Tiny open laptop and two terminal screens showing only abstract luminous lines with NO letters, a branching git-like tree of light.",
+    "ssl": "One prominent closed padlock standing on upper surface, orbit ring curves like a closed lock shackle.",
+    "domains": "Three blank direction-arrow signposts, blank address tags hanging on strings, routing light beams to three small moons.",
+    "datacenter": "Small datacenter building complex of two rounded buildings, visible cooling units and tidy power lines on surface.",
+    "ai": "Small friendly rounded assistant robot with luminous empty chat bubble and neural network of lilac sparkling connected nodes.",
+    "monitoring": "Large miniature radar dish on upper surface, orbit ring incorporates a distinct heartbeat pulse zigzag waveform.",
+    "backups": "Little vault safe on surface with round door, three smaller translucent ghost copies of sphere in a row like snapshots.",
+    "support": "Small lighthouse sending a soft lilac pink beam, headset-shaped satellite orbiting. Warm welcoming feeling within pink lilac palette only.",
+    "company": "Cosy rounded headquarters building on calm home planet with one blank lilac flag, clean welcoming windows.",
+    "knowledge": "Stacks of books and tiny library building on surface with two floating blank guide cards.",
+    "legal": "Small elegant balance scale and sealed blank document scroll on calm upper surface."
+  },
+  "backgroundSubjects": {
+    "bg-nebula": "Soft gently rounded violet and pink nebula clouds confined mostly to lower right and outer edges, a few tiny distant stylized banded planets at far edges.",
+    "bg-horizon": "The curved limb of an enormous smooth glossy pink violet banded planet ONLY along bottom 22% of image, soft glowing lilac atmosphere. Dark empty space above.",
+    "bg-deep": "Very dark subtle lilac dust, a very small distant glossy pink violet ringed planet only in bottom right corner, planet under 9% of image width."
+  },
+  "reference": "Client style-reference.png; game used as the shared image reference for all subsequent assets."
+}
