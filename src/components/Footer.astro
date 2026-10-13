@@ -3,11 +3,18 @@ import Logo from './Logo.astro';
 import {nav, legal, url} from '../data/nav';
 ---
 <footer class="site-footer">
-  <div class="wrap site-footer__grid">
-    <div class="site-footer__brand">
-      <Logo tone="on-dark" class="site-footer__logo" />
-      <p>Prémiový hosting a prostor pro vývojáře. Rychlost, bezpečnost, spolehlivost, automatizace.</p>
+  <div class="wrap site-footer__top">
+    <Logo tone="on-dark" class="site-footer__wordmark" />
+    <div class="site-footer__contact">
+      <p>Hosting, domény a servery s podporou v češtině. Datacentrum Tier III v Praze.</p>
+      <ul>
+        <li><span>Podpora</span><a href="mailto:podpora@onhost.cz">podpora@onhost.cz</a></li>
+        <li><span>Obchod</span><a href="mailto:obchod@onhost.cz">obchod@onhost.cz</a></li>
+        <li><span>Sídlo</span>Molákova 2145/5, Brno-Líšeň · IČ 08094616</li>
+      </ul>
     </div>
+  </div>
+  <div class="wrap site-footer__grid">
     {nav.map(group => (
       <div class="site-footer__col">
         <h2>{group.label}</h2>
@@ -23,9 +30,13 @@ import {nav, legal, url} from '../data/nav';
 <style>
   .site-footer { position: relative; margin-top: clamp(80px, 10vw, 140px); padding: 72px 0 32px; border-top: 1px solid color-mix(in srgb, var(--lilac) 14%, transparent);
     background: radial-gradient(1200px 400px at 85% 0%, color-mix(in srgb, var(--brand) 55%, transparent), transparent 70%), var(--space-0); }
-  .site-footer__grid { display: grid; grid-template-columns: 1.4fr repeat(5, 1fr); gap: 32px; }
-  .site-footer__brand p { color: color-mix(in srgb, var(--lilac-200) 78%, transparent); max-width: 30ch; font-size: 15px; }
-  .site-footer__brand :global(.site-footer__logo) { width: 140px; margin-bottom: 18px; }
+  .site-footer__top { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: end; padding-bottom: 56px; margin-bottom: 56px; border-bottom: 1px solid var(--line); }
+  .site-footer__top :global(.site-footer__wordmark) { width: min(100%, 520px); }
+  .site-footer__contact p { margin: 0 0 18px; font-size: 17px; color: var(--text-dim); }
+  .site-footer__contact ul { gap: 8px; }
+  .site-footer__contact li { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 15px; color: var(--text-dim); }
+  .site-footer__contact span { min-width: 64px; color: var(--text-faint); }
+  .site-footer__grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 32px; }
   .site-footer__col h2 { font: 600 13px/1 var(--font-body); letter-spacing: .12em; text-transform: uppercase; color: var(--lilac); margin-bottom: 16px; }
   .site-footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
   .site-footer a { text-decoration: none; color: color-mix(in srgb, var(--lilac-50) 85%, transparent); font-size: 15px; }
@@ -33,5 +44,5 @@ import {nav, legal, url} from '../data/nav';
   .site-footer__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 56px; padding-top: 24px; border-top: 1px solid color-mix(in srgb, var(--lilac) 12%, transparent); font-size: 13px; color: color-mix(in srgb, var(--lilac-200) 70%, transparent); }
   .site-footer__bottom ul { display: flex; flex-wrap: wrap; gap: 8px 20px; }
   .site-footer__bottom a { font-size: 13px; }
-  @media (max-width: 1080px) { .site-footer__grid { grid-template-columns: repeat(2, 1fr); } .site-footer__brand { grid-column: 1 / -1; } }
+  @media (max-width: 1080px) { .site-footer__grid { grid-template-columns: repeat(2, 1fr); } .site-footer__top { grid-template-columns: minmax(0, 1fr); } }
 </style>
