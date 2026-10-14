@@ -1,0 +1,41 @@
+---
+// Živá verze ilustrovaného pozadí .has-bg (public/bg/bg-<name>.webm|mp4, zdroj motion/remotion BgLoop).
+// Leží přesně tam, kde statický obrázek (stejné cover, pozice, průhlednost i maska). Video se načte až u viewportu,
+// hraje jen viditelné a obrázek nahradí teprve, když skutečně běží. Při omezeném pohybu zůstává obrázek.
+interface Props { name: 'nebula' | 'horizon' | 'deep' }
+const {name} = Astro.props;
+const base = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/bg/bg-${name}`;
+---
+<video class="has-bg__video" muted loop playsinline disablepictureinpicture preload="none" aria-hidden="true" tabindex="-1" data-bg-video>
+  <source data-src={`${base}.webm`} type="video/webm" />
+  <source data-src={`${base}.mp4`} type="video/mp4" />
+</video>
+<script>
+  import { onPage } from '../motion/lifecycle.js';
+  onPage(() => {
+    const videos = [...document.querySelectorAll<HTMLVideoElement>('video[data-bg-video]')];
+    const still = matchMedia('(prefers-reduced-motion: reduce)');
+    if (!videos.length || still.matches) return;
+    const host = (v: HTMLVideoElement) => v.closest('.has-bg');
+    const live = (v: HTMLVideoElement) => host(v)?.classList.add('bg-live');
+    const load = (v: HTMLVideoElement) => {
+      if (v.dataset.loaded) return;
+      v.dataset.loaded = '1';
+      v.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => { s.src = s.dataset.src!; });
+      v.addEventListener('playing', () => live(v), { once: true });
+      v.load();
+    };
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        const v = e.target as HTMLVideoElement;
+        if (e.isIntersecting && !document.hidden) { load(v); v.play().catch(() => {}); } else v.pause();
+      }
+    }, { rootMargin: '200px 0px' });
+    videos.forEach((v) => io.observe(v));
+    const onVis = () => { if (document.hidden) videos.forEach((v) => v.pause()); else { io.disconnect(); videos.forEach((v) => io.observe(v)); } };
+    const onMotion = () => { if (still.matches) videos.forEach((v) => { v.pause(); host(v)?.classList.remove('bg-live'); }); };
+    document.addEventListener('visibilitychange', onVis);
+    still.addEventListener('change', onMotion);
+    return () => { io.disconnect(); videos.forEach((v) => v.pause()); document.removeEventListener('visibilitychange', onVis); still.removeEventListener('change', onMotion); };
+  });
+</script>

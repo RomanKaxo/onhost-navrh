@@ -2,6 +2,7 @@
 // Úvod každé podstránky. Stejná skladba všude: drobečky, nadtitulek, H1, perex, akce, „v ceně“, planeta.
 import PlanetArt from './PlanetArt.astro';
 import Button from './Button.astro';
+import BgVideo from './BgVideo.astro';
 import {link} from '../data/pages';
 interface Crumb { label: string; href: string }
 interface Props {
@@ -37,6 +38,7 @@ const words = title.split(/\s+/);
       </>}
     </div>}
   </div>
+  {compact && <BgVideo name="deep" />}
 </section>
 <style>
   .phero { position: relative; padding-block: clamp(40px, 7vw, 96px) clamp(48px, 7vw, 104px); }

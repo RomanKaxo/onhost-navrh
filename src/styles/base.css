@@ -51,11 +51,14 @@ a.card:hover,.card--interactive:hover{border-color:var(--line-strong)}
 
 /* Ilustrované pozadí sekce (public/bg) — do stránky se rozplyne nahoře i dole. */
 .has-bg{position:relative;isolation:isolate;overflow-x:clip}
-.has-bg::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--bg) var(--bg-pos,center)/cover no-repeat;opacity:var(--bg-o,.9);
-  -webkit-mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent);
-  inset:-3% -3%;animation:bg-drift 28s ease-in-out infinite alternate}
-/* Obrázková mlhovina pomalu pluje, přibližuje se a dýchá (vypnuto při omezeném pohybu). */
-@keyframes bg-drift{0%{translate:-2% 1%;scale:1;opacity:var(--bg-o,.9);filter:hue-rotate(0deg)}50%{opacity:calc(var(--bg-o,.9)*.8)}100%{translate:2% -1.5%;scale:1.06;opacity:var(--bg-o,.9);filter:hue-rotate(-12deg) brightness(1.12)}}
+.has-bg::after,.has-bg__video{position:absolute;inset:0;pointer-events:none;opacity:var(--bg-o,.9);
+  -webkit-mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent)}
+.has-bg::after{content:'';z-index:-2;background:var(--bg) var(--bg-pos,center)/cover no-repeat}
+/* Živá smyčka téže ilustrace (BgVideo.astro): skryje statický obrázek, až když video opravdu hraje. */
+.has-bg__video{z-index:-1;width:100%;height:100%;object-fit:cover;object-position:var(--bg-pos,center);visibility:hidden}
+.has-bg.bg-live::after{visibility:hidden}
+.has-bg.bg-live>.has-bg__video{visibility:visible}
+@media (prefers-reduced-motion: reduce){.has-bg__video{display:none}.has-bg.bg-live::after{visibility:visible}}
 .sample-tag{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;font:600 11px/1.6 var(--font-body);letter-spacing:.04em;color:var(--space-0);background:var(--lilac-200);vertical-align:middle}
 
 /* Delší text z Markdownu (články, návody, právní stránky). */

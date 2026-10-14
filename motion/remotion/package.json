@@ -12,6 +12,7 @@
     "render:power-on-loop-portrait": "node scripts/render.mjs power-on-loop-portrait",
     "render:deploy": "node scripts/render.mjs deploy",
     "render:constellation": "node scripts/render.mjs constellation",
+    "render:bg": "node scripts/render-bg.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

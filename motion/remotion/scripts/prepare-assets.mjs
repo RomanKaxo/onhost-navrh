@@ -17,4 +17,7 @@ if (existsSync(world)) {
   await mkdir(new URL('public/data/', project), { recursive: true });
   await copyFile(world, new URL('public/data/world-network.json', project));
 }
-console.log('Assets copied (logo, planets, world network).');
+// Ilustrovaná pozadí (bg-*.webp) pro živé smyčky BgNebula/BgHorizon/BgDeep.
+await mkdir(new URL('public/bg/', project), { recursive: true });
+for (const name of ['bg-nebula.webp', 'bg-horizon.webp', 'bg-deep.webp']) await copyFile(new URL(`public/bg/${name}`, web), new URL(`public/bg/${name}`, project));
+console.log('Assets copied (logo, planets, world network, backgrounds).');

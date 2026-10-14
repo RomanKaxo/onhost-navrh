@@ -34,3 +34,7 @@ Self-hosted League Spartan 600/700 and Inter Variable match the website. Browser
 When integrating videos, use `preload="none"`, a poster, and no autoplay for `prefers-reduced-motion: reduce`. Start playback only while visible; pause on hidden tabs. Posters are the default reduced-motion presentation.
 
 **Licence:** Remotion is free only for individuals and companies with up to **3 employees**. A company licence may be needed for ONhost or the team; confirm applicability before commercial use.
+
+## Live section backgrounds (BgNebula, BgHorizon, BgDeep)
+
+`rtk npm run render:bg [nebula|horizon|deep]` renders the website's illustrated backgrounds (`public/bg/bg-*.webp`) as 10 s loops at 24 fps, 1664×936 (source size, rendered at `--scale=2` and downscaled), and writes `public/bg/bg-<name>.webm` (VP9) and `.mp4` (H.264, faststart). `ENCODE_ONLY=1` re-encodes the existing master in `out/`. `scripts/find-stars.mjs` detects the stars to twinkle (`src/bg/stars.json`). The image is never zoomed, panned or recoloured: clouds are warped by fractal noise whose offset travels a full circle per loop (frame 240 ≡ frame 0), planets stay sharp and static, stars twinkle 1–3× per loop. The site shows them via `src/components/BgVideo.astro`; the still webp stays the fallback and the reduced-motion view.

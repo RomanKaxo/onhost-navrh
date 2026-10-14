@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import BgVideo from './BgVideo.astro';
 import {nav, legal, url} from '../data/nav';
 ---
 <footer class="site-footer has-bg" style={`--bg:url(${import.meta.env.BASE_URL.replace(/\/$/, '')}/bg/bg-horizon.webp);--bg-pos:center bottom;--bg-o:.35`}>
@@ -26,6 +27,7 @@ import {nav, legal, url} from '../data/nav';
     <ul>{legal.map(item => <li><a href={url(item.href)}>{item.label}</a></li>)}</ul>
     <p>Návrh nového webu ONhost · tým Elaris + Claude + Codex · {new Date().getFullYear()}</p>
   </div>
+  <BgVideo name="horizon" />
 </footer>
 <style>
   .site-footer { position: relative; margin-top: clamp(80px, 10vw, 140px); padding: 72px 0 32px; border-top: 1px solid color-mix(in srgb, var(--lilac) 14%, transparent);
