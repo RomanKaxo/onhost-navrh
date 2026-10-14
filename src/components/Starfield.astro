@@ -16,11 +16,21 @@ const layers = [layer(110, 0), layer(46, .5), layer(16, 1)];
 </div>
 <style>
   .starfield { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: var(--space-0); }
-  .starfield__nebula { position: absolute; inset: -10%;
-    background:
-      radial-gradient(50% 40% at 82% 12%, color-mix(in srgb, var(--brand) 55%, transparent), transparent 70%),
-      radial-gradient(40% 35% at 8% 78%, color-mix(in srgb, var(--pink) 12%, transparent), transparent 70%),
-      radial-gradient(60% 50% at 50% 110%, color-mix(in srgb, var(--brand) 40%, transparent), transparent 70%); }
+  /* Mlhoviny: tři samostatné obláčky, každý pomalu pluje a dýchá vlastním tempem, takže fialové pozadí žije. */
+  .starfield__nebula { position: absolute; inset: -10%; }
+  .starfield__nebula::before, .starfield__nebula::after, .starfield__nebula { will-change: translate, scale; }
+  .starfield__nebula { background: radial-gradient(50% 40% at 82% 12%, color-mix(in srgb, var(--brand) 55%, transparent), transparent 70%);
+    animation: sf-neb-a 30s ease-in-out infinite alternate; }
+  .starfield__nebula::before, .starfield__nebula::after { content: ''; position: absolute; inset: 0; }
+  .starfield__nebula::before { background:
+      radial-gradient(40% 35% at 8% 78%, color-mix(in srgb, var(--pink) 14%, transparent), transparent 70%),
+      radial-gradient(28% 24% at 40% 40%, color-mix(in srgb, var(--pink-hot) 7%, transparent), transparent 70%);
+    animation: sf-neb-b 24s ease-in-out infinite alternate; }
+  .starfield__nebula::after { background: radial-gradient(60% 50% at 50% 110%, color-mix(in srgb, var(--brand) 40%, transparent), transparent 70%);
+    animation: sf-neb-c 36s ease-in-out infinite alternate; }
+  @keyframes sf-neb-a { 0% { translate: 0 0; scale: 1; opacity: 1; } 50% { opacity: .75; } 100% { translate: -14% 9%; scale: 1.2; opacity: 1; } }
+  @keyframes sf-neb-b { 0% { translate: 0 0; scale: 1; } 100% { translate: 18% -14%; scale: 1.25; } }
+  @keyframes sf-neb-c { 0% { translate: 0 0; scale: 1; opacity: .8; } 100% { translate: -10% -8%; scale: 1.15; opacity: 1; } }
   .starfield__layer { position: absolute; inset: 0; }
   /* Dvě kopie pod sebou dovolují plynulý nekonečný posun. */
   .starfield__layer span { position: absolute; left: 0; top: 0; width: 1px; height: 1px; border-radius: 50%; }
@@ -36,5 +46,5 @@ const layers = [layer(110, 0), layer(46, .5), layer(16, 1)];
     .starfield__layer--2 span { animation: sf-parallax linear both; animation-timeline: scroll(root); --depth: -260px; }
     @keyframes sf-parallax { to { translate: 0 var(--depth); } }
   }
-  @media (prefers-reduced-motion: reduce) { .starfield__layer, .starfield__layer span { animation: none !important; } }
+  @media (prefers-reduced-motion: reduce) { .starfield__layer, .starfield__layer span, .starfield__nebula, .starfield__nebula::before, .starfield__nebula::after { animation: none !important; } }
 </style>

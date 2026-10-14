@@ -2,46 +2,110 @@
 import world from '../data/world-network.json';
 interface Props { label?: string; class?: string; compact?: boolean }
 const {label='Praha · Tier III',class:className,compact=false}=Astro.props;
-const origin=world.points[0];
-const hops=[...new Set(world.points.map(p=>p.hop))].sort((a,b)=>a-b);
-const edgePath=(hop:number)=>world.edges.filter(e=>e.hop===hop).map(e=>{const a=world.points[e.a],b=world.points[e.b];return `M${a.x},${a.y}L${b.x},${b.y}`}).join('');
-const routePath=(route:number[])=>route.map((i,n)=>`${n?'L':'M'}${world.points[i].x},${world.points[i].y}`).join('');
+const {origin}=world;
+const uid=`wm${Math.random().toString(36).slice(2,8)}`;
+const reverse=(d:string)=>{const [x0,y0,cx,cy,x1,y1]=d.match(/-?[\d.]+/g)!;return `M${x1} ${y1}Q${cx} ${cy} ${x0} ${y0}`};
+const routes=world.routes.slice(0,compact?4:8).map((r,i)=>({...r,inbound:i%2===1,dur:(7.5+r.len/90+(i%3)*1.1).toFixed(1),delay:(2.6+i*.85).toFixed(2)}));
+// Label anchor sits over the open North Atlantic, west of Praha.
+const anchor={x:origin.x-62,y:origin.y-50};
 ---
-<div class:list={['world-map',className,{'world-map--compact':compact}]} data-reveal>
-  <svg viewBox="0 0 1000 520" role="img" aria-label="Ilustrace světové sítě kolem pražského datacentra. Body na mapě jsou ilustrativní, neoznačují další datacentra.">
-    {hops.map(hop=><g class="network-wave" style={`--wave:${Math.min(hop*45,2100)}ms`}>
-      <g class="network-edges"><path d={edgePath(hop)} pathLength="1" /></g>
-      <g class="network-points">{world.points.filter((p,i)=>i>0&&p.hop===hop).map(p=><circle cx={p.x} cy={p.y} r="1.8" />)}</g>
+<div class:list={['world-map',className,{'world-map--compact':compact}]} data-reveal data-world-map>
+  <svg class="world-map__base" viewBox={`0 0 ${world.width} ${world.height}`} role="img" aria-label="Ilustrace světové sítě kolem pražského datacentra. Body a oblouky jsou ilustrativní, neoznačují další datacentra.">
+    <defs>
+      <radialGradient id={`${uid}-glow`}>
+        <stop offset="0" stop-color="var(--pink-hot,#F72585)" stop-opacity=".34" />
+        <stop offset=".35" stop-color="var(--pink,#E91E7A)" stop-opacity=".12" />
+        <stop offset="1" stop-color="var(--brand,#3C096C)" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+    <circle class="wm-focus" cx={origin.x} cy={origin.y} r="150" fill={`url(#${uid}-glow)`} />
+    {world.bands.map(b=><g class="wm-band" style={`--i:${b.band};--o:${Math.max(.13,.5-b.band*.03).toFixed(2)}`}>
+      {b.edges&&<path class="wm-edges" d={b.edges} pathLength="1" />}
+      {b.dots.sm&&<path class="wm-dots wm-dots--sm" d={b.dots.sm} />}
+      {b.dots.md&&<path class="wm-dots wm-dots--md" d={b.dots.md} />}
+      {b.dots.lg&&<path class="wm-dots wm-dots--lg" d={b.dots.lg} />}
     </g>)}
-    <g class="network-pulses" aria-hidden="true">{world.routes.slice(0,compact?3:8).map((route,i)=><circle class="network-packet" r="2.2" fill={i%2?'#E0BEFF':'#E91E7A'} style={`offset-path:path('${routePath(route)}');--duration:${12+i*2}s;--delay:${4+i*1.3}s`} />)}</g>
-    <g transform={`translate(${origin.x} ${origin.y})`} class="network-origin">
-      <circle class="network-halo" r="15" /><circle class="network-halo-inner" r="8" />
-      <path class="network-star" d="M0,-8L2,-2L8,0L2,2L0,8L-2,2L-8,0L-2,-2Z" />
-      <path class="network-label-line" d="M10,-8L27,-31H125" />
-      <text x="30" y="-40"><slot name="label">{label}</slot></text>
-    </g>
   </svg>
+  <svg class="world-map__fx" viewBox={`0 0 ${world.width} ${world.height}`} aria-hidden="true" focusable="false">
+    <g class="wm-twinkles">{world.twinkles.map(t=><circle cx={t.x} cy={t.y} r={t.r} style={`--delay:${t.delay}s;--dur:${t.dur}s`} />)}</g>
+    {routes.map((r,i)=><g class:list={['wm-route',{'wm-route--in':r.inbound}]} style={`--n:${i};--dur:${r.dur}s;--delay:${r.delay}s`}>
+      <path class="wm-arc" d={r.d} pathLength="1" />
+      <path class="wm-comet wm-comet--tail" d={r.inbound?reverse(r.d):r.d} pathLength="1" />
+      <path class="wm-comet wm-comet--head" d={r.inbound?reverse(r.d):r.d} pathLength="1" />
+      {!r.inbound&&<circle class="wm-arrive" cx={r.end.x} cy={r.end.y} r="5" />}
+    </g>)}
+    <path class="wm-leader" d={`M${origin.x-7} ${origin.y-8}L${anchor.x+24} ${anchor.y}H${anchor.x}`} pathLength="1" />
+    <g transform={`translate(${origin.x} ${origin.y})`}><g class="wm-origin">
+      <circle class="wm-sonar" r="9" />
+      <circle class="wm-halo" r="13" />
+      <path class="wm-star" d="M0,-8.5L1.9,-1.9L8.5,0L1.9,1.9L0,8.5L-1.9,1.9L-8.5,0L-1.9,-1.9Z" />
+      <circle class="wm-core" r="1.6" />
+    </g></g>
+  </svg>
+  <p class="world-map__label" style={`--ax:${anchor.x/world.width*100}%;--ay:${anchor.y/world.height*100}%`}><span class="wm-label-dot" aria-hidden="true"></span><slot name="label">{label}</slot></p>
 </div>
+<script>import '../motion/world-map.js';</script>
 <style is:global>
-  .world-map{width:100%;position:relative;background:radial-gradient(ellipse at 54% 30%,#3c096c30,transparent 58%)}
-  .world-map svg{width:100%;height:auto;overflow:visible}
-  .world-map .network-edges{fill:none;stroke:var(--lilac,#BB88EB);stroke-opacity:.27;stroke-width:.7}
-  .world-map .network-edges path{stroke-dasharray:1;stroke-dashoffset:0;animation:network-draw 900ms var(--ease,ease) both;animation-delay:var(--wave)}
-  .world-map .network-points{fill:var(--lilac-50,#F1E2FF);fill-opacity:.72;animation:network-appear 700ms ease both;animation-delay:var(--wave)}
-  .world-map.reveal-pending .network-edges path,.world-map.reveal-pending .network-points{animation:none;opacity:0}
-  .world-map .network-pulses{opacity:0;animation:network-appear 1s 3.5s forwards}
-  .world-map .network-packet{offset-distance:0%;animation:network-travel var(--duration) var(--delay) linear infinite both}
-  .world-map.reveal-pending .network-pulses,.world-map.reveal-pending .network-packet{animation:none;opacity:0}
-  .world-map .network-halo{fill:#E91E7A;opacity:.09;animation:network-breathe 4s ease-in-out infinite}
-  .world-map .network-halo-inner{fill:#E91E7A;opacity:.16}
-  .world-map .network-star{fill:#E91E7A}
-  .world-map .network-label-line{fill:none;stroke:#E91E7A;stroke-opacity:.6;stroke-width:.8}
-  .world-map text{fill:var(--lilac-50,#F1E2FF);font:500 13px var(--font-body,sans-serif);letter-spacing:.04em}
-  .world-map--compact text{font-size:22px}
-  @media(max-width:600px){.world-map text{font-size:28px}}
-  @keyframes network-travel{from{offset-distance:0%}to{offset-distance:100%}}
-  @keyframes network-draw{from{stroke-dashoffset:1}}
-  @keyframes network-appear{from{opacity:0}to{opacity:1}}
-  @keyframes network-breathe{50%{opacity:.18;transform:scale(1.25)}}
-  @media(prefers-reduced-motion:reduce){.world-map .network-edges path,.world-map .network-points,.world-map .network-halo{animation:none!important;opacity:1;stroke-dashoffset:0}.world-map .network-pulses{display:none}.world-map .network-halo{opacity:.12}}
+  .world-map{--wm-line:var(--lilac,#BB88EB);width:100%;position:relative;container-type:inline-size;background:radial-gradient(ellipse at 54% 30%,#3c096c30,transparent 58%)}
+  .world-map svg{display:block;width:100%;height:auto;overflow:visible}
+  .world-map__fx{position:absolute;inset:0;pointer-events:none;will-change:transform}
+  /* Static constellation */
+  .world-map .wm-edges{fill:none;stroke:var(--wm-line);stroke-opacity:var(--o);stroke-width:.6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0;animation:wm-draw 1s var(--ease,ease) both;animation-delay:calc(var(--i)*85ms)}
+  .world-map .wm-dots{fill:none;stroke-linecap:round;animation:wm-appear .8s ease both;animation-delay:calc(var(--i)*85ms)}
+  .world-map .wm-dots--sm{stroke:var(--lilac-200,#E0BEFF);stroke-width:1.7;stroke-opacity:.42}
+  .world-map .wm-dots--md{stroke:var(--lilac-50,#F1E2FF);stroke-width:2.5;stroke-opacity:.7}
+  .world-map .wm-dots--lg{stroke:var(--lilac-50,#F1E2FF);stroke-width:3.5;stroke-opacity:.95}
+  .world-map .wm-focus{animation:wm-appear 1.6s ease both}
+  /* Live layer */
+  .world-map .wm-twinkles circle{fill:var(--lilac-50,#F1E2FF);opacity:0;animation:wm-twinkle var(--dur) var(--delay) ease-in-out infinite}
+  .world-map .wm-arc{fill:none;stroke:var(--pink,#E91E7A);stroke-opacity:.5;stroke-width:.9;stroke-dasharray:1;stroke-dashoffset:0;animation:wm-draw 1.5s var(--ease,ease) both;animation-delay:calc(1.3s + var(--n)*.16s)}
+  .world-map .wm-route--in .wm-arc{stroke:var(--lilac,#BB88EB);stroke-opacity:.42}
+  .world-map .wm-comet{fill:none;stroke-linecap:round;opacity:0;animation:var(--dur) var(--delay) cubic-bezier(.45,0,.3,1) infinite both}
+  .world-map .wm-comet--tail{stroke:var(--pink,#E91E7A);stroke-width:2.4;stroke-opacity:.5;stroke-dasharray:.16 3;animation-name:wm-tail}
+  .world-map .wm-comet--head{stroke:var(--pink-hot,#F72585);stroke-width:3.4;stroke-dasharray:.012 3;animation-name:wm-head}
+  .world-map .wm-route--in .wm-comet--tail{stroke:var(--lilac,#BB88EB)}
+  .world-map .wm-route--in .wm-comet--head{stroke:var(--lilac-200,#E0BEFF)}
+  .world-map .wm-arrive{fill:none;stroke:var(--pink-hot,#F72585);stroke-width:.9;opacity:0;transform-box:fill-box;transform-origin:center;animation:wm-arrive var(--dur) var(--delay) ease-out infinite both}
+  .world-map .wm-leader{fill:none;stroke:var(--pink,#E91E7A);stroke-opacity:.7;stroke-width:.8;stroke-dasharray:1;animation:wm-draw .9s .5s var(--ease,ease) both}
+  .world-map .wm-halo{fill:var(--pink,#E91E7A);opacity:.18;transform-box:fill-box;transform-origin:center;animation:wm-breathe 4s ease-in-out infinite}
+  .world-map .wm-sonar{fill:none;stroke:var(--pink-hot,#F72585);stroke-width:.8;opacity:0;transform-box:fill-box;transform-origin:center;animation:wm-sonar 3.6s 1s ease-out infinite}
+  .world-map .wm-star{fill:var(--pink-hot,#F72585)}
+  .world-map .wm-core{fill:#fff}
+  /* Label */
+  .world-map__label{position:absolute;left:var(--ax);top:var(--ay);transform:translate(-100%,-50%);margin:0;display:inline-flex;align-items:center;gap:8px;padding:6px 13px 6px 10px;border-radius:999px;white-space:nowrap;
+    font:600 12.5px/1.2 var(--font-body,sans-serif);letter-spacing:.05em;color:var(--lilac-50,#F1E2FF);
+    background:color-mix(in srgb,var(--space-0,#12001E) 78%,transparent);border:1px solid color-mix(in srgb,var(--pink,#E91E7A) 55%,transparent);
+    box-shadow:0 0 24px color-mix(in srgb,var(--pink,#E91E7A) 22%,transparent);animation:wm-appear .6s 1.1s ease both}
+  .wm-label-dot{width:6px;height:6px;border-radius:50%;background:var(--pink-hot,#F72585);box-shadow:0 0 8px var(--pink-hot,#F72585);flex:none}
+  @container (max-width:720px){
+    .world-map__label{left:0;top:0;transform:none;font-size:11.5px;padding:5px 11px 5px 9px}
+    .world-map .wm-leader{display:none}
+    .world-map .wm-edges{stroke-width:1.1}
+    .world-map .wm-dots--sm{stroke-width:2.8;stroke-opacity:.5}
+    .world-map .wm-dots--md{stroke-width:3.8}
+    .world-map .wm-dots--lg{stroke-width:5}
+    .world-map .wm-arc{stroke-width:1.6}
+    .world-map .wm-comet--tail{stroke-width:4}
+    .world-map .wm-comet--head{stroke-width:5.5}
+    .world-map .wm-twinkles circle{transform:scale(1.6);transform-box:fill-box;transform-origin:center}
+    .world-map .wm-origin{transform:scale(1.5)}
+  }
+  /* Before the section enters the viewport */
+  .world-map.reveal-pending .wm-band,.world-map.reveal-pending .world-map__fx,.world-map.reveal-pending .world-map__label,.world-map.reveal-pending .wm-focus{opacity:0}
+  .world-map.reveal-pending *{animation:none!important}
+  .world-map.reveal-pending .world-map__label{animation:none}
+  /* Offscreen: freeze the loops */
+  .world-map.is-paused .world-map__fx *{animation-play-state:paused}
+  @keyframes wm-draw{from{stroke-dashoffset:1}}
+  @keyframes wm-appear{from{opacity:0}}
+  @keyframes wm-twinkle{0%,100%{opacity:0}45%{opacity:.95}60%{opacity:.25}}
+  @keyframes wm-tail{0%{opacity:1;stroke-dashoffset:.16}42%{opacity:1;stroke-dashoffset:-1}43%,100%{opacity:0;stroke-dashoffset:-1}}
+  @keyframes wm-head{0%{opacity:1;stroke-dashoffset:.012}42%{opacity:1;stroke-dashoffset:-1.148}43%,100%{opacity:0;stroke-dashoffset:-1.148}}
+  @keyframes wm-arrive{0%,39%{opacity:0;transform:scale(.3)}43%{opacity:.9;transform:scale(.6)}70%,100%{opacity:0;transform:scale(2.6)}}
+  @keyframes wm-breathe{50%{opacity:.08;transform:scale(1.35)}}
+  @keyframes wm-sonar{0%{opacity:.7;transform:scale(1)}70%,100%{opacity:0;transform:scale(4.2)}}
+  @media(prefers-reduced-motion:reduce){
+    .world-map *,.world-map__label{animation:none!important}
+    .world-map .wm-twinkles,.world-map .wm-comet,.world-map .wm-arrive,.world-map .wm-sonar{display:none}
+  }
 </style>

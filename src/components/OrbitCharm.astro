@@ -1,0 +1,112 @@
+---
+// Malý animovaný kostičkový prvek nad planetou produktu v oběžné dráze katalogu (ve stylu postaviček u Gamehostingu).
+// Každý produkt má vlastní: okno prohlížeče, skládání bloků, servery, vlajku domény, postavičku, obálku, věž a databázi.
+// Barvy jen z brandmanuálu; pohyb jen posunem, průhledností a měřítkem.
+interface Props { name: string }
+const {name} = Astro.props;
+const ink = '#12001E', brand = '#3C096C', pink = '#E91E7A', hot = '#F72585', lilac = '#BB88EB', lilac200 = '#E0BEFF', lilac50 = '#F1E2FF';
+---
+<span class:list={['charm', `charm--${name}`]} aria-hidden="true">
+  {name === 'web' && (
+    <svg viewBox="0 0 32 24" class="charm__float">
+      <rect x="1" y="1" width="30" height="22" fill={brand} /><rect x="1" y="1" width="30" height="5" fill={lilac} />
+      <rect x="3" y="3" width="2" height="1" fill={hot} /><rect x="6" y="3" width="2" height="1" fill={lilac50} />
+      <rect x="4" y="9" width="12" height="2" fill={lilac200} /><rect x="4" y="13" width="18" height="2" fill={lilac} opacity=".6" />
+      <rect x="4" y="18" width="24" height="2" fill={ink} opacity=".5" /><rect class="web-bar" x="4" y="18" width="24" height="2" fill={hot} />
+    </svg>
+  )}
+  {name === 'wordpress' && (
+    <svg viewBox="0 0 24 28">
+      <rect x="2" y="1" width="20" height="26" fill={lilac50} /><rect x="2" y="1" width="20" height="3" fill={lilac} />
+      <rect class="wp-block" style="--n:0" x="5" y="7" width="14" height="5" fill={pink} />
+      <rect class="wp-block" style="--n:1" x="5" y="14" width="9" height="5" fill={lilac} />
+      <rect class="wp-block" style="--n:2" x="15" y="14" width="4" height="5" fill={brand} />
+      <rect class="wp-block" style="--n:3" x="5" y="21" width="14" height="3" fill={lilac200} />
+    </svg>
+  )}
+  {name === 'vps' && (
+    <svg viewBox="0 0 24 26">
+      {[0, 1, 2].map(i => <g>
+        <rect x="2" y={1 + i * 8} width="20" height="7" fill={i === 1 ? '#2C0A3E' : brand} /><rect x="2" y={1 + i * 8} width="20" height="1" fill={lilac} opacity=".5" />
+        <rect x="5" y={4 + i * 8} width="8" height="1" fill={lilac} opacity=".5" />
+        <rect class="led" style={`--n:${i}`} x="16" y={4 + i * 8} width="2" height="2" fill={hot} /><rect class="led" style={`--n:${i + .5}`} x="19" y={4 + i * 8} width="2" height="2" fill={lilac200} />
+      </g>)}
+    </svg>
+  )}
+  {name === 'domains' && (
+    <svg viewBox="0 0 30 30">
+      <rect x="4" y="2" width="2" height="27" fill={lilac50} /><rect x="3" y="27" width="4" height="2" fill={lilac} />
+      <g class="flag"><rect x="6" y="3" width="22" height="12" fill={pink} /><rect x="6" y="3" width="22" height="3" fill={hot} />
+        <text x="17" y="13.4" text-anchor="middle" font-size="7.5" font-weight="800" font-family="system-ui, sans-serif" fill="#fff">.cz</text></g>
+    </svg>
+  )}
+  {name === 'game' && (
+    <svg viewBox="0 0 24 40" class="hop">
+      <rect x="8" y="26" width="4" height="12" fill="#2C0A3E" /><rect x="12" y="26" width="4" height="12" fill="#2C0A3E" />
+      <rect x="6" y="14" width="12" height="12" fill={pink} /><rect x="18" y="14" width="4" height="12" fill={pink} /><rect x="2" y="14" width="4" height="12" fill={pink} opacity=".75" />
+      <rect x="6" y="2" width="12" height="12" fill={lilac50} /><rect x="6" y="2" width="12" height="4" fill={brand} />
+      <rect x="12" y="8" width="2" height="2" fill={ink} /><rect x="15" y="8" width="2" height="2" fill={ink} />
+      <rect x="19" y="8" width="2" height="16" fill={lilac50} /><rect x="17" y="22" width="6" height="2" fill={brand} />
+    </svg>
+  )}
+  {name === 'mail' && (
+    <span class="mail-orbit"><svg viewBox="0 0 22 16">
+      <rect x="1" y="1" width="20" height="14" fill={lilac50} />
+      <rect x="1" y="1" width="2" height="2" fill={lilac} /><rect x="3" y="3" width="2" height="2" fill={lilac} /><rect x="5" y="5" width="2" height="2" fill={lilac} /><rect x="7" y="7" width="2" height="2" fill={lilac} />
+      <rect x="9" y="8" width="4" height="2" fill={pink} />
+      <rect x="13" y="7" width="2" height="2" fill={lilac} /><rect x="15" y="5" width="2" height="2" fill={lilac} /><rect x="17" y="3" width="2" height="2" fill={lilac} /><rect x="19" y="1" width="2" height="2" fill={lilac} />
+    </svg></span>
+  )}
+  {name === 'dedicated' && (
+    <svg viewBox="0 0 16 34">
+      <rect x="2" y="1" width="12" height="32" fill={brand} /><rect x="2" y="1" width="12" height="2" fill={lilac} opacity=".6" />
+      {[0, 1, 2, 3, 4].map(i => <rect x="4" y={6 + i * 5} width="8" height="2" fill={'#2C0A3E'} />)}
+      {[0, 1, 2, 3, 4].map(i => <rect class="led" style={`--n:${i * .4}`} x="10" y={6 + i * 5} width="2" height="2" fill={i % 2 ? lilac200 : hot} />)}
+      <rect class="scan" x="2" y="4" width="12" height="2" fill={hot} opacity=".55" />
+    </svg>
+  )}
+  {name === 'database' && (
+    <svg viewBox="0 0 22 28">
+      {[0, 1, 2].map(i => <g class="disc" style={`--n:${i}`}>
+        <rect x="2" y={18 - i * 7} width="18" height="7" fill={i === 1 ? pink : lilac} />
+        <rect x="2" y={18 - i * 7} width="18" height="2" fill={i === 1 ? hot : lilac200} />
+        <rect x="4" y={22 - i * 7} width="2" height="1" fill={lilac50} />
+      </g>)}
+    </svg>
+  )}
+</span>
+<style>
+  /* Prvek stojí na horním okraji planety (planeta zabírá ~střed obrázku). */
+  .charm { position: absolute; left: 50%; bottom: 58%; width: 44%; translate: -50% 0; pointer-events: none; z-index: 2; filter: drop-shadow(0 2px 4px #12001Eaa); }
+  .charm svg { display: block; width: 100%; height: auto; shape-rendering: crispEdges; overflow: visible; }
+  .charm--dedicated { width: 26%; } .charm--game { width: 24%; bottom: 56%; } .charm--domains { width: 40%; left: 58%; }
+  .charm--mail { inset: 0; width: auto; translate: none; bottom: auto; }
+
+  /* Okno prohlížeče se vznáší a načítá. */
+  .charm__float { animation: ch-float 3.4s ease-in-out infinite alternate; }
+  @keyframes ch-float { to { translate: 0 -10%; } }
+  .web-bar { transform-box: fill-box; transform-origin: left; animation: ch-load 2.6s steps(8) infinite; }
+  @keyframes ch-load { from { scale: 0 1; } 80%, to { scale: 1 1; } }
+  /* Bloky stránky se skládají jeden po druhém. */
+  .wp-block { animation: ch-block 4s ease-out infinite; animation-delay: calc(var(--n) * .35s); }
+  @keyframes ch-block { 0%, 8% { opacity: 0; translate: 0 -3px; } 18%, 85% { opacity: 1; translate: 0 0; } 100% { opacity: 0; } }
+  /* Diody serverů blikají v různých rytmech. */
+  .led { animation: ch-led 1.4s steps(2) infinite; animation-delay: calc(var(--n) * -.47s); }
+  @keyframes ch-led { 50% { opacity: .25; } }
+  .scan { animation: ch-scan 2.8s ease-in-out infinite alternate; }
+  @keyframes ch-scan { to { translate: 0 26px; } }
+  /* Vlajka domény vlaje. */
+  .flag { transform-box: fill-box; transform-origin: left center; animation: ch-flag 1.8s ease-in-out infinite alternate; }
+  @keyframes ch-flag { to { scale: .9 1.06; } }
+  /* Postavička poskakuje. */
+  .hop { animation: ch-hop 1.1s cubic-bezier(.3, 0, .4, 1) infinite; }
+  @keyframes ch-hop { 0%, 100% { translate: 0 0; } 45% { translate: 0 -22%; } }
+  /* Obálka obíhá kolem planety po vlastní malé dráze. */
+  .mail-orbit { position: absolute; left: 0; top: 0; width: 30%; offset-path: ellipse(56% 20% at 50% 54%); offset-rotate: 0deg; animation: ch-mail 5s linear infinite; }
+  @keyframes ch-mail { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+  /* Databáze: disky se postupně rozsvěcují zdola nahoru. */
+  .disc { animation: ch-disc 2.4s ease-in-out infinite; animation-delay: calc(var(--n) * .3s); }
+  @keyframes ch-disc { 0%, 100% { translate: 0 0; } 30% { translate: 0 -2px; } }
+
+  @media (prefers-reduced-motion: reduce) { .charm *, .charm { animation: none !important; } }
+</style>

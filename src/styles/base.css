@@ -50,9 +50,12 @@ a.card:hover,.card--interactive:hover{border-color:var(--line-strong)}
 .chips li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--pink);box-shadow:0 0 10px var(--pink)}
 
 /* Ilustrované pozadí sekce (public/bg) — do stránky se rozplyne nahoře i dole. */
-.has-bg{position:relative;isolation:isolate}
+.has-bg{position:relative;isolation:isolate;overflow-x:clip}
 .has-bg::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--bg) var(--bg-pos,center)/cover no-repeat;opacity:var(--bg-o,.9);
-  -webkit-mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent)}
+  -webkit-mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent);mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent);
+  inset:-3% -3%;animation:bg-drift 28s ease-in-out infinite alternate}
+/* Obrázková mlhovina pomalu pluje, přibližuje se a dýchá (vypnuto při omezeném pohybu). */
+@keyframes bg-drift{0%{translate:-2% 1%;scale:1;opacity:var(--bg-o,.9);filter:hue-rotate(0deg)}50%{opacity:calc(var(--bg-o,.9)*.8)}100%{translate:2% -1.5%;scale:1.06;opacity:var(--bg-o,.9);filter:hue-rotate(-12deg) brightness(1.12)}}
 .sample-tag{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;font:600 11px/1.6 var(--font-body);letter-spacing:.04em;color:var(--space-0);background:var(--lilac-200);vertical-align:middle}
 
 /* Delší text z Markdownu (články, návody, právní stránky). */
@@ -91,6 +94,10 @@ a.card:hover,.card--interactive:hover{border-color:var(--line-strong)}
 main > .section::before{content:'';position:absolute;z-index:-1;pointer-events:none;width:min(1100px,120vw);aspect-ratio:1.6;top:8%;
   background:radial-gradient(closest-side,color-mix(in srgb,var(--brand) 42%,transparent),color-mix(in srgb,var(--brand) 12%,transparent) 55%,transparent);filter:blur(10px)}
 main > .section:nth-of-type(odd)::before{left:-28%}
+/* Mlhoviny sekcí pomalu plují a dýchají (vypnuto při omezeném pohybu výše). */
+main > .section::before{animation:sec-neb 26s ease-in-out infinite alternate}
+main > .section:nth-of-type(even)::before{animation-duration:31s;animation-direction:alternate-reverse}
+@keyframes sec-neb{0%{translate:0 0;scale:1;opacity:.85}50%{opacity:1}100%{translate:9% -6%;scale:1.14;opacity:.9}}
 main > .section:nth-of-type(even)::before{right:-30%;background:radial-gradient(closest-side,color-mix(in srgb,var(--pink) 16%,transparent),color-mix(in srgb,var(--brand) 14%,transparent) 50%,transparent)}
 main > .section.cta-section::before,main > .section.article::before,main > .section.listing::before{display:none}
 main{position:relative;isolation:isolate;overflow-x:clip}

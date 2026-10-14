@@ -1,41 +1,70 @@
 ---
-// Závěrečná výzva: plná brandová fialová (povolené pozadí z manuálu), bez přechodu. Symbol stojí vlevo,
-// kolem něj se při odkrytí rozběhnou oběžné dráhy — logo samo zůstává beze změny.
+// Závěrečná výzva jako výřez z vesmíru úvodu: klidná tmavá plocha bez přechodu, dole obzor planety
+// s levandulovým okrajem (stejný jako v hero), vpravo ilustrovaná planeta s drahami a hvězdy.
+// Světlo patří jen vesmíru a planetě. Motiv vypínače nese malý přepínač OFF → ON (logo se nepoužívá).
 import Button from './Button.astro';
-import Logo from './Logo.astro';
+import PlanetArt from './PlanetArt.astro';
 import {link} from '../data/pages';
-interface Props { title: string; text?: string; primary?: {label: string; href: string}; secondary?: {label: string; href: string} }
-const {title, text, primary = {label: 'Vybrat hosting', href: '/webhosting'}, secondary} = Astro.props;
+interface Props { title: string; text?: string; primary?: {label: string; href: string}; secondary?: {label: string; href: string}; planet?: string }
+const {title, text, primary = {label: 'Vybrat hosting', href: '/webhosting'}, secondary, planet = 'web'} = Astro.props;
+// Hvězdy deterministicky při buildu (souřadnice v % plochy, aby se škálovaly s panelem).
+let seed = 11;
+const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const tones = ['#ffffff', '#F1E2FF', '#E0BEFF', '#BB88EB', '#F72585'];
+const stars = Array.from({length: 46}, () => ({x: rand() * 100, y: rand() * 78, s: rand() > .86 ? 2 : 1, c: tones[Math.floor(rand() ** 2.4 * tones.length)], o: .35 + rand() * .55}));
 ---
 <section class="section cta-section">
   <div class="wrap">
     <div class="cta" data-reveal>
-      <div class="cta__mark" aria-hidden="true"><span></span><span></span><span></span><Logo variant="symbol" tone="on-dark" /></div>
+      <div class="cta__space" aria-hidden="true">
+        {stars.map(st => <i style={`left:${st.x.toFixed(2)}%;top:${st.y.toFixed(2)}%;--s:${st.s}px;--c:${st.c};--o:${st.o.toFixed(2)}`}></i>)}
+        <span class="cta__horizon"></span>
+        <div class="cta__planet"><PlanetArt name={planet} size="100%" tracks={2} /></div>
+      </div>
       <div class="cta__copy">
+        <p class="cta__switch" aria-hidden="true"><span class="cta__toggle"><span></span></span><span class="cta__state"><b>OFF</b><b>ON</b></span></p>
         <h2>{title}</h2>
-        {text && <p>{text}</p>}
+        {text && <p class="cta__text">{text}</p>}
         <div class="cta__actions">
-          <Button href={link(primary.href)} variant="light" size="lg">{primary.label}</Button>
-          {secondary && <Button href={link(secondary.href)} variant="ghost" size="lg" class="cta__ghost">{secondary.label}</Button>}
+          <Button href={link(primary.href)} size="lg">{primary.label}</Button>
+          {secondary && <Button href={link(secondary.href)} variant="ghost" size="lg">{secondary.label}</Button>}
         </div>
       </div>
     </div>
   </div>
 </section>
 <style>
-  .cta { position: relative; overflow: hidden; border-radius: var(--radius-lg); display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: clamp(28px, 6vw, 88px);
-    padding: clamp(40px, 6vw, 88px) clamp(24px, 6vw, 88px); background: var(--brand); }
-  .cta__mark { position: relative; width: clamp(96px, 13vw, 168px); aspect-ratio: 1; display: grid; place-items: center; }
-  .cta__mark :global(.logo) { width: 100%; position: relative; }
-  .cta__mark span { position: absolute; inset: -30%; border-radius: 50%; border: 1px solid #ffffff2e; transition: scale 1.6s var(--ease), opacity 1.6s var(--ease); }
-  .cta__mark span:nth-child(2) { inset: -62%; border-color: #ffffff1c; transition-delay: .15s; }
-  .cta__mark span:nth-child(3) { inset: -100%; border-color: #ffffff12; transition-delay: .3s; }
-  .cta.reveal-pending .cta__mark span { scale: .6; opacity: 0; }
+  .cta { position: relative; overflow: hidden; isolation: isolate; border-radius: var(--radius-lg); border: 1px solid var(--line); background: var(--space-0);
+    display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); align-items: center; min-height: clamp(440px, 38vw, 540px);
+    padding: clamp(40px, 5.5vw, 80px) clamp(24px, 5.5vw, 80px) clamp(96px, 9vw, 130px); }
+  .cta__space { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+  .cta__space i { position: absolute; width: var(--s); height: var(--s); border-radius: 50%; background: var(--c); opacity: var(--o); }
+  /* Obzor: horní okraj obří planety, stejné barvy jako v hero (tmavý povrch, fialový přechod do levandulové linky). */
+  .cta__horizon { position: absolute; left: 50%; bottom: 0; width: 260%; aspect-ratio: 1; translate: -50% calc(100% - clamp(64px, 7vw, 104px));
+    border-radius: 50%; background: #08000e; border-top: 1px solid var(--lilac);
+    box-shadow: 0 -2px 18px color-mix(in srgb, var(--lilac) 45%, transparent), 0 -40px 120px color-mix(in srgb, var(--brand) 85%, transparent), inset 0 30px 60px -30px color-mix(in srgb, var(--brand) 90%, transparent); }
+  .cta__planet { position: absolute; right: clamp(-40px, 2vw, 40px); top: 50%; width: clamp(300px, 34vw, 470px); translate: 0 -54%; }
   .cta__copy { position: relative; display: grid; gap: 18px; justify-items: start; }
-  .cta h2 { font-size: var(--fs-h2); color: #fff; max-width: 15ch; }
-  .cta p { margin: 0; font-size: var(--fs-lead); max-width: 48ch; color: #fff; opacity: .9; }
-  .cta__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
-  .cta :global(.cta__ghost) { border-color: #ffffff66; color: #fff; }
-  .cta :global(.cta__ghost:hover) { background: #ffffff1f; border-color: #fff; }
-  @media (max-width: 760px) { .cta { grid-template-columns: minmax(0, 1fr); } .cta__mark { width: 88px; margin: 12px 0 0 12px; } }
+  /* Přepínač: při odkrytí se překlopí z OFF na ON (jen posun jezdce a barva, žádné logo). */
+  .cta__switch { display: inline-flex; align-items: center; gap: 12px; margin: 0 0 6px; }
+  .cta__toggle { position: relative; width: 44px; height: 24px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--pink);
+    transition: background-color var(--t-move) var(--ease) .5s, border-color var(--t-move) var(--ease) .5s; }
+  .cta__toggle span { position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; translate: 20px 0; transition: translate var(--t-move) var(--ease) .5s; }
+  .cta__state { display: grid; font: 600 12px/1 var(--font-body); letter-spacing: .32em; }
+  .cta__state b { grid-area: 1 / 1; font-weight: inherit; transition: opacity var(--t-move) var(--ease) .5s; }
+  .cta__state b:first-child { color: var(--text-faint); opacity: 0; }
+  .cta__state b:last-child { color: var(--pink-hot); }
+  .cta.reveal-pending .cta__toggle { background: transparent; border-color: var(--line-strong); }
+  .cta.reveal-pending .cta__toggle span { translate: 0 0; background: var(--lilac-200); }
+  .cta.reveal-pending .cta__state b:first-child { opacity: 1; }
+  .cta.reveal-pending .cta__state b:last-child { opacity: 0; }
+  .cta h2 { font-size: var(--fs-h2); max-width: 14ch; }
+  .cta__text { margin: 0; font-size: var(--fs-lead); line-height: 1.55; max-width: 44ch; color: var(--text-dim); }
+  .cta__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+  @media (max-width: 860px) {
+    .cta { grid-template-columns: minmax(0, 1fr); align-items: start; min-height: 0; padding-top: clamp(220px, 52vw, 320px); }
+    .cta__planet { top: -6%; right: -14%; width: clamp(260px, 72vw, 400px); translate: none; }
+  }
+  @media (max-width: 480px) { .cta__actions { display: grid; width: 100%; } .cta__actions :global(.btn) { width: 100%; } }
+  @media (prefers-reduced-motion: reduce) { .cta__toggle, .cta__toggle span, .cta__state b { transition: none; } }
 </style>
