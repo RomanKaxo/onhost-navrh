@@ -29,7 +29,7 @@ const origin = globeLocation(50.08, 14.43);
 // Illustrative destinations only. No labels or persistent destination markers.
 const destinations = [[51.51, -0.13], [40.71, -74.01], [48.86, 2.35], [1.35, 103.82],
   [41.9, 12.5], [59.33, 18.07], [40.42, -3.7], [52.52, 13.41]];
-const routes = destinations.map(([lat, lon]) => {
+const outgoing = destinations.map(([lat, lon]) => {
   const end = globeLocation(lat, lon);
   const angle = Math.acos(Math.max(-1, Math.min(1, origin.reduce((sum, v, i) => sum + v * end[i], 0))));
   const lift = 0.12 + angle * 0.16;
@@ -42,6 +42,8 @@ const routes = destinations.map(([lat, lon]) => {
       (a * origin[1] + b * end[1]) * height, (a * origin[2] + b * end[2]) * height];
   });
 });
+// Traffic both ways: every outgoing pulse is followed by one flying back to Prague.
+const routes = outgoing.flatMap(route => [route, [...route].reverse()]);
 
 export function createGlobeLasers(globe: HTMLCanvasElement) {
   const canvas = document.createElement('canvas');
@@ -68,7 +70,7 @@ export function createGlobeLasers(globe: HTMLCanvasElement) {
       ctx.lineCap = 'round';
       const cycle = 6.8;
       routes.forEach((route, index) => {
-        const age = (elapsed - index * 0.72) % cycle;
+        const age = (elapsed - index * 0.42) % cycle;
         if (age < 0 || age > 2.25) return;
         const head = Math.min(age / 1.65, 1);
         const fade = Math.min(age / 0.15, 1) * Math.min((2.25 - age) / 0.45, 1);
