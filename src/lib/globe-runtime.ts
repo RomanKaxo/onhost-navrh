@@ -1,4 +1,5 @@
 import createGlobe, { type COBEOptions } from "cobe";
+import { createGlobeLasers } from "./globe-lasers";
 export type { COBEOptions } from "cobe";
 
 /** Adapter used only by the verbatim 21st.dev component (see astro.config.mjs).
@@ -12,6 +13,8 @@ export default function createOnhostGlobe(canvas: HTMLCanvasElement, options: CO
   let pointerX: number | null = null;
   let drag = 0;
   let lastDrag = 0;
+  let lastFrame = 0;
+  const lasers = createGlobeLasers(canvas);
   canvas.tabIndex = 0;
   canvas.setAttribute('role', 'img');
   canvas.setAttribute('aria-label', 'Globus s označenou Prahou. Otočte jej tažením nebo šipkami vlevo a vpravo.');
@@ -25,12 +28,18 @@ export default function createOnhostGlobe(canvas: HTMLCanvasElement, options: CO
     ...options,
     context,
     onRender(state) {
+      const now = performance.now();
+      const delta = lastFrame ? Math.min((now - lastFrame) / 1000, 0.05) : 0;
+      lastFrame = now;
       options.onRender(state);
       // The supplied callback closes over stale React state; keep drag in this boundary.
-      if (!motion.matches && pointerX === null) phi += 0.005;
+      if (!motion.matches && pointerX === null) phi += delta * 0.3;
       state.phi = phi + drag;
       state.width = canvas.offsetWidth * options.devicePixelRatio;
       state.height = canvas.offsetHeight * options.devicePixelRatio;
+      lasers.render({ phi: state.phi, theta: state.theta ?? options.theta,
+        scale: state.scale ?? options.scale ?? 1, offset: state.offset ?? options.offset ?? [0, 0],
+        pixelRatio: options.devicePixelRatio }, delta, motion.matches);
       // COBE 0.6.5 sets NEAREST after its embedded map texture has loaded.
       // Wait for that observable state before stopping on a fully rendered poster.
       const gl = instance?.gl;
@@ -40,6 +49,7 @@ export default function createOnhostGlobe(canvas: HTMLCanvasElement, options: CO
     },
   });
   const sync = () => {
+    lastFrame = 0;
     if (!destroyed) instance?.toggle(visible && !document.hidden);
   };
   const resize = new ResizeObserver(() => {
@@ -83,6 +93,7 @@ export default function createOnhostGlobe(canvas: HTMLCanvasElement, options: CO
       destroyed = true;
       resize.disconnect();
       observer.disconnect();
+      lasers.destroy();
       canvas.removeEventListener("pointerdown", down);
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", up);

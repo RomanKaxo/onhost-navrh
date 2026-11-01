@@ -4,12 +4,12 @@ import '../styles/globe.css';
 ---
 <figure class="network-visual">
   <NetworkGlobe client:visible />
-  <figcaption><span aria-hidden="true"></span>Praha · Tier III</figcaption>
+  <figcaption><span aria-hidden="true"></span>Odtud běží vaše weby – dostupné odkudkoli</figcaption>
   <p>Globus otočíte tažením nebo šipkami na klávesnici.</p>
 </figure>
 <style>
   .network-visual { position: relative; width: 100%; margin: 0; }
-  figcaption { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--lilac-50); font-size: 14px; }
-  figcaption span { width: 7px; height: 7px; border-radius: 50%; background: var(--pink-hot); box-shadow: 0 0 14px var(--pink); }
+  figcaption { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--lilac-50); font-size: 14px; text-align: center; }
+  figcaption span { flex-shrink: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--pink-hot); box-shadow: 0 0 14px var(--pink); }
   p { text-align: center; font-size: 13px; color: var(--text-faint); margin: 8px 0 0; }
 </style>

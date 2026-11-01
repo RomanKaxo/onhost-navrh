@@ -97,3 +97,55 @@ Kvůli pravidlu 14 dní jsou také přesně připnuté nepřímé závislosti p�
 
 Nebyl změřen LCP ani výkon na skutečném telefonu. Kontrola přes codebase-memory
 nebyla dostupná (nástroje skillu nebyly v relaci vystavené); soubory byly čtené přímo.
+
+## Paprsky dostupnosti — 1. 11. 2026
+
+COBE 0.6.5 v `node_modules/cobe/dist/index.d.ts` ani rendereru nemá API
+oblouků. `src/lib/globe-lasers.ts` proto přidává dekorativní 2D canvas přes
+stejný adaptér. Původní `ui/globe.tsx` i jeho SHA-256 zůstávají stejné.
+Žádné nové závislosti.
+
+Paprsky ilustrují dostupnost služeb z Prahy odkudkoli. Cíle (Londýn,
+New York, Paříž, Singapur, Řím, Stockholm, Madrid a Berlín) nemají
+popisky ani trvalé markery a neoznačují datacentra nebo pobočky.
+Popisek: „Odtud běží vaše weby – dostupné odkudkoli“.
+
+Trasy jsou předpočítané kulové interpolace s vyvýšením nad povrch.
+Projekce přebírá matici `J(theta, phi)` a poloměr 0,8 z připnutého shaderu
+COBE, včetně měřítka, offsetu a poměru pixelů. Zadní úseky uvnitř siluety
+Země se nekreslí; oblouk může nad horizont vyčnívat. Každý let má světlou
+hlavu, růžovofialovou stopu a krátký dopadový kruh, poté zaniká.
+
+Overlay nemá vlastní animační smyčku: používá přímo COBE `onRender` a jeho
+aktuální `phi/theta`, včetně tažení a šipek. Časový krok je omezen na 50 ms,
+aby se po pauze neposunul skokem; rotace je nyní časová (0,3 rad/s).
+Mimo viewport a při skryté kartě stojí i overlay. Při reduced motion
+se vymaže a zůstane statický globus. Je dekorativní (`aria-hidden`),
+nepřebírá události ukazatele a při zániku se odstraní. Canvas má nejvýše
+2× rozlišení CSS; nejsou zde per-frame blur filtry ani nové textury.
+
+Geometrii ověřuje `rtk proxy node scripts/verify-globe-lasers.mjs` (Node 22+):
+19 zpětných projekcí proti shaderu, světové strany, zakrytí horizontem,
+měřítko a offset. Browserové důkazy a skript jsou v
+`/home/roman/Documents/ONHOST/lasery-2026-11-01/`.
+
+Build: 42 stránek, exit 0; `rtk proxy npx tsc --noEmit`: exit 0 (po
+vygenerování Astro typů buildem). Playwright Chromium, 1440 × 1000 a
+390 × 1000: let, viditelný overlay, lazy start, pauza mimo viewport,
+vymazání a zastavení při reduced motion, návrat k letu, resize, tažení
+65 px = 0,325 rad, šipky, navigace, žádný horizontální scroll ani pageerror.
+Ověřen také první vstup s reduced motion a fallback bez WebGL.
+
+Na NVIDIA RTX 4060 Ti má měření s nahráváním na obou šířkách medián
+16,7 ms/snímek (přibližně 60 fps). Jde o desktop s mobilní šířkou,
+nikoli skutečný telefon. Softwarový SwiftShader byl pomalejší;
+jeho oddělené výsledky zachovává `checks-swiftshader.json`.
+`checks.json` obsahuje aktuální měření GPU a přesné percentily.
+`nahled-8s.webm` je osm sekund skutečného záznamu Playwright bez zásahů
+do rychlosti animace. PNG obsahují oba viewporty, detail globu i celou sekci.
+Finální PNG vznikly přes SwiftShader se zastavením na skutečném snímku letu;
+nativní GPU při screenshot readbacku občas vynechala WebGL vrstvu.
+Video a měření pocházejí z nativní GPU; snímek z videa byl vizuálně ověřen.
+Při této práci byly nástroje codebase-memory dostupné, ale tento worktree
+není indexovaný (včetně negativního výsledku `check_index_coverage`);
+dotčené zdroje byly zkontrolovány přímo.
