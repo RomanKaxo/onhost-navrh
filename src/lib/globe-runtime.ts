@@ -12,6 +12,9 @@ export default function createOnhostGlobe(canvas: HTMLCanvasElement, options: CO
   let pointerX: number | null = null;
   let drag = 0;
   let lastDrag = 0;
+  canvas.tabIndex = 0;
+  canvas.setAttribute('role', 'img');
+  canvas.setAttribute('aria-label', 'Globus s označenou Prahou. Otočte jej tažením nebo šipkami vlevo a vpravo.');
   // COBE probes WebGL before applying context options; create it with preservation first.
   // A stopped reduced-motion canvas must retain its pixels after compositing/readback.
   const context = { alpha: true, ...options.context, preserveDrawingBuffer: true };
@@ -48,15 +51,29 @@ export default function createOnhostGlobe(canvas: HTMLCanvasElement, options: CO
   resize.observe(canvas);
   const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); });
   observer.observe(canvas);
-  const down = (event: PointerEvent) => { pointerX = event.clientX; lastDrag = drag; };
-  const move = (event: PointerEvent) => {
-    if (pointerX !== null && !motion.matches) drag = lastDrag + (event.clientX - pointerX) / 200;
+  const down = (event: PointerEvent) => {
+    pointerX = event.clientX; lastDrag = drag;
+    canvas.setPointerCapture(event.pointerId);
+    canvas.style.cursor = 'grabbing';
   };
-  const up = () => { pointerX = null; };
+  const move = (event: PointerEvent) => {
+    if (pointerX !== null) {
+      drag = lastDrag + (event.clientX - pointerX) / 200;
+      if (motion.matches) instance?.toggle(true);
+    }
+  };
+  const up = () => { pointerX = null; canvas.style.cursor = 'grab'; };
+  const key = (event: KeyboardEvent) => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    drag += event.key === 'ArrowLeft' ? -0.2 : 0.2;
+    instance?.toggle(true);
+  };
   canvas.addEventListener("pointerdown", down);
   window.addEventListener("pointermove", move);
   window.addEventListener("pointerup", up);
   window.addEventListener("pointercancel", up);
+  canvas.addEventListener('keydown', key);
   motion.addEventListener("change", sync);
   document.addEventListener("visibilitychange", sync);
   sync();
@@ -70,6 +87,7 @@ export default function createOnhostGlobe(canvas: HTMLCanvasElement, options: CO
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", up);
       window.removeEventListener("pointercancel", up);
+      canvas.removeEventListener('keydown', key);
       motion.removeEventListener("change", sync);
       document.removeEventListener("visibilitychange", sync);
       instance?.destroy();

@@ -13,18 +13,42 @@ onPage(() => {
 
   // Rozbalovací skupiny navigace: klik, Escape a klik mimo zavírají.
   const triggers = [...document.querySelectorAll('.site-nav__trigger')];
-  const closeAll = except => triggers.forEach(t => t !== except && t.setAttribute('aria-expanded', 'false'));
+  const setExpanded = (trigger, open) => {
+    trigger.setAttribute('aria-expanded', String(open));
+    const menu = document.getElementById(trigger.getAttribute('aria-controls'));
+    if (menu) menu.inert = !open;
+  };
+  const closeAll = except => triggers.forEach(t => t !== except && setExpanded(t, false));
   triggers.forEach(trigger => listen(trigger, 'click', () => {
     const open = trigger.getAttribute('aria-expanded') === 'true';
-    closeAll(trigger); trigger.setAttribute('aria-expanded', String(!open));
+    closeAll(trigger); setExpanded(trigger, !open);
   }));
-  listen(document, 'keydown', e => {if (e.key === 'Escape') closeAll();});
+  triggers.forEach(trigger => listen(trigger, 'keydown', e => {
+    if (e.key !== 'ArrowDown') return;
+    e.preventDefault(); closeAll(trigger); setExpanded(trigger, true);
+    trigger.nextElementSibling?.querySelector('a')?.focus();
+  }));
+  listen(document, 'keydown', e => {
+    if (e.key !== 'Escape') return;
+    const active = triggers.find(t => t.getAttribute('aria-expanded') === 'true');
+    if (active?.parentElement.contains(document.activeElement)) active.focus();
+    closeAll();
+    if (toggle?.getAttribute('aria-expanded') === 'true') { closeMobile(); toggle.focus(); }
+  });
   listen(document, 'click', e => {if (!e.target.closest?.('.site-nav__group')) closeAll();});
+  listen(document, 'focusin', e => {
+    if (!e.target.closest?.('.site-nav__group')) closeAll();
+    if (panel && !panel.hidden && !header?.contains(e.target)) closeMobile();
+  });
   const toggle = document.querySelector('[data-menu-toggle]'), panel = document.getElementById('mobile-nav');
+  const sizeMobile = () => panel?.style.setProperty('--mobile-nav-height', `${Math.max(0, innerHeight - panel.getBoundingClientRect().top)}px`);
+  const closeMobile = () => { if (toggle && panel) { toggle.setAttribute('aria-expanded', 'false'); panel.hidden = true; } };
   if (toggle && panel) listen(toggle, 'click', () => {
     const open = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', String(!open)); panel.hidden = open;
+    if (!open) sizeMobile();
   });
+  listen(window, 'resize', () => { closeAll(); if (innerWidth > 1080) closeMobile(); else sizeMobile(); });
 
   // Karty: jemné světlo sleduje ukazatel (jen myš, ne dotyk).
   listen(document, 'pointermove', e => {

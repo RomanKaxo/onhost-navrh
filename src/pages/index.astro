@@ -9,8 +9,7 @@ import Steps from '../components/Steps.astro';
 import Faq from '../components/Faq.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Cosmos from '../components/motion/Cosmos.astro';
-import NetworkGlobe from '../components/NetworkGlobe';
-import '../styles/globe.css';
+import NetworkVisual from '../components/NetworkVisual.astro';
 import Marquee from '../components/Marquee.astro';
 import Stats from '../components/Stats.astro';
 import {getEntry, getCollection} from 'astro:content';
@@ -62,9 +61,10 @@ const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p
         {d?.lead && <p class="lead">{d.lead}</p>}
         <form class="domain" action={url('domeny')} method="get" role="search">
           <label class="sr-only" for="domain-q">Najděte si doménu</label>
-          <input id="domain-q" name="q" placeholder="vase-firma.cz" autocomplete="off" />
-          <Button type="submit">Ověřit doménu</Button>
+          <input id="domain-q" name="q" placeholder="vase-firma.cz" autocomplete="off" required pattern=".*\S.*" title="Zadejte název domény." maxlength="253" aria-describedby="domain-note" />
+          <Button type="submit">Pokračovat s doménou</Button>
         </form>
+        <p class="domain-note" id="domain-note">Dostupnost domény ověříte v klientské zóně ONhost.</p>
       </div>
     </div>
     {d?.included && <ul class="chips hero__chips" aria-label="V ceně každého tarifu">{d.included.slice(0, 3).map(i => <li>{i}</li>)}</ul>}
@@ -97,6 +97,19 @@ const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p
     </div>
   </section>
 
+  <section class="section dc">
+    <div class="wrap">
+      <SectionHead title="Datacentrum v srdci Evropy." lead="Vlastní infrastruktura v datacentru Tier III v Praze. Odtud běží vaše weby, e-maily i servery." />
+      <div class="dc__globe"><NetworkVisual /></div>
+      <ul class="dc__facts" data-reveal>
+        <li><strong>Tier III</strong><span>Praha</span></li>
+        <li><strong>N+1</strong><span>redundance kritických systémů</span></li>
+        <li><strong>99,9 %</strong><span>SLA dostupnosti</span></li>
+        <li class="dc__more"><Button href={url('datacenter')} variant="ghost">Prohlédnout datacentrum</Button></li>
+      </ul>
+    </div>
+  </section>
+
   {d?.highlights?.length && <Highlights items={d.highlights} title="Prémiový hosting, který nemusíte hlídat." planet="datacenter" />}
 
   <Stats title="ONhost v číslech." items={[
@@ -110,21 +123,7 @@ const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p
 
   {d?.steps?.length && <Steps items={d.steps} title={stepsTitle(d.steps.length)} />}
 
-  <section class="section dc">
-    <div class="wrap">
-      <SectionHead title="Datacentrum v srdci Evropy." lead="Vlastní infrastruktura v datacentru Tier III v Praze. Odtud běží vaše weby, e-maily i servery." />
-      <figure class="dc__globe">
-        <NetworkGlobe client:visible />
-        <figcaption><span class="dc__dot" aria-hidden="true"></span>Praha · Tier III</figcaption>
-      </figure>
-      <ul class="dc__facts" data-reveal>
-        <li><strong>Tier III</strong><span>Praha</span></li>
-        <li><strong>N+1</strong><span>redundance kritických systémů</span></li>
-        <li><strong>99,9 %</strong><span>SLA dostupnosti</span></li>
-        <li class="dc__more"><Button href={url('datacenter')} variant="ghost">Prohlédnout datacentrum</Button></li>
-      </ul>
-    </div>
-  </section>
+
 
   {d?.faq?.length && <Faq items={d.faq} />}
 
@@ -137,7 +136,7 @@ const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p
   import {getCosmos} from '../motion/cosmos.js';
   onPage(() => {
     const scene = document.querySelector<HTMLElement>('[data-power-scene]');
-    const button = document.querySelector<HTMLButtonElement>('[data-power]');
+    const button = document.querySelector<HTMLButtonElement>('button[data-power]');
     const state = document.querySelector('[data-power-state]');
     if (!scene || !button) return;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -179,12 +178,13 @@ const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p
   .hero__inner { display: grid; justify-items: center; text-align: center; padding-block: clamp(28px, 6vh, 72px) 0; }
   .hero__stage { position: relative; display: grid; place-items: center; width: clamp(92px, 9vw, 128px); aspect-ratio: 1; margin: 18px 0 10px; }
   .hero__switch { width: 100%; aspect-ratio: 1; border-radius: 50%; border: 0; background: none; cursor: pointer; padding: 0; }
+  .hero__switch:hover { background: color-mix(in srgb, var(--lilac) 10%, transparent); }
   .hero__switch :global(.logo) { width: 100%; }
   .hero__switch.is-pressed :global(.logo) { animation: hero-press 220ms var(--ease); }
   @keyframes hero-press { 50% { scale: .94; } }
   .hero__switch:focus-visible { outline: 2px solid var(--lilac-200); outline-offset: 14px; }
   /* Dráhy kolem symbolu (mimo ochrannou zónu) se po zapnutí roztáhnou a rozsvítí. */
-  .hero__ring { position: absolute; inset: -38%; border-radius: 50%; border: 1px solid transparent; scale: .7; opacity: 0;
+  .hero__ring { position: absolute; inset: -38%; border-radius: 50%; border: 1px solid transparent; scale: .7; opacity: 0; pointer-events: none;
     transition: scale var(--t-scene) var(--ease), opacity var(--t-scene) var(--ease), border-color var(--t-scene) var(--ease); }
   .hero__ring--2 { inset: -66%; border-style: dashed; transition-delay: .2s; }
   .hero.is-on .hero__ring { scale: 1; opacity: 1; border-color: color-mix(in srgb, var(--lilac) 30%, transparent); }
@@ -202,6 +202,7 @@ const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p
   .domain input { flex: 1; min-width: 0; border: 0; background: none; color: #fff; font: 500 16px var(--font-body); padding: 0 16px; }
   .domain input::placeholder { color: var(--text-faint); }
   .domain input:focus { outline: none; }
+  .domain-note { margin: -10px 0 0; font-size: 13px; color: var(--text-faint); }
   .domain:focus-within { border-color: var(--lilac-200); }
   .hero__chips { position: absolute; left: 50%; bottom: clamp(20px, 5vh, 44px); translate: -50% 0; justify-content: center; width: max-content; max-width: calc(100% - 32px); opacity: 0; transition: opacity var(--t-scene) var(--ease) .6s; }
   .hero.is-on .hero__chips { opacity: 1; }
@@ -233,9 +234,7 @@ const catalog = planets.map(p => ({...p, note: noteOf(p.href), from: fromPrice(p
   .system__orbit.is-paused .orb { animation-play-state: paused; }
 
   /* DATACENTRUM — mapa sítě přes celou šířku, pod ní fakta z živého webu. */
-  .dc__globe { position: relative; width: min(100%, 600px); margin: 0 auto; }
-  .dc__globe figcaption { position: absolute; bottom: 4%; left: 50%; translate: -50% 0; display: flex; align-items: center; gap: 10px; white-space: nowrap; padding: 10px 18px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--space-0); color: var(--lilac-50); font-size: 14px; }
-  .dc__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pink-hot); box-shadow: 0 0 14px var(--pink); }
+  .dc__globe { position: relative; width: min(100%, 680px); margin: 0 auto; }
   .dc__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; align-items: center; gap: 24px; margin: 40px 0 0; padding: 28px 0 0; list-style: none; border-top: 1px solid var(--line); }
   .dc__facts li { display: grid; gap: 4px; }
   .dc__facts strong { font: 700 clamp(28px, 3vw, 40px)/1 var(--font-display); color: #fff; }

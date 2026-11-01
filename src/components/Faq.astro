@@ -30,6 +30,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   .faq__item { padding: 0; }
   .faq__item summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 24px; cursor: pointer; list-style: none; font: 600 17px/1.4 var(--font-body); color: #fff; }
   .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__item summary:hover { background: color-mix(in srgb, var(--lilac) 10%, transparent); }
+  .faq__item summary:focus-visible { outline-offset: -4px; border-radius: var(--radius); }
   .faq__item[open] { border-color: var(--line-strong); }
   .faq__icon { width: 14px; height: 14px; flex: none; position: relative; }
   .faq__icon::before, .faq__icon::after { content: ''; position: absolute; inset: 0; margin: auto; width: 14px; height: 2px; border-radius: 2px; background: var(--pink); transition: rotate var(--t-micro) var(--ease); }

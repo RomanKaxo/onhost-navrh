@@ -14,6 +14,8 @@ import BackupTimeline from '../components/visuals/BackupTimeline.astro';
 import ChatSample from '../components/visuals/ChatSample.astro';
 import Heartbeat from '../components/visuals/Heartbeat.astro';
 import WorldMap from '../components/WorldMap.astro';
+import NetworkVisual from '../components/NetworkVisual.astro';
+import DomainRequest from '../components/DomainRequest.astro';
 import {render} from 'astro:content';
 import {allPages, crumbs, type Page} from '../data/pages';
 import {planetOf, highlightsHead, stepsTitle} from '../data/defaults';
@@ -25,14 +27,16 @@ const hasBody = Boolean(page.body?.trim());
 const pages = await allPages();
 const related = (d.related ?? []).map(s => pages.find(p => p.data.slug === s)).filter((p): p is Page => Boolean(p)).slice(0, 3);
 const primary = d.plans?.length ? {label: 'Vybrat tarif', href: '#tarify'} : d.cta?.primary;
-const secondary = d.plans?.length ? (d.cta?.secondary ?? {label: 'Napsat podpoře', href: '/kontakt'}) : d.cta?.secondary;
+const secondaryCandidate = d.plans?.length ? (d.cta?.secondary ?? {label: 'Napsat podpoře', href: '/kontakt'}) : d.cta?.secondary;
+const secondary = secondaryCandidate?.href === primary?.href ? undefined : secondaryCandidate;
 const head = highlightsHead(d.kind, d.slug, d.title);
 // Stránky s vlastní ilustrací v úvodu místo planety.
-const Visual = ({developer: Terminal, 'funkce/zalohy': BackupTimeline, 'funkce/ai-asistent': ChatSample, 'funkce/monitoring': Heartbeat} as Record<string, any>)[d.slug];
+const Visual = ({datacenter: NetworkVisual, developer: Terminal, 'funkce/zalohy': BackupTimeline, 'funkce/ai-asistent': ChatSample, 'funkce/monitoring': Heartbeat} as Record<string, any>)[d.slug];
 ---
 <Site title={d.title} description={d.description}>
   <PageHero crumbs={crumbs(d.slug, d.title)} eyebrow={d.eyebrow} title={d.headline ?? d.title} lead={d.lead}
     planet={planetOf(d.slug, d.planet)} included={d.included} primary={primary} secondary={secondary} visual={Visual} />
+  {d.slug === 'domeny' && <DomainRequest />}
   {d.slug === 'datacenter' && <section class="section map-band"><div class="wrap"><WorldMap /></div></section>}
   {d.highlights?.length && <Highlights items={d.highlights} title={head.title} planet={planetOf(d.slug, d.planet)} />}
   {d.plans?.length && <Plans plans={d.plans} note={d.priceNote} />}

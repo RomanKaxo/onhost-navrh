@@ -3,6 +3,9 @@ import {defineConfig} from 'astro/config';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import {fileURLToPath} from 'node:url';
+import {satteri} from '@astrojs/markdown-satteri';
+
+const base = '/onhost-navrh';
 
 // Návrh běží na GitHub Pages pod /onhost-navrh; odkazy vždy přes import.meta.env.BASE_URL.
 export default defineConfig({
@@ -20,7 +23,17 @@ export default defineConfig({
     }],
   },
   site: 'https://romankaxo.github.io',
-  base: '/onhost-navrh',
+  base,
   trailingSlash: 'ignore',
+  markdown: {
+    processor: satteri({mdastPlugins: [{
+      name: 'onhost-base-links',
+      link(node, ctx) {
+        if (/^\/(?!\/)/.test(node.url) && node.url !== base && !node.url.startsWith(`${base}/`)) {
+          ctx.setProperty(node, 'url', `${base}${node.url}`);
+        }
+      },
+    }]}),
+  },
   output: 'static',
 });

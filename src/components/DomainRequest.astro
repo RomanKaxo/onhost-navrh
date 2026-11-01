@@ -1,0 +1,30 @@
+---
+import Button from './Button.astro';
+---
+<section class="section domain-request" hidden data-domain-request>
+  <div class="wrap">
+    <div class="card">
+      <h2>Vaše doména: <span data-domain-name></span></h2>
+      <p>Tento návrh neověřuje dostupnost domén. Dostupnost a registraci vyřešíte v klientské zóně ONhost.</p>
+      <Button href="https://admin.onhost.cz/panel">Přejít do klientské zóny</Button>
+    </div>
+  </div>
+</section>
+<script>
+  import {onPage} from '../motion/lifecycle.js';
+  onPage(() => {
+    const section = document.querySelector<HTMLElement>('[data-domain-request]');
+    const name = section?.querySelector('[data-domain-name]');
+    const query = new URLSearchParams(location.search).get('q')?.trim().slice(0, 253);
+    if (section && name && query) {
+      name.textContent = query;
+      section.hidden = false;
+      section.scrollIntoView({block: 'center'});
+    }
+  });
+</script>
+<style>
+  .domain-request { padding-top: 0; }
+  .card { display: grid; gap: 20px; justify-items: start; }
+  h2 { font-size: var(--fs-h3); overflow-wrap: anywhere; }
+</style>

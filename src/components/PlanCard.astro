@@ -1,6 +1,6 @@
 ---
 interface Props { name: string; price: string; period?: string; features?: string[]; featured?: boolean; href?: string; index?: number }
-const {name, price, period, features = [], featured = false, href = 'https://onhost.cz/panel', index = 0} = Astro.props;
+const {name, price, period, features = [], featured = false, href = 'https://admin.onhost.cz/panel', index = 0} = Astro.props;
 ---
 <article class:list={['card', 'plan', {'plan--featured': featured}]} data-reveal style={`--d:${index * 60}ms`}>
   {featured && <p class="plan__badge">Nejoblíbenější</p>}
@@ -21,7 +21,8 @@ const {name, price, period, features = [], featured = false, href = 'https://onh
   @property --charge { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
   @keyframes charge { to { --charge: 360deg; } }
   .plan--featured { border-color: color-mix(in srgb, var(--pink) 70%, transparent); background: var(--surface-raised); }
-  .plan__badge { position: absolute; top: -12px; left: 22px; margin: 0; padding: 5px 12px; border-radius: 999px; background: var(--pink); color: #fff; font: 600 12px/1 var(--font-body); }
+  .plan--featured { padding-top: 56px; }
+  .plan__badge { position: absolute; top: 16px; left: 22px; margin: 0; padding: 5px 12px; border-radius: 999px; background: var(--pink); color: #fff; font: 600 12px/1 var(--font-body); }
   .plan__name { font-size: 24px; }
   .plan__price { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
   .plan__price strong { font: 700 clamp(32px, 3vw, 42px)/1 var(--font-display); color: #fff; white-space: nowrap; }

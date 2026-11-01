@@ -17,9 +17,9 @@ faq:
   - q: Kam se obrátit při výpadku?
     a: "Otevřete ticket v klientské zóně. Urgentní výpadky řešíme nepřetržitě a reagujeme do 1 hodiny."
   - q: Kam poslat dotaz k faktuře?
-    a: "Na fakturace@onhost.cz. Ve formuláři můžete také vybrat oddělení Fakturace."
+    a: "Na fakturace@onhost.cz. V kontaktním formuláři na živém webu ONhost můžete také vybrat oddělení Fakturace."
   - q: Jak nahlásit zneužití nebo porušení autorských práv?
-    a: "Ve formuláři vyberte oddělení Abuse / DMCA a popište, o co jde."
+    a: "V kontaktním formuláři na živém webu ONhost vyberte oddělení Abuse / DMCA a popište, o co jde."
   - q: Kde najdu návody?
     a: "Ve znalostní bázi. Najdete tam postupy pro DNS, e-mail, SSL, nahrávání přes FTP a změnu verze PHP."
 cta:
@@ -55,7 +55,7 @@ E-mail: [info@onhost.cz](mailto:info@onhost.cz)
 
 ## Napište nám
 
-Vyplňte formulář a ozveme se vám co nejdříve. Vyberte oddělení:
+Otevřete [kontaktní formulář na živém webu ONhost](https://onhost.cz/kontakt). Vyberte oddělení:
 
 - technická podpora,
 - fakturace,
@@ -66,4 +66,4 @@ Urgentní záležitosti řešte raději ticketem.
 
 ## Odběr novinek
 
-Dozvíte se jako první o nových produktech, výhodách a technických novinkách. Odhlásit se můžete kdykoli. Žádný spam.
+Odběr novinek najdete na [živém webu ONhost](https://onhost.cz/kontakt). Dozvíte se o nových produktech, výhodách a technických novinkách. Odhlásit se můžete kdykoli.

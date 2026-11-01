@@ -15,10 +15,10 @@ const current = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$
     <a class="site-header__brand" href={url()} aria-label="ONhost — úvod"><Logo tone="on-dark" /></a>
     <nav class="site-nav" aria-label="Hlavní navigace">
       <ul class="site-nav__list">
-        {nav.map(group => (
+        {nav.map((group, i) => (
           <li class="site-nav__group">
-            <button class="site-nav__trigger" type="button" aria-expanded="false">{group.label}<span aria-hidden="true" class="site-nav__chev">▾</span></button>
-            <div class="site-nav__panel">
+            <button class="site-nav__trigger" type="button" aria-expanded="false" aria-controls={`nav-panel-${i}`}>{group.label}<span aria-hidden="true" class="site-nav__chev">▾</span></button>
+            <div class="site-nav__panel" id={`nav-panel-${i}`} inert>
               <ul>
                 {group.items.map(item => (
                   <li><a href={url(item.href)} aria-current={current === item.href ? 'page' : undefined}><span class="nav-orb" style={orb(item.href)} aria-hidden="true"></span><span class="nav-text"><strong>{item.label}</strong>{item.note && <small>{item.note}</small>}</span></a></li>
@@ -30,7 +30,7 @@ const current = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$
       </ul>
     </nav>
     <div class="site-header__actions">
-      <Button href="https://onhost.cz/panel" variant="ghost" class="site-header__login">Klientská zóna</Button>
+      <Button href="https://admin.onhost.cz/panel" variant="ghost" class="site-header__login">Klientská zóna</Button>
       <button class="site-header__menu" type="button" aria-expanded="false" aria-controls="mobile-nav" data-menu-toggle><span class="sr-only">Menu</span><span aria-hidden="true"></span></button>
     </div>
   </div>
@@ -42,7 +42,7 @@ const current = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$
           <ul>{group.items.map(item => <li><a href={url(item.href)}>{item.label}</a></li>)}</ul>
         </details>
       ))}
-      <Button href="https://onhost.cz/panel" variant="primary" class="mobile-nav__login">Klientská zóna</Button>
+      <Button href="https://admin.onhost.cz/panel" variant="primary" class="mobile-nav__login">Klientská zóna</Button>
     </div>
   </div>
 </header>
@@ -51,6 +51,7 @@ const current = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$
   .site-header.is-scrolled { background: color-mix(in srgb, var(--space-0) 78%, transparent); backdrop-filter: blur(14px) saturate(140%); border-bottom-color: color-mix(in srgb, var(--lilac) 14%, transparent); }
   .site-header__bar { display: flex; align-items: center; gap: 28px; min-height: 76px; }
   .site-header__brand { width: 132px; flex: none; }
+  .site-header__brand:hover { opacity: .8; }
   .site-nav { flex: 1; }
   .site-nav__list { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
   .site-nav__group { position: relative; }
@@ -70,13 +71,15 @@ const current = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$
     box-shadow: inset -3px -3px 6px #12001E99, 0 0 14px color-mix(in srgb, var(--c1) 45%, transparent); transition: scale var(--t-micro) var(--ease); }
   .site-nav__panel a:hover .nav-orb { scale: 1.12; }
   .site-nav__panel a:hover, .site-nav__panel a:focus-visible { background: color-mix(in srgb, var(--lilac) 12%, transparent); outline: none; }
+  .site-nav__panel a:focus-visible { outline: 2px solid var(--lilac-200); outline-offset: -2px; }
   .site-nav__panel strong { font: 600 15px/1.2 var(--font-body); color: #fff; }
   .site-nav__panel small { font-size: 13px; color: color-mix(in srgb, var(--lilac-200) 80%, transparent); }
   .site-nav__panel a[aria-current="page"] strong { color: var(--pink-hot); }
   .site-header__actions { display: flex; gap: 10px; align-items: center; }
   .site-header__menu { display: none; width: 44px; height: 44px; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--lilac) 35%, transparent); background: none; cursor: pointer; position: relative; }
   .site-header__menu span[aria-hidden] { position: absolute; inset: 0; margin: auto; width: 18px; height: 2px; background: var(--lilac-50); box-shadow: 0 -6px 0 var(--lilac-50), 0 6px 0 var(--lilac-50); }
-  .mobile-nav { border-top: 1px solid color-mix(in srgb, var(--lilac) 14%, transparent); background: var(--space-0); padding: 12px 0 24px; max-height: calc(100vh - 76px); overflow: auto; }
+  .site-header__menu:hover, .mobile-nav summary:hover, .mobile-nav a:hover { background: color-mix(in srgb, var(--lilac) 12%, transparent); }
+  .mobile-nav { border-top: 1px solid color-mix(in srgb, var(--lilac) 14%, transparent); background: var(--space-0); padding: 12px 0 24px; max-height: calc(100svh - 76px); max-height: var(--mobile-nav-height, calc(100svh - 76px)); overflow: auto; overscroll-behavior: contain; }
   .mobile-nav details { border-bottom: 1px solid color-mix(in srgb, var(--lilac) 12%, transparent); }
   .mobile-nav summary { padding: 16px 0; font: 600 18px/1 var(--font-display); cursor: pointer; }
   .mobile-nav ul { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 4px; }

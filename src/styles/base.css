@@ -1,6 +1,7 @@
 /* Základ celého návrhu: typografie, rytmus, karty, štítky a text z Markdownu.
    Komponenty tyto role jen skládají; vlastní barvy a velikosti nezavádějí. */
 *,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
 html{background:var(--space-0);color:var(--text);font-family:var(--font-body);-webkit-font-smoothing:antialiased;scroll-padding-top:96px}
 body{margin:0;min-height:100vh;line-height:1.6;font-size:17px;overflow-x:clip}
 h1,h2,h3,h4{font-family:var(--font-display);line-height:1.04;letter-spacing:-.015em;margin:0;color:var(--text-strong);text-wrap:balance}
